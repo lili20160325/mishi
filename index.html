@@ -232,7 +232,7 @@ var ITEMS={
 };
 /* ---------------- 第 1 间：外婆家的书房 ---------------- */
 var r1={id:'r1',title:'外婆家的书房',emoji:'📚',sub:'面积 · 英语 · 组合物品',
- story:['周末，你在外婆家玩捉迷藏，躲进了书房。','“咔哒”一声，门被风吹上，还自动锁住了！','外婆在门外笑着说：“钥匙就藏在一个蓝色的秘密里。动动脑筋，自己打开门吧！”'],
+ story:['周末，你在外婆家玩捉迷藏，躲进了书房。','“咔哒”一声，门被风吹上，还自动锁住了！','外婆在门外笑着说：“钥匙就藏在蓝色小盒子里，盒子上有英语单词题哦。动动脑筋，自己打开门吧！”'],
  objects:[
   {id:'door',name:'书房门',box:[300,52,78,160],views:[{text:'门锁得紧紧的，要用钥匙才能打开。',use:[{item:'doorkey',win:true,text:'钥匙一转，“咔哒”——门开了！外婆笑眯眯地说：“真聪明！”'}]}]},
   {id:'desk',name:'书桌',box:[20,128,120,84],views:[
@@ -245,8 +245,8 @@ var r1={id:'r1',title:'外婆家的书房',emoji:'📚',sub:'面积 · 英语 ·
     {text:'地毯下面什么也没有了。'}]},
   {id:'shelf',name:'书架',box:[150,30,120,184],views:[
     {if:['!shelf_lit'],text:'书架上摆满了书。最下面一层黑乎乎的，什么也看不清。要是有光就好了。',use:[{item:'torch_on',set:['shelf_lit'],text:'手电筒一照，书架最下层藏着一个蓝色的小盒子！'}],wrong:'书架下面太黑了，这个东西帮不上忙。'},
-    {if:['shelf_lit','!box_open'],text:'蓝色小盒子上有一把字母密码锁，一共 4 格。盒子上贴着一行英文：',note:'What colour is the sky?\n（天空是什么颜色的？用英文单词回答）',
-     lock:{kind:'alpha',len:4,answer:'BLUE',prompt:'输入 4 个英文字母',ok:{set:['box_open'],give:['doorkey'],text:'B-L-U-E！盒子打开了，里面是一把亮闪闪的门钥匙！'},bad:'不对哦。天空是蓝色的，“蓝色”的英文怎么拼？'}},
+    {if:['shelf_lit','!box_open'],text:'蓝色小盒子上有一把字母密码锁，一共 5 格。盒子上贴着 Unit 1 单词卡：',note:'_____ = 担心\n（教科版五年级上册 Unit 1 单词，用英文大写填写）',
+     lock:{kind:'alpha',len:5,answer:'WORRY',prompt:'输入 5 个英文字母',ok:{set:['box_open'],give:['doorkey'],text:'W-O-R-R-Y！盒子打开了，里面是一把亮闪闪的门钥匙！'},bad:'不对哦。Unit 1 里“担心”的英文怎么拼？'}},
     {text:'蓝色小盒子已经空了。书架上有一本《十万个为什么》。'}]},
   {id:'lamp',name:'台灯',box:[88,78,46,52],views:[{text:'一盏小台灯，灯泡坏了，按开关也不亮。'}]},
   {id:'window',name:'窗户',box:[34,24,92,78],views:[{text:'窗外是外婆的菜园，绿油油的，正好是一个长方形。'}]}
@@ -258,11 +258,11 @@ var r1={id:'r1',title:'外婆家的书房',emoji:'📚',sub:'面积 · 英语 ·
   {until:'took_battery',obj:'rug',tiers:['手电筒没有电。房间里哪里藏着电池呢？','地上的地毯，有一角翘起来了。','点地毯，把电池拿起来。']},
   {until:'made_torch',tiers:['手电筒和电池，能不能放在一起？','在下面的物品栏里，先点手电筒，再点电池，就能组合。','先点 🔦，再点 🔋。']},
   {until:'shelf_lit',obj:'shelf',tiers:['房间里哪里黑乎乎的看不清？','书架最下面一层很黑。','先在物品栏点亮着的手电筒，再点书架。']},
-  {until:'box_open',obj:'shelf',tiers:['盒子上的英文在问：天空是什么颜色的？','天空是蓝色的。“蓝色”的英文有 4 个字母。','输入 B、L、U、E。']},
+  {until:'box_open',obj:'shelf',tiers:['盒子上的单词卡：_____ = 担心。','Unit 1 单词：担心 = worry，一共 5 个字母。','输入 W、O、R、R、Y。']},
   {until:'escaped',obj:'door',tiers:['你已经拿到门钥匙了！','选中门钥匙，再点门。','先点物品栏里的 🗝️，再点右边的门。']}
  ],
- explain:['长方形面积 = 长 × 宽：12.5 × 8 = 100（平方米），所以抽屉密码是 100。','手电筒没有电，要先在地毯下找到电池，把两样东西组合起来。','用亮着的手电筒照黑乎乎的书架，发现蓝色小盒子。','天空是蓝色的，“蓝色”的英文是 blue，盒子打开，拿到门钥匙。'],
- solution:[['code','desk','100'],['take','desk'],['take','rug'],['combine','torch','battery'],['use','shelf','torch_on'],['code','shelf','BLUE'],['use','door','doorkey']],
+ explain:['长方形面积 = 长 × 宽：12.5 × 8 = 100（平方米），所以抽屉密码是 100。','手电筒没有电，要先在地毯下找到电池，把两样东西组合起来。','用亮着的手电筒照黑乎乎的书架，发现蓝色小盒子。','Unit 1：worry = 担心，蓝色小盒子打开，拿到门钥匙。'],
+ solution:[['code','desk','100'],['take','desk'],['take','rug'],['combine','torch','battery'],['use','shelf','torch_on'],['code','shelf','WORRY'],['use','door','doorkey']],
  art:function(f){var s='';
   s+=R(0,0,400,300,'#ffe9c7')+R(0,214,400,86,'#e7b98a')+P('M0 214H400','none',' stroke="#c9945f" stroke-width="3"');
   for(var i=0;i<8;i++)s+=P('M'+(i*50+10)+' 0v214','none',' stroke="#ffdcae" stroke-width="10" opacity=".5"');
@@ -330,7 +330,7 @@ var r3={id:'r3',title:'机器人厨房',emoji:'🤖',sub:'英语 · 小数 · �
   {id:'robot',name:'机器人小厨',box:[288,104,84,110],views:[
     {text:'机器人小厨眨着眼睛：“I want a cake! 我想要一个蛋糕！”',use:[{item:'cake',take:['cake'],win:true,text:'小厨开心地转圈：“Thank you! Yummy! 谢谢你，真好吃！”门“嘀”的一声打开了。'}],wrong:'小厨摇摇头：“No, no! I want a cake!”'}]},
   {id:'fridge',name:'冰箱',box:[18,36,76,178],views:[
-    {if:['!fridge_open'],text:'冰箱门上有一把三位数的密码锁，旁边贴着一张英文菜谱：',note:'Cake Recipe\n· three eggs\n· two cups of milk\n· five spoons of sugar\n\n冰箱密码：按 eggs、milk、sugar 的顺序，把三个数量连起来。',
+    {if:['!fridge_open'],text:'冰箱门上有一把三位数的密码锁，旁边贴着一张英文菜谱：',note:'Cooking Club Cake Recipe\n（小厨的烹饪社团菜谱）\n· three eggs\n· two cups of milk\n· five spoons of sugar\n\n冰箱密码：按 eggs、milk、sugar 的顺序，把三个数量连起来。',
      lock:{kind:'num',len:3,answer:'325',prompt:'输入三位数密码',ok:{set:['fridge_open'],text:'冰箱“嘀”地开了！里面有鸡蛋和牛奶。'},bad:'不对哦。three、two、five 分别是几？按顺序连起来。'}},
     {if:['fridge_open','!took_fridge'],text:'冰箱里有鸡蛋和牛奶。',take:{give:['egg','milk'],set:['took_fridge'],text:'你拿到了鸡蛋和牛奶。'}},
     {text:'冰箱里只剩一瓶橙汁了。'}]},
@@ -966,7 +966,7 @@ var r8={id:'r8',title:'香香厨房',emoji:'🍳',sub:'英语 · 词汇',
     {text:'门锁着，需要钥匙。',use:[{item:'key_r8',win:true,text:'Great! 门开了，你完成了英语挑战！'}],wrong:'Need a key!'}
   ]},
   {id:'desk',name:'书桌',box:[30,150,120,50],views:[
-    {if:['!desk_open'],text:'书桌小盒上有字母锁，旁边是英文卡片：',note:'【英语题】What colour is grass?\n（草是绿色的。green = 绿色）',lock:{kind:'alpha',len:5,answer:'GREEN',prompt:'输入英文大写',ok:{set:['desk_open'],give:['key_r8'],text:'Correct! 小盒打开，里面是钥匙！'},bad:'不对哦，再想想英文怎么说。'}},
+    {if:['!desk_open'],text:'书桌小盒上有字母锁，旁边是英文卡片：',note:'【英语题】How do you learn new words? I like to learn words in _____.\n（Unit 1：用语块学单词。chunks = 语块（复数））',lock:{kind:'alpha',len:6,answer:'CHUNKS',prompt:'输入英文大写',ok:{set:['desk_open'],give:['key_r8'],text:'Correct! 小盒打开，里面是钥匙！'},bad:'不对哦，再想想英文怎么说。'}},
     {text:'小盒已经空了。'}
   ]},
   {id:'board',name:'黑板',box:[130,20,150,90],views:[
@@ -984,11 +984,11 @@ var r8={id:'r8',title:'香香厨房',emoji:'🍳',sub:'英语 · 词汇',
  ],
  combos:[],
  hints:[
-  {until:'desk_open',obj:'desk',tiers:['看看英文卡片上的问题。','草是绿色的。green = 绿色','答案是 GREEN。']},
+  {until:'desk_open',obj:'desk',tiers:['看看英文卡片上的问题。','Unit 1：用语块学单词。chunks = 语块（复数）','答案是 CHUNKS。']},
   {until:'escaped',obj:'door',tiers:['钥匙在手！','选中钥匙点门。','开门出去。']}
  ],
- explain:['英文题：What colour is grass?','草是绿色的。green = 绿色 → GREEN','用钥匙打开门。'],
- solution:[['code','desk','GREEN'],['use','door','key_r8']],
+ explain:['英文题：How do you learn new words? I like to learn words in _____.','Unit 1：用语块学单词。chunks = 语块（复数） → CHUNKS','用钥匙打开门。'],
+ solution:[['code','desk','CHUNKS'],['use','door','key_r8']],
  art:function(f){var s='';s+=R(0,0,400,300,'#fff4e0')+R(0,214,400,86,'#cfe8f0');
   s+=g('window',R(24,24,90,70,'#bfe8ff',8,SK)+C(90,44,10,'#fff2a8'));
   s+=g('board',R(130,20,150,90,'#2f6b4f',6,' stroke="#a86b38" stroke-width="5"')+T(205,65,11,'📝',' fill="#fff'));
@@ -1175,7 +1175,7 @@ var r13={id:'r13',title:'奇妙实验室',emoji:'🔬',sub:'英语 · 词汇',
     {text:'门锁着，需要钥匙。',use:[{item:'key_r13',win:true,text:'Great! 门开了，你完成了英语挑战！'}],wrong:'Need a key!'}
   ]},
   {id:'desk',name:'书桌',box:[30,150,120,50],views:[
-    {if:['!desk_open'],text:'书桌小盒上有字母锁，旁边是英文卡片：',note:'【英语题】What colour is the sun?\n（太阳是黄色的。yellow = 黄色）',lock:{kind:'alpha',len:6,answer:'YELLOW',prompt:'输入英文大写',ok:{set:['desk_open'],give:['key_r13'],text:'Correct! 小盒打开，里面是钥匙！'},bad:'不对哦，再想想英文怎么说。'}},
+    {if:['!desk_open'],text:'书桌小盒上有字母锁，旁边是英文卡片：',note:'【英语题】What is a _____? A group of words that go together. (语块)\n（Unit 1：chunk = 语块）',lock:{kind:'alpha',len:5,answer:'CHUNK',prompt:'输入英文大写',ok:{set:['desk_open'],give:['key_r13'],text:'Correct! 小盒打开，里面是钥匙！'},bad:'不对哦，再想想英文怎么说。'}},
     {text:'小盒已经空了。'}
   ]},
   {id:'board',name:'黑板',box:[130,20,150,90],views:[
@@ -1193,11 +1193,11 @@ var r13={id:'r13',title:'奇妙实验室',emoji:'🔬',sub:'英语 · 词汇',
  ],
  combos:[],
  hints:[
-  {until:'desk_open',obj:'desk',tiers:['看看英文卡片上的问题。','太阳是黄色的。yellow = 黄色','答案是 YELLOW。']},
+  {until:'desk_open',obj:'desk',tiers:['看看英文卡片上的问题。','Unit 1：chunk = 语块','答案是 CHUNK。']},
   {until:'escaped',obj:'door',tiers:['钥匙在手！','选中钥匙点门。','开门出去。']}
  ],
- explain:['英文题：What colour is the sun?','太阳是黄色的。yellow = 黄色 → YELLOW','用钥匙打开门。'],
- solution:[['code','desk','YELLOW'],['use','door','key_r13']],
+ explain:['英文题：What is a _____? A group of words that go together. (语块)','Unit 1：chunk = 语块 → CHUNK','用钥匙打开门。'],
+ solution:[['code','desk','CHUNK'],['use','door','key_r13']],
  art:function(f){var s='';s+=R(0,0,400,300,'#e8f4ff')+R(0,214,400,86,'#b8d4e8');
   s+=g('window',R(24,24,90,70,'#bfe8ff',8,SK)+C(90,44,10,'#fff2a8'));
   s+=g('board',R(130,20,150,90,'#2f6b4f',6,' stroke="#a86b38" stroke-width="5"')+T(205,65,11,'📝',' fill="#fff'));
@@ -1219,7 +1219,7 @@ var r14={id:'r14',title:'糖果超市',emoji:'🛒',sub:'数学 · 英语',
     {text:'书桌密码已经打开了。'}
   ]},
   {id:'box',name:'小盒',box:[200,160,70,50],views:[
-    {if:['!box_open'],text:'小盒上还有一把锁。',note:'【英语题】What colour is snow?\n（雪是白色的。white = 白色）',lock:{kind:'alpha',len:5,answer:'WHITE',prompt:'输入英文',ok:{set:['box_open'],give:['key_r14'],text:'小盒打开了，钥匙在里面！'},bad:'再想想。'}},
+    {if:['!box_open'],text:'小盒上还有一把锁。',note:'【英语题】_____ = 担心\n（Unit 1 单词：worry = 担心）',lock:{kind:'alpha',len:5,answer:'WORRY',prompt:'输入英文',ok:{set:['box_open'],give:['key_r14'],text:'小盒打开了，钥匙在里面！'},bad:'再想想。'}},
     {text:'小盒空了。'}
   ]},
   {id:'board',name:'提示板',box:[130,20,150,90],views:[
@@ -1235,11 +1235,11 @@ var r14={id:'r14',title:'糖果超市',emoji:'🛒',sub:'数学 · 英语',
  combos:[],
  hints:[
   {until:'desk_open',obj:'desk',tiers:['先解开书桌的数学题。','仔细看【算一算】。','答案是 80。']},
-  {until:'box_open',obj:'box',tiers:['书桌开了，去开小盒。','雪是白色的。white = 白色','答案是 WHITE。']},
+  {until:'box_open',obj:'box',tiers:['书桌开了，去开小盒。','Unit 1 单词：worry = 担心','答案是 WORRY。']},
   {until:'escaped',obj:'door',tiers:['钥匙到手！','用钥匙开门。','选中钥匙点门。']}
  ],
- explain:['长方形面积 = 长 × 宽 = 10 × 8 = 80','What colour is snow? → WHITE','用钥匙打开门。'],
- solution:[['code','desk','80'],['code','box','WHITE'],['use','door','key_r14']],
+ explain:['长方形面积 = 长 × 宽 = 10 × 8 = 80','_____ = 担心 → WORRY','用钥匙打开门。'],
+ solution:[['code','desk','80'],['code','box','WORRY'],['use','door','key_r14']],
  art:function(f){var s='';s+=R(0,0,400,300,'#fff5f0')+R(0,214,400,86,'#f0d4c8');
   s+=g('window',R(24,24,90,70,'#bfe8ff',8,SK)+C(90,44,10,'#fff2a8'));
   s+=g('board',R(130,20,150,90,'#2f6b4f',6,' stroke="#a86b38" stroke-width="5"')+T(205,65,11,'📝',' fill="#fff'));
@@ -1384,7 +1384,7 @@ var r18={id:'r18',title:'秘密小花园',emoji:'🌷',sub:'英语 · 词汇',
     {text:'门锁着，需要钥匙。',use:[{item:'key_r18',win:true,text:'Great! 门开了，你完成了英语挑战！'}],wrong:'Need a key!'}
   ]},
   {id:'desk',name:'书桌',box:[30,150,120,50],views:[
-    {if:['!desk_open'],text:'书桌小盒上有字母锁，旁边是英文卡片：',note:'【英语题】What colour is a ripe banana?\n（熟香蕉是黄色的。）',lock:{kind:'alpha',len:6,answer:'YELLOW',prompt:'输入英文大写',ok:{set:['desk_open'],give:['key_r18'],text:'Correct! 小盒打开，里面是钥匙！'},bad:'不对哦，再想想英文怎么说。'}},
+    {if:['!desk_open'],text:'书桌小盒上有字母锁，旁边是英文卡片：',note:'【英语题】Please _____ the sentences. (读)\n（Unit 1：read = 读）',lock:{kind:'alpha',len:4,answer:'READ',prompt:'输入英文大写',ok:{set:['desk_open'],give:['key_r18'],text:'Correct! 小盒打开，里面是钥匙！'},bad:'不对哦，再想想英文怎么说。'}},
     {text:'小盒已经空了。'}
   ]},
   {id:'board',name:'黑板',box:[130,20,150,90],views:[
@@ -1402,11 +1402,11 @@ var r18={id:'r18',title:'秘密小花园',emoji:'🌷',sub:'英语 · 词汇',
  ],
  combos:[],
  hints:[
-  {until:'desk_open',obj:'desk',tiers:['看看英文卡片上的问题。','熟香蕉是黄色的。','答案是 YELLOW。']},
+  {until:'desk_open',obj:'desk',tiers:['看看英文卡片上的问题。','Unit 1：read = 读','答案是 READ。']},
   {until:'escaped',obj:'door',tiers:['钥匙在手！','选中钥匙点门。','开门出去。']}
  ],
- explain:['英文题：What colour is a ripe banana?','熟香蕉是黄色的。 → YELLOW','用钥匙打开门。'],
- solution:[['code','desk','YELLOW'],['use','door','key_r18']],
+ explain:['英文题：Please _____ the sentences. (读)','Unit 1：read = 读 → READ','用钥匙打开门。'],
+ solution:[['code','desk','READ'],['use','door','key_r18']],
  art:function(f){var s='';s+=R(0,0,400,300,'#e8ffe8')+R(0,214,400,86,'#90d080');
   s+=g('window',R(24,24,90,70,'#bfe8ff',8,SK)+C(90,44,10,'#fff2a8'));
   s+=g('board',R(130,20,150,90,'#2f6b4f',6,' stroke="#a86b38" stroke-width="5"')+T(205,65,11,'📝',' fill="#fff'));
@@ -1593,7 +1593,7 @@ var r23={id:'r23',title:'甜甜厨房',emoji:'🍳',sub:'英语 · 词汇',
     {text:'门锁着，需要钥匙。',use:[{item:'key_r23',win:true,text:'Great! 门开了，你完成了英语挑战！'}],wrong:'Need a key!'}
   ]},
   {id:'desk',name:'书桌',box:[30,150,120,50],views:[
-    {if:['!desk_open'],text:'书桌小盒上有字母锁，旁边是英文卡片：',note:'【英语题】How many legs does a cat have?\n（猫有四条腿。four = 4）',lock:{kind:'alpha',len:4,answer:'FOUR',prompt:'输入英文大写',ok:{set:['desk_open'],give:['key_r23'],text:'Correct! 小盒打开，里面是钥匙！'},bad:'不对哦，再想想英文怎么说。'}},
+    {if:['!desk_open'],text:'书桌小盒上有字母锁，旁边是英文卡片：',note:'【英语题】Be careful! Don\'t let the book _____. (落下)\n（Unit 1：fall = 落下）',lock:{kind:'alpha',len:4,answer:'FALL',prompt:'输入英文大写',ok:{set:['desk_open'],give:['key_r23'],text:'Correct! 小盒打开，里面是钥匙！'},bad:'不对哦，再想想英文怎么说。'}},
     {text:'小盒已经空了。'}
   ]},
   {id:'board',name:'黑板',box:[130,20,150,90],views:[
@@ -1611,11 +1611,11 @@ var r23={id:'r23',title:'甜甜厨房',emoji:'🍳',sub:'英语 · 词汇',
  ],
  combos:[],
  hints:[
-  {until:'desk_open',obj:'desk',tiers:['看看英文卡片上的问题。','猫有四条腿。four = 4','答案是 FOUR。']},
+  {until:'desk_open',obj:'desk',tiers:['看看英文卡片上的问题。','Unit 1：fall = 落下','答案是 FALL。']},
   {until:'escaped',obj:'door',tiers:['钥匙在手！','选中钥匙点门。','开门出去。']}
  ],
- explain:['英文题：How many legs does a cat have?','猫有四条腿。four = 4 → FOUR','用钥匙打开门。'],
- solution:[['code','desk','FOUR'],['use','door','key_r23']],
+ explain:['英文题：Be careful! Don\'t let the book _____. (落下)','Unit 1：fall = 落下 → FALL','用钥匙打开门。'],
+ solution:[['code','desk','FALL'],['use','door','key_r23']],
  art:function(f){var s='';s+=R(0,0,400,300,'#fff4e0')+R(0,214,400,86,'#cfe8f0');
   s+=g('window',R(24,24,90,70,'#bfe8ff',8,SK)+C(90,44,10,'#fff2a8'));
   s+=g('board',R(130,20,150,90,'#2f6b4f',6,' stroke="#a86b38" stroke-width="5"')+T(205,65,11,'📝',' fill="#fff'));
@@ -1637,7 +1637,7 @@ var r24={id:'r24',title:'风筝操场',emoji:'⚽',sub:'数学 · 英语',
     {text:'书桌密码已经打开了。'}
   ]},
   {id:'box',name:'小盒',box:[200,160,70,50],views:[
-    {if:['!box_open'],text:'小盒上还有一把锁。',note:'【英语题】How many days are in a week?\n（一周有七天。seven = 7）',lock:{kind:'alpha',len:5,answer:'SEVEN',prompt:'输入英文',ok:{set:['box_open'],give:['key_r24'],text:'小盒打开了，钥匙在里面！'},bad:'再想想。'}},
+    {if:['!box_open'],text:'小盒上还有一把锁。',note:'【英语题】Don\'t speak too _____. (大声的)\n（Unit 1：loud = 大声的）',lock:{kind:'alpha',len:4,answer:'LOUD',prompt:'输入英文',ok:{set:['box_open'],give:['key_r24'],text:'小盒打开了，钥匙在里面！'},bad:'再想想。'}},
     {text:'小盒空了。'}
   ]},
   {id:'board',name:'提示板',box:[130,20,150,90],views:[
@@ -1653,11 +1653,11 @@ var r24={id:'r24',title:'风筝操场',emoji:'⚽',sub:'数学 · 英语',
  combos:[],
  hints:[
   {until:'desk_open',obj:'desk',tiers:['先解开书桌的数学题。','仔细看【算一算】。','答案是 24。']},
-  {until:'box_open',obj:'box',tiers:['书桌开了，去开小盒。','一周有七天。seven = 7','答案是 SEVEN。']},
+  {until:'box_open',obj:'box',tiers:['书桌开了，去开小盒。','Unit 1：loud = 大声的','答案是 LOUD。']},
   {until:'escaped',obj:'door',tiers:['钥匙到手！','用钥匙开门。','选中钥匙点门。']}
  ],
- explain:['三角形面积 = 底 × 高 ÷ 2 = 8 × 6 ÷ 2 = 24','How many days are in a week? → SEVEN','用钥匙打开门。'],
- solution:[['code','desk','24'],['code','box','SEVEN'],['use','door','key_r24']],
+ explain:['三角形面积 = 底 × 高 ÷ 2 = 8 × 6 ÷ 2 = 24','Don\'t speak too _____. (大声的) → LOUD','用钥匙打开门。'],
+ solution:[['code','desk','24'],['code','box','LOUD'],['use','door','key_r24']],
  art:function(f){var s='';s+=R(0,0,400,300,'#c9f0ff')+R(0,214,400,86,'#9ee07a');
   s+=g('window',R(24,24,90,70,'#bfe8ff',8,SK)+C(90,44,10,'#fff2a8'));
   s+=g('board',R(130,20,150,90,'#2f6b4f',6,' stroke="#a86b38" stroke-width="5"')+T(205,65,11,'📝',' fill="#fff'));
@@ -1802,7 +1802,7 @@ var r28={id:'r28',title:'气泡实验室',emoji:'🔬',sub:'英语 · 词汇',
     {text:'门锁着，需要钥匙。',use:[{item:'key_r28',win:true,text:'Great! 门开了，你完成了英语挑战！'}],wrong:'Need a key!'}
   ]},
   {id:'desk',name:'书桌',box:[30,150,120,50],views:[
-    {if:['!desk_open'],text:'书桌小盒上有字母锁，旁边是英文卡片：',note:'【英语题】What animal says meow?\n（喵喵叫的是猫。cat = 猫）',lock:{kind:'alpha',len:3,answer:'CAT',prompt:'输入英文大写',ok:{set:['desk_open'],give:['key_r28'],text:'Correct! 小盒打开，里面是钥匙！'},bad:'不对哦，再想想英文怎么说。'}},
+    {if:['!desk_open'],text:'书桌小盒上有字母锁，旁边是英文卡片：',note:'【英语题】Is there _____ in the box? (任何东西)\n（Unit 1：anything = 任何东西）',lock:{kind:'alpha',len:8,answer:'ANYTHING',prompt:'输入英文大写',ok:{set:['desk_open'],give:['key_r28'],text:'Correct! 小盒打开，里面是钥匙！'},bad:'不对哦，再想想英文怎么说。'}},
     {text:'小盒已经空了。'}
   ]},
   {id:'board',name:'黑板',box:[130,20,150,90],views:[
@@ -1820,11 +1820,11 @@ var r28={id:'r28',title:'气泡实验室',emoji:'🔬',sub:'英语 · 词汇',
  ],
  combos:[],
  hints:[
-  {until:'desk_open',obj:'desk',tiers:['看看英文卡片上的问题。','喵喵叫的是猫。cat = 猫','答案是 CAT。']},
+  {until:'desk_open',obj:'desk',tiers:['看看英文卡片上的问题。','Unit 1：anything = 任何东西','答案是 ANYTHING。']},
   {until:'escaped',obj:'door',tiers:['钥匙在手！','选中钥匙点门。','开门出去。']}
  ],
- explain:['英文题：What animal says meow?','喵喵叫的是猫。cat = 猫 → CAT','用钥匙打开门。'],
- solution:[['code','desk','CAT'],['use','door','key_r28']],
+ explain:['英文题：Is there _____ in the box? (任何东西)','Unit 1：anything = 任何东西 → ANYTHING','用钥匙打开门。'],
+ solution:[['code','desk','ANYTHING'],['use','door','key_r28']],
  art:function(f){var s='';s+=R(0,0,400,300,'#e8f4ff')+R(0,214,400,86,'#b8d4e8');
   s+=g('window',R(24,24,90,70,'#bfe8ff',8,SK)+C(90,44,10,'#fff2a8'));
   s+=g('board',R(130,20,150,90,'#2f6b4f',6,' stroke="#a86b38" stroke-width="5"')+T(205,65,11,'📝',' fill="#fff'));
@@ -2011,7 +2011,7 @@ var r33={id:'r33',title:'蒲公英花园',emoji:'🌷',sub:'英语 · 词汇',
     {text:'门锁着，需要钥匙。',use:[{item:'key_r33',win:true,text:'Great! 门开了，你完成了英语挑战！'}],wrong:'Need a key!'}
   ]},
   {id:'desk',name:'书桌',box:[30,150,120,50],views:[
-    {if:['!desk_open'],text:'书桌小盒上有字母锁，旁边是英文卡片：',note:'【英语题】What animal says woof?\n（汪汪叫的是狗。dog = 狗）',lock:{kind:'alpha',len:3,answer:'DOG',prompt:'输入英文大写',ok:{set:['desk_open'],give:['key_r33'],text:'Correct! 小盒打开，里面是钥匙！'},bad:'不对哦，再想想英文怎么说。'}},
+    {if:['!desk_open'],text:'书桌小盒上有字母锁，旁边是英文卡片：',note:'【英语题】There are a _____ new words on the card. (几个)\n（Unit 1：a few = 几个）',lock:{kind:'alpha',len:3,answer:'FEW',prompt:'输入英文大写',ok:{set:['desk_open'],give:['key_r33'],text:'Correct! 小盒打开，里面是钥匙！'},bad:'不对哦，再想想英文怎么说。'}},
     {text:'小盒已经空了。'}
   ]},
   {id:'board',name:'黑板',box:[130,20,150,90],views:[
@@ -2029,11 +2029,11 @@ var r33={id:'r33',title:'蒲公英花园',emoji:'🌷',sub:'英语 · 词汇',
  ],
  combos:[],
  hints:[
-  {until:'desk_open',obj:'desk',tiers:['看看英文卡片上的问题。','汪汪叫的是狗。dog = 狗','答案是 DOG。']},
+  {until:'desk_open',obj:'desk',tiers:['看看英文卡片上的问题。','Unit 1：a few = 几个','答案是 FEW。']},
   {until:'escaped',obj:'door',tiers:['钥匙在手！','选中钥匙点门。','开门出去。']}
  ],
- explain:['英文题：What animal says woof?','汪汪叫的是狗。dog = 狗 → DOG','用钥匙打开门。'],
- solution:[['code','desk','DOG'],['use','door','key_r33']],
+ explain:['英文题：There are a _____ new words on the card. (几个)','Unit 1：a few = 几个 → FEW','用钥匙打开门。'],
+ solution:[['code','desk','FEW'],['use','door','key_r33']],
  art:function(f){var s='';s+=R(0,0,400,300,'#e8ffe8')+R(0,214,400,86,'#90d080');
   s+=g('window',R(24,24,90,70,'#bfe8ff',8,SK)+C(90,44,10,'#fff2a8'));
   s+=g('board',R(130,20,150,90,'#2f6b4f',6,' stroke="#a86b38" stroke-width="5"')+T(205,65,11,'📝',' fill="#fff'));
@@ -2055,7 +2055,7 @@ var r34={id:'r34',title:'跳跳球馆',emoji:'🏀',sub:'数学 · 英语',
     {text:'书桌密码已经打开了。'}
   ]},
   {id:'box',name:'小盒',box:[200,160,70,50],views:[
-    {if:['!box_open'],text:'小盒上还有一把锁。',note:'【英语题】We write with a ___ . (pen)\n（用笔写字。pen = 钢笔/笔）',lock:{kind:'alpha',len:3,answer:'PEN',prompt:'输入英文',ok:{set:['box_open'],give:['key_r34'],text:'小盒打开了，钥匙在里面！'},bad:'再想想。'}},
+    {if:['!box_open'],text:'小盒上还有一把锁。',note:'【英语题】Can you write a _____? (句子)\n（Unit 1：sentence = 句子）',lock:{kind:'alpha',len:8,answer:'SENTENCE',prompt:'输入英文',ok:{set:['box_open'],give:['key_r34'],text:'小盒打开了，钥匙在里面！'},bad:'再想想。'}},
     {text:'小盒空了。'}
   ]},
   {id:'board',name:'提示板',box:[130,20,150,90],views:[
@@ -2071,11 +2071,11 @@ var r34={id:'r34',title:'跳跳球馆',emoji:'🏀',sub:'数学 · 英语',
  combos:[],
  hints:[
   {until:'desk_open',obj:'desk',tiers:['先解开书桌的数学题。','仔细看【算一算】。','答案是 30。']},
-  {until:'box_open',obj:'box',tiers:['书桌开了，去开小盒。','用笔写字。pen = 钢笔/笔','答案是 PEN。']},
+  {until:'box_open',obj:'box',tiers:['书桌开了，去开小盒。','Unit 1：sentence = 句子','答案是 SENTENCE。']},
   {until:'escaped',obj:'door',tiers:['钥匙到手！','用钥匙开门。','选中钥匙点门。']}
  ],
- explain:['三角形面积 = 底 × 高 ÷ 2 = 6 × 10 ÷ 2 = 30','We write with a ___ . (pen) → PEN','用钥匙打开门。'],
- solution:[['code','desk','30'],['code','box','PEN'],['use','door','key_r34']],
+ explain:['三角形面积 = 底 × 高 ÷ 2 = 6 × 10 ÷ 2 = 30','Can you write a _____? (句子) → SENTENCE','用钥匙打开门。'],
+ solution:[['code','desk','30'],['code','box','SENTENCE'],['use','door','key_r34']],
  art:function(f){var s='';s+=R(0,0,400,300,'#fff8e0')+R(0,214,400,86,'#e8c878');
   s+=g('window',R(24,24,90,70,'#bfe8ff',8,SK)+C(90,44,10,'#fff2a8'));
   s+=g('board',R(130,20,150,90,'#2f6b4f',6,' stroke="#a86b38" stroke-width="5"')+T(205,65,11,'📝',' fill="#fff'));
@@ -2220,7 +2220,7 @@ var r38={id:'r38',title:'饼干厨房',emoji:'🍳',sub:'英语 · 词汇',
     {text:'门锁着，需要钥匙。',use:[{item:'key_r38',win:true,text:'Great! 门开了，你完成了英语挑战！'}],wrong:'Need a key!'}
   ]},
   {id:'desk',name:'书桌',box:[30,150,120,50],views:[
-    {if:['!desk_open'],text:'书桌小盒上有字母锁，旁边是英文卡片：',note:'【英语题】I have a little sister. She is my ___ .\n（妹妹是 sister）',lock:{kind:'alpha',len:6,answer:'SISTER',prompt:'输入英文大写',ok:{set:['desk_open'],give:['key_r38'],text:'Correct! 小盒打开，里面是钥匙！'},bad:'不对哦，再想想英文怎么说。'}},
+    {if:['!desk_open'],text:'书桌小盒上有字母锁，旁边是英文卡片：',note:'【英语题】Look them up in the _____. (词典)\n（Unit 1：查词典 look up in the dictionary）',lock:{kind:'alpha',len:10,answer:'DICTIONARY',prompt:'输入英文大写',ok:{set:['desk_open'],give:['key_r38'],text:'Correct! 小盒打开，里面是钥匙！'},bad:'不对哦，再想想英文怎么说。'}},
     {text:'小盒已经空了。'}
   ]},
   {id:'board',name:'黑板',box:[130,20,150,90],views:[
@@ -2238,11 +2238,11 @@ var r38={id:'r38',title:'饼干厨房',emoji:'🍳',sub:'英语 · 词汇',
  ],
  combos:[],
  hints:[
-  {until:'desk_open',obj:'desk',tiers:['看看英文卡片上的问题。','妹妹是 sister','答案是 SISTER。']},
+  {until:'desk_open',obj:'desk',tiers:['看看英文卡片上的问题。','Unit 1：查词典 look up in the dictionary','答案是 DICTIONARY。']},
   {until:'escaped',obj:'door',tiers:['钥匙在手！','选中钥匙点门。','开门出去。']}
  ],
- explain:['英文题：I have a little sister. She is my ___ .','妹妹是 sister → SISTER','用钥匙打开门。'],
- solution:[['code','desk','SISTER'],['use','door','key_r38']],
+ explain:['英文题：Look them up in the _____. (词典)','Unit 1：查词典 look up in the dictionary → DICTIONARY','用钥匙打开门。'],
+ solution:[['code','desk','DICTIONARY'],['use','door','key_r38']],
  art:function(f){var s='';s+=R(0,0,400,300,'#fff4e0')+R(0,214,400,86,'#cfe8f0');
   s+=g('window',R(24,24,90,70,'#bfe8ff',8,SK)+C(90,44,10,'#fff2a8'));
   s+=g('board',R(130,20,150,90,'#2f6b4f',6,' stroke="#a86b38" stroke-width="5"')+T(205,65,11,'📝',' fill="#fff'));
@@ -2429,7 +2429,7 @@ var r43={id:'r43',title:'试管屋',emoji:'🔬',sub:'英语 · 词汇',
     {text:'门锁着，需要钥匙。',use:[{item:'key_r43',win:true,text:'Great! 门开了，你完成了英语挑战！'}],wrong:'Need a key!'}
   ]},
   {id:'desk',name:'书桌',box:[30,150,120,50],views:[
-    {if:['!desk_open'],text:'书桌小盒上有字母锁，旁边是英文卡片：',note:'【英语题】My father\'s father is my ___ .\n（爷爷是 grandpa）',lock:{kind:'alpha',len:7,answer:'GRANDPA',prompt:'输入英文大写',ok:{set:['desk_open'],give:['key_r43'],text:'Correct! 小盒打开，里面是钥匙！'},bad:'不对哦，再想想英文怎么说。'}},
+    {if:['!desk_open'],text:'书桌小盒上有字母锁，旁边是英文卡片：',note:'【英语题】Make word _____ with pictures. (卡片)\n（Unit 1：make word cards = 做单词卡片）',lock:{kind:'alpha',len:5,answer:'CARDS',prompt:'输入英文大写',ok:{set:['desk_open'],give:['key_r43'],text:'Correct! 小盒打开，里面是钥匙！'},bad:'不对哦，再想想英文怎么说。'}},
     {text:'小盒已经空了。'}
   ]},
   {id:'board',name:'黑板',box:[130,20,150,90],views:[
@@ -2447,11 +2447,11 @@ var r43={id:'r43',title:'试管屋',emoji:'🔬',sub:'英语 · 词汇',
  ],
  combos:[],
  hints:[
-  {until:'desk_open',obj:'desk',tiers:['看看英文卡片上的问题。','爷爷是 grandpa','答案是 GRANDPA。']},
+  {until:'desk_open',obj:'desk',tiers:['看看英文卡片上的问题。','Unit 1：make word cards = 做单词卡片','答案是 CARDS。']},
   {until:'escaped',obj:'door',tiers:['钥匙在手！','选中钥匙点门。','开门出去。']}
  ],
- explain:['英文题：My father\'s father is my ___ .','爷爷是 grandpa → GRANDPA','用钥匙打开门。'],
- solution:[['code','desk','GRANDPA'],['use','door','key_r43']],
+ explain:['英文题：Make word _____ with pictures. (卡片)','Unit 1：make word cards = 做单词卡片 → CARDS','用钥匙打开门。'],
+ solution:[['code','desk','CARDS'],['use','door','key_r43']],
  art:function(f){var s='';s+=R(0,0,400,300,'#e8f4ff')+R(0,214,400,86,'#b8d4e8');
   s+=g('window',R(24,24,90,70,'#bfe8ff',8,SK)+C(90,44,10,'#fff2a8'));
   s+=g('board',R(130,20,150,90,'#2f6b4f',6,' stroke="#a86b38" stroke-width="5"')+T(205,65,11,'📝',' fill="#fff'));
@@ -2473,7 +2473,7 @@ var r44={id:'r44',title:'气球超市',emoji:'🛒',sub:'数学 · 英语',
     {text:'书桌密码已经打开了。'}
   ]},
   {id:'box',name:'小盒',box:[200,160,70,50],views:[
-    {if:['!box_open'],text:'小盒上还有一把锁。',note:'【英语题】Monday comes after ___ .\n（星期一前面是星期天 Sunday）',lock:{kind:'alpha',len:6,answer:'SUNDAY',prompt:'输入英文',ok:{set:['box_open'],give:['key_r44'],text:'小盒打开了，钥匙在里面！'},bad:'再想想。'}},
+    {if:['!box_open'],text:'小盒上还有一把锁。',note:'【英语题】Keep the chunks in _____. (记在心里)\n（Unit 1：keep in mind = 记在心里）',lock:{kind:'alpha',len:4,answer:'MIND',prompt:'输入英文',ok:{set:['box_open'],give:['key_r44'],text:'小盒打开了，钥匙在里面！'},bad:'再想想。'}},
     {text:'小盒空了。'}
   ]},
   {id:'board',name:'提示板',box:[130,20,150,90],views:[
@@ -2489,11 +2489,11 @@ var r44={id:'r44',title:'气球超市',emoji:'🛒',sub:'数学 · 英语',
  combos:[],
  hints:[
   {until:'desk_open',obj:'desk',tiers:['先解开书桌的数学题。','仔细看【算一算】。','答案是 30。']},
-  {until:'box_open',obj:'box',tiers:['书桌开了，去开小盒。','星期一前面是星期天 Sunday','答案是 SUNDAY。']},
+  {until:'box_open',obj:'box',tiers:['书桌开了，去开小盒。','Unit 1：keep in mind = 记在心里','答案是 MIND。']},
   {until:'escaped',obj:'door',tiers:['钥匙到手！','用钥匙开门。','选中钥匙点门。']}
  ],
- explain:['梯形面积 =（上底+下底）×高÷2 =（8+12）×3÷2 = 30','Monday comes after ___ . → SUNDAY','用钥匙打开门。'],
- solution:[['code','desk','30'],['code','box','SUNDAY'],['use','door','key_r44']],
+ explain:['梯形面积 =（上底+下底）×高÷2 =（8+12）×3÷2 = 30','Keep the chunks in _____. (记在心里) → MIND','用钥匙打开门。'],
+ solution:[['code','desk','30'],['code','box','MIND'],['use','door','key_r44']],
  art:function(f){var s='';s+=R(0,0,400,300,'#fff5f0')+R(0,214,400,86,'#f0d4c8');
   s+=g('window',R(24,24,90,70,'#bfe8ff',8,SK)+C(90,44,10,'#fff2a8'));
   s+=g('board',R(130,20,150,90,'#2f6b4f',6,' stroke="#a86b38" stroke-width="5"')+T(205,65,11,'📝',' fill="#fff'));
@@ -2638,7 +2638,7 @@ var r48={id:'r48',title:'蜜蜂花园',emoji:'🌷',sub:'英语 · 词汇',
     {text:'门锁着，需要钥匙。',use:[{item:'key_r48',win:true,text:'Great! 门开了，你完成了英语挑战！'}],wrong:'Need a key!'}
   ]},
   {id:'desk',name:'书桌',box:[30,150,120,50],views:[
-    {if:['!desk_open'],text:'书桌小盒上有字母锁，旁边是英文卡片：',note:'【英语题】The opposite of hot is ___ .\n（hot 的反义词是 cold）',lock:{kind:'alpha',len:4,answer:'COLD',prompt:'输入英文大写',ok:{set:['desk_open'],give:['key_r48'],text:'Correct! 小盒打开，里面是钥匙！'},bad:'不对哦，再想想英文怎么说。'}},
+    {if:['!desk_open'],text:'书桌小盒上有字母锁，旁边是英文卡片：',note:'【英语题】I\'m _____ to join the science club. (be going to)\n（Unit 2：be going to 表示打算，这里填 going）',lock:{kind:'alpha',len:5,answer:'GOING',prompt:'输入英文大写',ok:{set:['desk_open'],give:['key_r48'],text:'Correct! 小盒打开，里面是钥匙！'},bad:'不对哦，再想想英文怎么说。'}},
     {text:'小盒已经空了。'}
   ]},
   {id:'board',name:'黑板',box:[130,20,150,90],views:[
@@ -2656,11 +2656,11 @@ var r48={id:'r48',title:'蜜蜂花园',emoji:'🌷',sub:'英语 · 词汇',
  ],
  combos:[],
  hints:[
-  {until:'desk_open',obj:'desk',tiers:['看看英文卡片上的问题。','hot 的反义词是 cold','答案是 COLD。']},
+  {until:'desk_open',obj:'desk',tiers:['看看英文卡片上的问题。','Unit 2：be going to 表示打算，这里填 going','答案是 GOING。']},
   {until:'escaped',obj:'door',tiers:['钥匙在手！','选中钥匙点门。','开门出去。']}
  ],
- explain:['英文题：The opposite of hot is ___ .','hot 的反义词是 cold → COLD','用钥匙打开门。'],
- solution:[['code','desk','COLD'],['use','door','key_r48']],
+ explain:['英文题：I\'m _____ to join the science club. (be going to)','Unit 2：be going to 表示打算，这里填 going → GOING','用钥匙打开门。'],
+ solution:[['code','desk','GOING'],['use','door','key_r48']],
  art:function(f){var s='';s+=R(0,0,400,300,'#e8ffe8')+R(0,214,400,86,'#90d080');
   s+=g('window',R(24,24,90,70,'#bfe8ff',8,SK)+C(90,44,10,'#fff2a8'));
   s+=g('board',R(130,20,150,90,'#2f6b4f',6,' stroke="#a86b38" stroke-width="5"')+T(205,65,11,'📝',' fill="#fff'));
@@ -2847,7 +2847,7 @@ var r53={id:'r53',title:'果汁厨房',emoji:'🍳',sub:'英语 · 词汇',
     {text:'门锁着，需要钥匙。',use:[{item:'key_r53',win:true,text:'Great! 门开了，你完成了英语挑战！'}],wrong:'Need a key!'}
   ]},
   {id:'desk',name:'书桌',box:[30,150,120,50],views:[
-    {if:['!desk_open'],text:'书桌小盒上有字母锁，旁边是英文卡片：',note:'【英语题】We read books in the ___ .\n（图书馆 library）',lock:{kind:'alpha',len:7,answer:'LIBRARY',prompt:'输入英文大写',ok:{set:['desk_open'],give:['key_r53'],text:'Correct! 小盒打开，里面是钥匙！'},bad:'不对哦，再想想英文怎么说。'}},
+    {if:['!desk_open'],text:'书桌小盒上有字母锁，旁边是英文卡片：',note:'【英语题】Which _____ are you going to join? (社团)\n（Unit 2：club = 社团）',lock:{kind:'alpha',len:4,answer:'CLUB',prompt:'输入英文大写',ok:{set:['desk_open'],give:['key_r53'],text:'Correct! 小盒打开，里面是钥匙！'},bad:'不对哦，再想想英文怎么说。'}},
     {text:'小盒已经空了。'}
   ]},
   {id:'board',name:'黑板',box:[130,20,150,90],views:[
@@ -2865,11 +2865,11 @@ var r53={id:'r53',title:'果汁厨房',emoji:'🍳',sub:'英语 · 词汇',
  ],
  combos:[],
  hints:[
-  {until:'desk_open',obj:'desk',tiers:['看看英文卡片上的问题。','图书馆 library','答案是 LIBRARY。']},
+  {until:'desk_open',obj:'desk',tiers:['看看英文卡片上的问题。','Unit 2：club = 社团','答案是 CLUB。']},
   {until:'escaped',obj:'door',tiers:['钥匙在手！','选中钥匙点门。','开门出去。']}
  ],
- explain:['英文题：We read books in the ___ .','图书馆 library → LIBRARY','用钥匙打开门。'],
- solution:[['code','desk','LIBRARY'],['use','door','key_r53']],
+ explain:['英文题：Which _____ are you going to join? (社团)','Unit 2：club = 社团 → CLUB','用钥匙打开门。'],
+ solution:[['code','desk','CLUB'],['use','door','key_r53']],
  art:function(f){var s='';s+=R(0,0,400,300,'#fff4e0')+R(0,214,400,86,'#cfe8f0');
   s+=g('window',R(24,24,90,70,'#bfe8ff',8,SK)+C(90,44,10,'#fff2a8'));
   s+=g('board',R(130,20,150,90,'#2f6b4f',6,' stroke="#a86b38" stroke-width="5"')+T(205,65,11,'📝',' fill="#fff'));
@@ -2891,7 +2891,7 @@ var r54={id:'r54',title:'跑道旁',emoji:'⚽',sub:'数学 · 英语',
     {text:'书桌密码已经打开了。'}
   ]},
   {id:'box',name:'小盒',box:[200,160,70,50],views:[
-    {if:['!box_open'],text:'小盒上还有一把锁。',note:'【英语题】Birds can ___ in the sky.\n（鸟会飞。fly = 飞）',lock:{kind:'alpha',len:3,answer:'FLY',prompt:'输入英文',ok:{set:['box_open'],give:['key_r54'],text:'小盒打开了，钥匙在里面！'},bad:'再想想。'}},
+    {if:['!box_open'],text:'小盒上还有一把锁。',note:'【英语题】I want to join the _____ club. (科学)\n（Unit 2：science club = 科学社团）',lock:{kind:'alpha',len:7,answer:'SCIENCE',prompt:'输入英文',ok:{set:['box_open'],give:['key_r54'],text:'小盒打开了，钥匙在里面！'},bad:'再想想。'}},
     {text:'小盒空了。'}
   ]},
   {id:'board',name:'提示板',box:[130,20,150,90],views:[
@@ -2907,11 +2907,11 @@ var r54={id:'r54',title:'跑道旁',emoji:'⚽',sub:'数学 · 英语',
  combos:[],
  hints:[
   {until:'desk_open',obj:'desk',tiers:['先解开书桌的数学题。','仔细看【算一算】。','答案是 29。']},
-  {until:'box_open',obj:'box',tiers:['书桌开了，去开小盒。','鸟会飞。fly = 飞','答案是 FLY。']},
+  {until:'box_open',obj:'box',tiers:['书桌开了，去开小盒。','Unit 2：science club = 科学社团','答案是 SCIENCE。']},
   {until:'escaped',obj:'door',tiers:['钥匙到手！','用钥匙开门。','选中钥匙点门。']}
  ],
- explain:['2x − 8 = 50 → 2x = 58 → x = 29','Birds can ___ in the sky. → FLY','用钥匙打开门。'],
- solution:[['code','desk','29'],['code','box','FLY'],['use','door','key_r54']],
+ explain:['2x − 8 = 50 → 2x = 58 → x = 29','I want to join the _____ club. (科学) → SCIENCE','用钥匙打开门。'],
+ solution:[['code','desk','29'],['code','box','SCIENCE'],['use','door','key_r54']],
  art:function(f){var s='';s+=R(0,0,400,300,'#c9f0ff')+R(0,214,400,86,'#9ee07a');
   s+=g('window',R(24,24,90,70,'#bfe8ff',8,SK)+C(90,44,10,'#fff2a8'));
   s+=g('board',R(130,20,150,90,'#2f6b4f',6,' stroke="#a86b38" stroke-width="5"')+T(205,65,11,'📝',' fill="#fff'));
@@ -3056,7 +3056,7 @@ var r58={id:'r58',title:'显微镜屋',emoji:'🔬',sub:'英语 · 词汇',
     {text:'门锁着，需要钥匙。',use:[{item:'key_r58',win:true,text:'Great! 门开了，你完成了英语挑战！'}],wrong:'Need a key!'}
   ]},
   {id:'desk',name:'书桌',box:[30,150,120,50],views:[
-    {if:['!desk_open'],text:'书桌小盒上有字母锁，旁边是英文卡片：',note:'【英语题】An apple is a kind of ___ .\n（苹果是一种水果。fruit）',lock:{kind:'alpha',len:5,answer:'FRUIT',prompt:'输入英文大写',ok:{set:['desk_open'],give:['key_r58'],text:'Correct! 小盒打开，里面是钥匙！'},bad:'不对哦，再想想英文怎么说。'}},
+    {if:['!desk_open'],text:'书桌小盒上有字母锁，旁边是英文卡片：',note:'【英语题】Any _____? (有什么建议吗？)\n（Unit 2：advice = 建议）',lock:{kind:'alpha',len:6,answer:'ADVICE',prompt:'输入英文大写',ok:{set:['desk_open'],give:['key_r58'],text:'Correct! 小盒打开，里面是钥匙！'},bad:'不对哦，再想想英文怎么说。'}},
     {text:'小盒已经空了。'}
   ]},
   {id:'board',name:'黑板',box:[130,20,150,90],views:[
@@ -3074,11 +3074,11 @@ var r58={id:'r58',title:'显微镜屋',emoji:'🔬',sub:'英语 · 词汇',
  ],
  combos:[],
  hints:[
-  {until:'desk_open',obj:'desk',tiers:['看看英文卡片上的问题。','苹果是一种水果。fruit','答案是 FRUIT。']},
+  {until:'desk_open',obj:'desk',tiers:['看看英文卡片上的问题。','Unit 2：advice = 建议','答案是 ADVICE。']},
   {until:'escaped',obj:'door',tiers:['钥匙在手！','选中钥匙点门。','开门出去。']}
  ],
- explain:['英文题：An apple is a kind of ___ .','苹果是一种水果。fruit → FRUIT','用钥匙打开门。'],
- solution:[['code','desk','FRUIT'],['use','door','key_r58']],
+ explain:['英文题：Any _____? (有什么建议吗？)','Unit 2：advice = 建议 → ADVICE','用钥匙打开门。'],
+ solution:[['code','desk','ADVICE'],['use','door','key_r58']],
  art:function(f){var s='';s+=R(0,0,400,300,'#e8f4ff')+R(0,214,400,86,'#b8d4e8');
   s+=g('window',R(24,24,90,70,'#bfe8ff',8,SK)+C(90,44,10,'#fff2a8'));
   s+=g('board',R(130,20,150,90,'#2f6b4f',6,' stroke="#a86b38" stroke-width="5"')+T(205,65,11,'📝',' fill="#fff'));
@@ -3265,7 +3265,7 @@ var r63={id:'r63',title:'玫瑰园',emoji:'🌷',sub:'英语 · 词汇',
     {text:'门锁着，需要钥匙。',use:[{item:'key_r63',win:true,text:'Great! 门开了，你完成了英语挑战！'}],wrong:'Need a key!'}
   ]},
   {id:'desk',name:'书桌',box:[30,150,120,50],views:[
-    {if:['!desk_open'],text:'书桌小盒上有字母锁，旁边是英文卡片：',note:'【英语题】We go to school by ___ . (bus)\n（坐公交车 bus）',lock:{kind:'alpha',len:3,answer:'BUS',prompt:'输入英文大写',ok:{set:['desk_open'],give:['key_r63'],text:'Correct! 小盒打开，里面是钥匙！'},bad:'不对哦，再想想英文怎么说。'}},
+    {if:['!desk_open'],text:'书桌小盒上有字母锁，旁边是英文卡片：',note:'【英语题】You can try new _____. (事物)\n（Unit 2：try new things = 尝试新事物）',lock:{kind:'alpha',len:6,answer:'THINGS',prompt:'输入英文大写',ok:{set:['desk_open'],give:['key_r63'],text:'Correct! 小盒打开，里面是钥匙！'},bad:'不对哦，再想想英文怎么说。'}},
     {text:'小盒已经空了。'}
   ]},
   {id:'board',name:'黑板',box:[130,20,150,90],views:[
@@ -3283,11 +3283,11 @@ var r63={id:'r63',title:'玫瑰园',emoji:'🌷',sub:'英语 · 词汇',
  ],
  combos:[],
  hints:[
-  {until:'desk_open',obj:'desk',tiers:['看看英文卡片上的问题。','坐公交车 bus','答案是 BUS。']},
+  {until:'desk_open',obj:'desk',tiers:['看看英文卡片上的问题。','Unit 2：try new things = 尝试新事物','答案是 THINGS。']},
   {until:'escaped',obj:'door',tiers:['钥匙在手！','选中钥匙点门。','开门出去。']}
  ],
- explain:['英文题：We go to school by ___ . (bus)','坐公交车 bus → BUS','用钥匙打开门。'],
- solution:[['code','desk','BUS'],['use','door','key_r63']],
+ explain:['英文题：You can try new _____. (事物)','Unit 2：try new things = 尝试新事物 → THINGS','用钥匙打开门。'],
+ solution:[['code','desk','THINGS'],['use','door','key_r63']],
  art:function(f){var s='';s+=R(0,0,400,300,'#e8ffe8')+R(0,214,400,86,'#90d080');
   s+=g('window',R(24,24,90,70,'#bfe8ff',8,SK)+C(90,44,10,'#fff2a8'));
   s+=g('board',R(130,20,150,90,'#2f6b4f',6,' stroke="#a86b38" stroke-width="5"')+T(205,65,11,'📝',' fill="#fff'));
@@ -3309,7 +3309,7 @@ var r64={id:'r64',title:'乒乓球室',emoji:'🏀',sub:'数学 · 英语',
     {text:'书桌密码已经打开了。'}
   ]},
   {id:'box',name:'小盒',box:[200,160,70,50],views:[
-    {if:['!box_open'],text:'小盒上还有一把锁。',note:'【英语题】The first month of a year is ___ .\n（一月 January）',lock:{kind:'alpha',len:7,answer:'JANUARY',prompt:'输入英文',ok:{set:['box_open'],give:['key_r64'],text:'小盒打开了，钥匙在里面！'},bad:'再想想。'}},
+    {if:['!box_open'],text:'小盒上还有一把锁。',note:'【英语题】Join a club to make more _____. (朋友)\n（Unit 2：make more friends）',lock:{kind:'alpha',len:7,answer:'FRIENDS',prompt:'输入英文',ok:{set:['box_open'],give:['key_r64'],text:'小盒打开了，钥匙在里面！'},bad:'再想想。'}},
     {text:'小盒空了。'}
   ]},
   {id:'board',name:'提示板',box:[130,20,150,90],views:[
@@ -3325,11 +3325,11 @@ var r64={id:'r64',title:'乒乓球室',emoji:'🏀',sub:'数学 · 英语',
  combos:[],
  hints:[
   {until:'desk_open',obj:'desk',tiers:['先解开书桌的数学题。','仔细看【算一算】。','答案是 13。']},
-  {until:'box_open',obj:'box',tiers:['书桌开了，去开小盒。','一月 January','答案是 JANUARY。']},
+  {until:'box_open',obj:'box',tiers:['书桌开了，去开小盒。','Unit 2：make more friends','答案是 FRIENDS。']},
   {until:'escaped',obj:'door',tiers:['钥匙到手！','用钥匙开门。','选中钥匙点门。']}
  ],
- explain:['3x + 6 = 45 → 3x = 39 → x = 13','The first month of a year is ___ . → JANUARY','用钥匙打开门。'],
- solution:[['code','desk','13'],['code','box','JANUARY'],['use','door','key_r64']],
+ explain:['3x + 6 = 45 → 3x = 39 → x = 13','Join a club to make more _____. (朋友) → FRIENDS','用钥匙打开门。'],
+ solution:[['code','desk','13'],['code','box','FRIENDS'],['use','door','key_r64']],
  art:function(f){var s='';s+=R(0,0,400,300,'#fff8e0')+R(0,214,400,86,'#e8c878');
   s+=g('window',R(24,24,90,70,'#bfe8ff',8,SK)+C(90,44,10,'#fff2a8'));
   s+=g('board',R(130,20,150,90,'#2f6b4f',6,' stroke="#a86b38" stroke-width="5"')+T(205,65,11,'📝',' fill="#fff'));
@@ -3474,7 +3474,7 @@ var r68={id:'r68',title:'沙拉厨房',emoji:'🍳',sub:'英语 · 词汇',
     {text:'门锁着，需要钥匙。',use:[{item:'key_r68',win:true,text:'Great! 门开了，你完成了英语挑战！'}],wrong:'Need a key!'}
   ]},
   {id:'desk',name:'书桌',box:[30,150,120,50],views:[
-    {if:['!desk_open'],text:'书桌小盒上有字母锁，旁边是英文卡片：',note:'【英语题】Please open the ___ . (door)\n（开门 door）',lock:{kind:'alpha',len:4,answer:'DOOR',prompt:'输入英文大写',ok:{set:['desk_open'],give:['key_r68'],text:'Correct! 小盒打开，里面是钥匙！'},bad:'不对哦，再想想英文怎么说。'}},
+    {if:['!desk_open'],text:'书桌小盒上有字母锁，旁边是英文卡片：',note:'【英语题】I can share my _____. (想法)\n（Unit 2：share my ideas）',lock:{kind:'alpha',len:5,answer:'IDEAS',prompt:'输入英文大写',ok:{set:['desk_open'],give:['key_r68'],text:'Correct! 小盒打开，里面是钥匙！'},bad:'不对哦，再想想英文怎么说。'}},
     {text:'小盒已经空了。'}
   ]},
   {id:'board',name:'黑板',box:[130,20,150,90],views:[
@@ -3492,11 +3492,11 @@ var r68={id:'r68',title:'沙拉厨房',emoji:'🍳',sub:'英语 · 词汇',
  ],
  combos:[],
  hints:[
-  {until:'desk_open',obj:'desk',tiers:['看看英文卡片上的问题。','开门 door','答案是 DOOR。']},
+  {until:'desk_open',obj:'desk',tiers:['看看英文卡片上的问题。','Unit 2：share my ideas','答案是 IDEAS。']},
   {until:'escaped',obj:'door',tiers:['钥匙在手！','选中钥匙点门。','开门出去。']}
  ],
- explain:['英文题：Please open the ___ . (door)','开门 door → DOOR','用钥匙打开门。'],
- solution:[['code','desk','DOOR'],['use','door','key_r68']],
+ explain:['英文题：I can share my _____. (想法)','Unit 2：share my ideas → IDEAS','用钥匙打开门。'],
+ solution:[['code','desk','IDEAS'],['use','door','key_r68']],
  art:function(f){var s='';s+=R(0,0,400,300,'#fff4e0')+R(0,214,400,86,'#cfe8f0');
   s+=g('window',R(24,24,90,70,'#bfe8ff',8,SK)+C(90,44,10,'#fff2a8'));
   s+=g('board',R(130,20,150,90,'#2f6b4f',6,' stroke="#a86b38" stroke-width="5"')+T(205,65,11,'📝',' fill="#fff'));
@@ -3683,7 +3683,7 @@ var r73={id:'r73',title:'烧杯角',emoji:'🔬',sub:'英语 · 词汇',
     {text:'门锁着，需要钥匙。',use:[{item:'key_r73',win:true,text:'Great! 门开了，你完成了英语挑战！'}],wrong:'Need a key!'}
   ]},
   {id:'desk',name:'书桌',box:[30,150,120,50],views:[
-    {if:['!desk_open'],text:'书桌小盒上有字母锁，旁边是英文卡片：',note:'【英语题】Good ___ ! (morning)\n（早上好 Good morning）',lock:{kind:'alpha',len:7,answer:'MORNING',prompt:'输入英文大写',ok:{set:['desk_open'],give:['key_r73'],text:'Correct! 小盒打开，里面是钥匙！'},bad:'不对哦，再想想英文怎么说。'}},
+    {if:['!desk_open'],text:'书桌小盒上有字母锁，旁边是英文卡片：',note:'【英语题】A _____ can help us at the fair. (机器人)\n（Unit 2：robot = 机器人）',lock:{kind:'alpha',len:5,answer:'ROBOT',prompt:'输入英文大写',ok:{set:['desk_open'],give:['key_r73'],text:'Correct! 小盒打开，里面是钥匙！'},bad:'不对哦，再想想英文怎么说。'}},
     {text:'小盒已经空了。'}
   ]},
   {id:'board',name:'黑板',box:[130,20,150,90],views:[
@@ -3701,11 +3701,11 @@ var r73={id:'r73',title:'烧杯角',emoji:'🔬',sub:'英语 · 词汇',
  ],
  combos:[],
  hints:[
-  {until:'desk_open',obj:'desk',tiers:['看看英文卡片上的问题。','早上好 Good morning','答案是 MORNING。']},
+  {until:'desk_open',obj:'desk',tiers:['看看英文卡片上的问题。','Unit 2：robot = 机器人','答案是 ROBOT。']},
   {until:'escaped',obj:'door',tiers:['钥匙在手！','选中钥匙点门。','开门出去。']}
  ],
- explain:['英文题：Good ___ ! (morning)','早上好 Good morning → MORNING','用钥匙打开门。'],
- solution:[['code','desk','MORNING'],['use','door','key_r73']],
+ explain:['英文题：A _____ can help us at the fair. (机器人)','Unit 2：robot = 机器人 → ROBOT','用钥匙打开门。'],
+ solution:[['code','desk','ROBOT'],['use','door','key_r73']],
  art:function(f){var s='';s+=R(0,0,400,300,'#e8f4ff')+R(0,214,400,86,'#b8d4e8');
   s+=g('window',R(24,24,90,70,'#bfe8ff',8,SK)+C(90,44,10,'#fff2a8'));
   s+=g('board',R(130,20,150,90,'#2f6b4f',6,' stroke="#a86b38" stroke-width="5"')+T(205,65,11,'📝',' fill="#fff'));
@@ -3727,7 +3727,7 @@ var r74={id:'r74',title:'牛奶超市',emoji:'🛒',sub:'数学 · 英语',
     {text:'书桌密码已经打开了。'}
   ]},
   {id:'box',name:'小盒',box:[200,160,70,50],views:[
-    {if:['!box_open'],text:'小盒上还有一把锁。',note:'【英语题】Red + yellow = ___ .\n（红加黄等于橙色 orange）',lock:{kind:'alpha',len:6,answer:'ORANGE',prompt:'输入英文',ok:{set:['box_open'],give:['key_r74'],text:'小盒打开了，钥匙在里面！'},bad:'再想想。'}},
+    {if:['!box_open'],text:'小盒上还有一把锁。',note:'【英语题】Sports help me _____ taller and stronger. (成长/长高)\n（Unit 2：grow taller and stronger）',lock:{kind:'alpha',len:4,answer:'GROW',prompt:'输入英文',ok:{set:['box_open'],give:['key_r74'],text:'小盒打开了，钥匙在里面！'},bad:'再想想。'}},
     {text:'小盒空了。'}
   ]},
   {id:'board',name:'提示板',box:[130,20,150,90],views:[
@@ -3743,11 +3743,11 @@ var r74={id:'r74',title:'牛奶超市',emoji:'🛒',sub:'数学 · 英语',
  combos:[],
  hints:[
   {until:'desk_open',obj:'desk',tiers:['先解开书桌的数学题。','仔细看【算一算】。','答案是 9。']},
-  {until:'box_open',obj:'box',tiers:['书桌开了，去开小盒。','红加黄等于橙色 orange','答案是 ORANGE。']},
+  {until:'box_open',obj:'box',tiers:['书桌开了，去开小盒。','Unit 2：grow taller and stronger','答案是 GROW。']},
   {until:'escaped',obj:'door',tiers:['钥匙到手！','用钥匙开门。','选中钥匙点门。']}
  ],
- explain:['1.5 × 6 = 9','Red + yellow = ___ . → ORANGE','用钥匙打开门。'],
- solution:[['code','desk','9'],['code','box','ORANGE'],['use','door','key_r74']],
+ explain:['1.5 × 6 = 9','Sports help me _____ taller and stronger. (成长/长高) → GROW','用钥匙打开门。'],
+ solution:[['code','desk','9'],['code','box','GROW'],['use','door','key_r74']],
  art:function(f){var s='';s+=R(0,0,400,300,'#fff5f0')+R(0,214,400,86,'#f0d4c8');
   s+=g('window',R(24,24,90,70,'#bfe8ff',8,SK)+C(90,44,10,'#fff2a8'));
   s+=g('board',R(130,20,150,90,'#2f6b4f',6,' stroke="#a86b38" stroke-width="5"')+T(205,65,11,'📝',' fill="#fff'));
@@ -3892,7 +3892,7 @@ var r78={id:'r78',title:'向日葵园',emoji:'🌷',sub:'英语 · 词汇',
     {text:'门锁着，需要钥匙。',use:[{item:'key_r78',win:true,text:'Great! 门开了，你完成了英语挑战！'}],wrong:'Need a key!'}
   ]},
   {id:'desk',name:'书桌',box:[30,150,120,50],views:[
-    {if:['!desk_open'],text:'书桌小盒上有字母锁，旁边是英文卡片：',note:'【英语题】A baby cow is called a ___ .\n（小牛 calf）',lock:{kind:'alpha',len:4,answer:'CALF',prompt:'输入英文大写',ok:{set:['desk_open'],give:['key_r78'],text:'Correct! 小盒打开，里面是钥匙！'},bad:'不对哦，再想想英文怎么说。'}},
+    {if:['!desk_open'],text:'书桌小盒上有字母锁，旁边是英文卡片：',note:'【英语题】It is a _____ to learn new skills. (机会)\n（Unit 2：a chance to… = 一个……的机会）',lock:{kind:'alpha',len:6,answer:'CHANCE',prompt:'输入英文大写',ok:{set:['desk_open'],give:['key_r78'],text:'Correct! 小盒打开，里面是钥匙！'},bad:'不对哦，再想想英文怎么说。'}},
     {text:'小盒已经空了。'}
   ]},
   {id:'board',name:'黑板',box:[130,20,150,90],views:[
@@ -3910,11 +3910,11 @@ var r78={id:'r78',title:'向日葵园',emoji:'🌷',sub:'英语 · 词汇',
  ],
  combos:[],
  hints:[
-  {until:'desk_open',obj:'desk',tiers:['看看英文卡片上的问题。','小牛 calf','答案是 CALF。']},
+  {until:'desk_open',obj:'desk',tiers:['看看英文卡片上的问题。','Unit 2：a chance to… = 一个……的机会','答案是 CHANCE。']},
   {until:'escaped',obj:'door',tiers:['钥匙在手！','选中钥匙点门。','开门出去。']}
  ],
- explain:['英文题：A baby cow is called a ___ .','小牛 calf → CALF','用钥匙打开门。'],
- solution:[['code','desk','CALF'],['use','door','key_r78']],
+ explain:['英文题：It is a _____ to learn new skills. (机会)','Unit 2：a chance to… = 一个……的机会 → CHANCE','用钥匙打开门。'],
+ solution:[['code','desk','CHANCE'],['use','door','key_r78']],
  art:function(f){var s='';s+=R(0,0,400,300,'#e8ffe8')+R(0,214,400,86,'#90d080');
   s+=g('window',R(24,24,90,70,'#bfe8ff',8,SK)+C(90,44,10,'#fff2a8'));
   s+=g('board',R(130,20,150,90,'#2f6b4f',6,' stroke="#a86b38" stroke-width="5"')+T(205,65,11,'📝',' fill="#fff'));
@@ -4101,7 +4101,7 @@ var r83={id:'r83',title:'面条厨房',emoji:'🍳',sub:'英语 · 词汇',
     {text:'门锁着，需要钥匙。',use:[{item:'key_r83',win:true,text:'Great! 门开了，你完成了英语挑战！'}],wrong:'Need a key!'}
   ]},
   {id:'desk',name:'书桌',box:[30,150,120,50],views:[
-    {if:['!desk_open'],text:'书桌小盒上有字母锁，旁边是英文卡片：',note:'【英语题】We see with our ___ .\n（眼睛 eyes）',lock:{kind:'alpha',len:4,answer:'EYES',prompt:'输入英文大写',ok:{set:['desk_open'],give:['key_r83'],text:'Correct! 小盒打开，里面是钥匙！'},bad:'不对哦，再想想英文怎么说。'}},
+    {if:['!desk_open'],text:'书桌小盒上有字母锁，旁边是英文卡片：',note:'【英语题】I like dancing as _____. (也)\n（Unit 2：as well = 也）',lock:{kind:'alpha',len:4,answer:'WELL',prompt:'输入英文大写',ok:{set:['desk_open'],give:['key_r83'],text:'Correct! 小盒打开，里面是钥匙！'},bad:'不对哦，再想想英文怎么说。'}},
     {text:'小盒已经空了。'}
   ]},
   {id:'board',name:'黑板',box:[130,20,150,90],views:[
@@ -4119,11 +4119,11 @@ var r83={id:'r83',title:'面条厨房',emoji:'🍳',sub:'英语 · 词汇',
  ],
  combos:[],
  hints:[
-  {until:'desk_open',obj:'desk',tiers:['看看英文卡片上的问题。','眼睛 eyes','答案是 EYES。']},
+  {until:'desk_open',obj:'desk',tiers:['看看英文卡片上的问题。','Unit 2：as well = 也','答案是 WELL。']},
   {until:'escaped',obj:'door',tiers:['钥匙在手！','选中钥匙点门。','开门出去。']}
  ],
- explain:['英文题：We see with our ___ .','眼睛 eyes → EYES','用钥匙打开门。'],
- solution:[['code','desk','EYES'],['use','door','key_r83']],
+ explain:['英文题：I like dancing as _____. (也)','Unit 2：as well = 也 → WELL','用钥匙打开门。'],
+ solution:[['code','desk','WELL'],['use','door','key_r83']],
  art:function(f){var s='';s+=R(0,0,400,300,'#fff4e0')+R(0,214,400,86,'#cfe8f0');
   s+=g('window',R(24,24,90,70,'#bfe8ff',8,SK)+C(90,44,10,'#fff2a8'));
   s+=g('board',R(130,20,150,90,'#2f6b4f',6,' stroke="#a86b38" stroke-width="5"')+T(205,65,11,'📝',' fill="#fff'));
@@ -4145,7 +4145,7 @@ var r84={id:'r84',title:'跳远区',emoji:'⚽',sub:'数学 · 英语',
     {text:'书桌密码已经打开了。'}
   ]},
   {id:'box',name:'小盒',box:[200,160,70,50],views:[
-    {if:['!box_open'],text:'小盒上还有一把锁。',note:'【英语题】There are ___ months in a year.\n（一年十二个月 twelve）',lock:{kind:'alpha',len:6,answer:'TWELVE',prompt:'输入英文',ok:{set:['box_open'],give:['key_r84'],text:'小盒打开了，钥匙在里面！'},bad:'再想想。'}},
+    {if:['!box_open'],text:'小盒上还有一把锁。',note:'【英语题】What _____ will you learn in the club? (技能)\n（Unit 2：skill = 技能）',lock:{kind:'alpha',len:5,answer:'SKILL',prompt:'输入英文',ok:{set:['box_open'],give:['key_r84'],text:'小盒打开了，钥匙在里面！'},bad:'再想想。'}},
     {text:'小盒空了。'}
   ]},
   {id:'board',name:'提示板',box:[130,20,150,90],views:[
@@ -4161,11 +4161,11 @@ var r84={id:'r84',title:'跳远区',emoji:'⚽',sub:'数学 · 英语',
  combos:[],
  hints:[
   {until:'desk_open',obj:'desk',tiers:['先解开书桌的数学题。','仔细看【算一算】。','答案是 10。']},
-  {until:'box_open',obj:'box',tiers:['书桌开了，去开小盒。','一年十二个月 twelve','答案是 TWELVE。']},
+  {until:'box_open',obj:'box',tiers:['书桌开了，去开小盒。','Unit 2：skill = 技能','答案是 SKILL。']},
   {until:'escaped',obj:'door',tiers:['钥匙到手！','用钥匙开门。','选中钥匙点门。']}
  ],
- explain:['段数 = 45÷5 = 9，两头都种：棵数 = 段数 + 1 = 10','There are ___ months in a year. → TWELVE','用钥匙打开门。'],
- solution:[['code','desk','10'],['code','box','TWELVE'],['use','door','key_r84']],
+ explain:['段数 = 45÷5 = 9，两头都种：棵数 = 段数 + 1 = 10','What _____ will you learn in the club? (技能) → SKILL','用钥匙打开门。'],
+ solution:[['code','desk','10'],['code','box','SKILL'],['use','door','key_r84']],
  art:function(f){var s='';s+=R(0,0,400,300,'#c9f0ff')+R(0,214,400,86,'#9ee07a');
   s+=g('window',R(24,24,90,70,'#bfe8ff',8,SK)+C(90,44,10,'#fff2a8'));
   s+=g('board',R(130,20,150,90,'#2f6b4f',6,' stroke="#a86b38" stroke-width="5"')+T(205,65,11,'📝',' fill="#fff'));
@@ -4310,7 +4310,7 @@ var r88={id:'r88',title:'放大镜屋',emoji:'🔬',sub:'英语 · 词汇',
     {text:'门锁着，需要钥匙。',use:[{item:'key_r88',win:true,text:'Great! 门开了，你完成了英语挑战！'}],wrong:'Need a key!'}
   ]},
   {id:'desk',name:'书桌',box:[30,150,120,50],views:[
-    {if:['!desk_open'],text:'书桌小盒上有字母锁，旁边是英文卡片：',note:'【英语题】The capital of China is ___ .\n（中国的首都是 Beijing）',lock:{kind:'alpha',len:7,answer:'BEIJING',prompt:'输入英文大写',ok:{set:['desk_open'],give:['key_r88'],text:'Correct! 小盒打开，里面是钥匙！'},bad:'不对哦，再想想英文怎么说。'}},
+    {if:['!desk_open'],text:'书桌小盒上有字母锁，旁边是英文卡片：',note:'【英语题】What\'s _____? (怎么了？)\n（Unit 3：What\'s wrong? = 怎么了？）',lock:{kind:'alpha',len:5,answer:'WRONG',prompt:'输入英文大写',ok:{set:['desk_open'],give:['key_r88'],text:'Correct! 小盒打开，里面是钥匙！'},bad:'不对哦，再想想英文怎么说。'}},
     {text:'小盒已经空了。'}
   ]},
   {id:'board',name:'黑板',box:[130,20,150,90],views:[
@@ -4328,11 +4328,11 @@ var r88={id:'r88',title:'放大镜屋',emoji:'🔬',sub:'英语 · 词汇',
  ],
  combos:[],
  hints:[
-  {until:'desk_open',obj:'desk',tiers:['看看英文卡片上的问题。','中国的首都是 Beijing','答案是 BEIJING。']},
+  {until:'desk_open',obj:'desk',tiers:['看看英文卡片上的问题。','Unit 3：What\'s wrong? = 怎么了？','答案是 WRONG。']},
   {until:'escaped',obj:'door',tiers:['钥匙在手！','选中钥匙点门。','开门出去。']}
  ],
- explain:['英文题：The capital of China is ___ .','中国的首都是 Beijing → BEIJING','用钥匙打开门。'],
- solution:[['code','desk','BEIJING'],['use','door','key_r88']],
+ explain:['英文题：What\'s _____? (怎么了？)','Unit 3：What\'s wrong? = 怎么了？ → WRONG','用钥匙打开门。'],
+ solution:[['code','desk','WRONG'],['use','door','key_r88']],
  art:function(f){var s='';s+=R(0,0,400,300,'#e8f4ff')+R(0,214,400,86,'#b8d4e8');
   s+=g('window',R(24,24,90,70,'#bfe8ff',8,SK)+C(90,44,10,'#fff2a8'));
   s+=g('board',R(130,20,150,90,'#2f6b4f',6,' stroke="#a86b38" stroke-width="5"')+T(205,65,11,'📝',' fill="#fff'));
@@ -4519,7 +4519,7 @@ var r93={id:'r93',title:'薰衣草园',emoji:'🌷',sub:'英语 · 词汇',
     {text:'门锁着，需要钥匙。',use:[{item:'key_r93',win:true,text:'Great! 门开了，你完成了英语挑战！'}],wrong:'Need a key!'}
   ]},
   {id:'desk',name:'书桌',box:[30,150,120,50],views:[
-    {if:['!desk_open'],text:'书桌小盒上有字母锁，旁边是英文卡片：',note:'【英语题】Fish live in the ___ .\n（鱼生活在水里 water）',lock:{kind:'alpha',len:5,answer:'WATER',prompt:'输入英文大写',ok:{set:['desk_open'],give:['key_r93'],text:'Correct! 小盒打开，里面是钥匙！'},bad:'不对哦，再想想英文怎么说。'}},
+    {if:['!desk_open'],text:'书桌小盒上有字母锁，旁边是英文卡片：',note:'【英语题】_____ for asking. (谢谢关心)\n（Unit 3：Thanks for asking.）',lock:{kind:'alpha',len:6,answer:'THANKS',prompt:'输入英文大写',ok:{set:['desk_open'],give:['key_r93'],text:'Correct! 小盒打开，里面是钥匙！'},bad:'不对哦，再想想英文怎么说。'}},
     {text:'小盒已经空了。'}
   ]},
   {id:'board',name:'黑板',box:[130,20,150,90],views:[
@@ -4537,11 +4537,11 @@ var r93={id:'r93',title:'薰衣草园',emoji:'🌷',sub:'英语 · 词汇',
  ],
  combos:[],
  hints:[
-  {until:'desk_open',obj:'desk',tiers:['看看英文卡片上的问题。','鱼生活在水里 water','答案是 WATER。']},
+  {until:'desk_open',obj:'desk',tiers:['看看英文卡片上的问题。','Unit 3：Thanks for asking.','答案是 THANKS。']},
   {until:'escaped',obj:'door',tiers:['钥匙在手！','选中钥匙点门。','开门出去。']}
  ],
- explain:['英文题：Fish live in the ___ .','鱼生活在水里 water → WATER','用钥匙打开门。'],
- solution:[['code','desk','WATER'],['use','door','key_r93']],
+ explain:['英文题：_____ for asking. (谢谢关心)','Unit 3：Thanks for asking. → THANKS','用钥匙打开门。'],
+ solution:[['code','desk','THANKS'],['use','door','key_r93']],
  art:function(f){var s='';s+=R(0,0,400,300,'#e8ffe8')+R(0,214,400,86,'#90d080');
   s+=g('window',R(24,24,90,70,'#bfe8ff',8,SK)+C(90,44,10,'#fff2a8'));
   s+=g('board',R(130,20,150,90,'#2f6b4f',6,' stroke="#a86b38" stroke-width="5"')+T(205,65,11,'📝',' fill="#fff'));
@@ -4563,7 +4563,7 @@ var r94={id:'r94',title:'游泳馆门',emoji:'🏀',sub:'数学 · 英语',
     {text:'书桌密码已经打开了。'}
   ]},
   {id:'box',name:'小盒',box:[200,160,70,50],views:[
-    {if:['!box_open'],text:'小盒上还有一把锁。',note:'【英语题】She is a girl. He is a ___ .\n（男孩 boy）',lock:{kind:'alpha',len:3,answer:'BOY',prompt:'输入英文',ok:{set:['box_open'],give:['key_r94'],text:'小盒打开了，钥匙在里面！'},bad:'再想想。'}},
+    {if:['!box_open'],text:'小盒上还有一把锁。',note:'【英语题】I feel _____. (难过的)\n（Unit 3：sad = 难过的）',lock:{kind:'alpha',len:3,answer:'SAD',prompt:'输入英文',ok:{set:['box_open'],give:['key_r94'],text:'小盒打开了，钥匙在里面！'},bad:'再想想。'}},
     {text:'小盒空了。'}
   ]},
   {id:'board',name:'提示板',box:[130,20,150,90],views:[
@@ -4579,11 +4579,11 @@ var r94={id:'r94',title:'游泳馆门',emoji:'🏀',sub:'数学 · 英语',
  combos:[],
  hints:[
   {until:'desk_open',obj:'desk',tiers:['先解开书桌的数学题。','仔细看【算一算】。','答案是 11。']},
-  {until:'box_open',obj:'box',tiers:['书桌开了，去开小盒。','男孩 boy','答案是 BOY。']},
+  {until:'box_open',obj:'box',tiers:['书桌开了，去开小盒。','Unit 3：sad = 难过的','答案是 SAD。']},
   {until:'escaped',obj:'door',tiers:['钥匙到手！','用钥匙开门。','选中钥匙点门。']}
  ],
- explain:['段数 = 50÷5 = 10，两头都种：棵数 = 段数 + 1 = 11','She is a girl. He is a ___ . → BOY','用钥匙打开门。'],
- solution:[['code','desk','11'],['code','box','BOY'],['use','door','key_r94']],
+ explain:['段数 = 50÷5 = 10，两头都种：棵数 = 段数 + 1 = 11','I feel _____. (难过的) → SAD','用钥匙打开门。'],
+ solution:[['code','desk','11'],['code','box','SAD'],['use','door','key_r94']],
  art:function(f){var s='';s+=R(0,0,400,300,'#fff8e0')+R(0,214,400,86,'#e8c878');
   s+=g('window',R(24,24,90,70,'#bfe8ff',8,SK)+C(90,44,10,'#fff2a8'));
   s+=g('board',R(130,20,150,90,'#2f6b4f',6,' stroke="#a86b38" stroke-width="5"')+T(205,65,11,'📝',' fill="#fff'));
@@ -4728,7 +4728,7 @@ var r98={id:'r98',title:'蒸笼厨房',emoji:'🍳',sub:'英语 · 词汇',
     {text:'门锁着，需要钥匙。',use:[{item:'key_r98',win:true,text:'Great! 门开了，你完成了英语挑战！'}],wrong:'Need a key!'}
   ]},
   {id:'desk',name:'书桌',box:[30,150,120,50],views:[
-    {if:['!desk_open'],text:'书桌小盒上有字母锁，旁边是英文卡片：',note:'【英语题】We eat breakfast in the ___ .\n（早饭在早上 morning）',lock:{kind:'alpha',len:7,answer:'MORNING',prompt:'输入英文大写',ok:{set:['desk_open'],give:['key_r98'],text:'Correct! 小盒打开，里面是钥匙！'},bad:'不对哦，再想想英文怎么说。'}},
+    {if:['!desk_open'],text:'书桌小盒上有字母锁，旁边是英文卡片：',note:'【英语题】Sorry to _____ that. (听到……很难过)\n（Unit 3：sorry to hear that）',lock:{kind:'alpha',len:4,answer:'HEAR',prompt:'输入英文大写',ok:{set:['desk_open'],give:['key_r98'],text:'Correct! 小盒打开，里面是钥匙！'},bad:'不对哦，再想想英文怎么说。'}},
     {text:'小盒已经空了。'}
   ]},
   {id:'board',name:'黑板',box:[130,20,150,90],views:[
@@ -4746,11 +4746,11 @@ var r98={id:'r98',title:'蒸笼厨房',emoji:'🍳',sub:'英语 · 词汇',
  ],
  combos:[],
  hints:[
-  {until:'desk_open',obj:'desk',tiers:['看看英文卡片上的问题。','早饭在早上 morning','答案是 MORNING。']},
+  {until:'desk_open',obj:'desk',tiers:['看看英文卡片上的问题。','Unit 3：sorry to hear that','答案是 HEAR。']},
   {until:'escaped',obj:'door',tiers:['钥匙在手！','选中钥匙点门。','开门出去。']}
  ],
- explain:['英文题：We eat breakfast in the ___ .','早饭在早上 morning → MORNING','用钥匙打开门。'],
- solution:[['code','desk','MORNING'],['use','door','key_r98']],
+ explain:['英文题：Sorry to _____ that. (听到……很难过)','Unit 3：sorry to hear that → HEAR','用钥匙打开门。'],
+ solution:[['code','desk','HEAR'],['use','door','key_r98']],
  art:function(f){var s='';s+=R(0,0,400,300,'#fff4e0')+R(0,214,400,86,'#cfe8f0');
   s+=g('window',R(24,24,90,70,'#bfe8ff',8,SK)+C(90,44,10,'#fff2a8'));
   s+=g('board',R(130,20,150,90,'#2f6b4f',6,' stroke="#a86b38" stroke-width="5"')+T(205,65,11,'📝',' fill="#fff'));
