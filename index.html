@@ -49,19 +49,23 @@ h1,h2,h3,p{margin:0}
 .prog-banner span{font-size:14px;opacity:.95}
 .list-intro{margin:4px 2px 12px;color:var(--ink2);font-size:14px;line-height:1.5}
 .chapters{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 12px}
-.big-grid{display:grid;grid-template-columns:1fr;gap:12px}
+.big-grid{display:grid;grid-template-columns:1fr;gap:10px}
 @media(min-width:700px){.big-grid{grid-template-columns:1fr 1fr}}
 @media(min-width:1000px){.big-grid{grid-template-columns:1fr 1fr 1fr}}
-.big{display:flex;align-items:center;gap:12px;background:#fff;border-radius:20px;padding:12px;box-shadow:0 4px 0 rgba(74,53,96,.1);text-align:left;min-height:84px;width:100%}
-.big .bi{font-size:36px;width:60px;height:60px;border-radius:18px;background:var(--sun2);display:flex;align-items:center;justify-content:center;flex:none}
-.big b{font-size:18px;display:block}
-.big small{display:block;color:var(--ink2);font-size:13px;margin-top:2px}
+.room-list-hint{text-align:center;font-size:13px;font-weight:800;color:#a14d72;margin:0 0 8px;line-height:1.4}
+.room-list-panel{max-height:min(58vh,560px);overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;padding:6px 4px 14px;margin:0 -2px 4px;border-radius:18px;background:rgba(255,255,255,.42);box-shadow:inset 0 -22px 18px -18px rgba(120,80,160,.14);touch-action:pan-y}
+.room-list-panel::-webkit-scrollbar{width:8px}
+.room-list-panel::-webkit-scrollbar-thumb{background:#e0c4d4;border-radius:8px}
+.big{display:flex;align-items:center;gap:12px;background:#fff;border-radius:18px;padding:10px 12px;box-shadow:0 4px 0 rgba(74,53,96,.1);text-align:left;min-height:72px;width:100%}
+.big .bi{font-size:32px;width:54px;height:54px;border-radius:16px;background:var(--sun2);display:flex;align-items:center;justify-content:center;flex:none}
+.big b{font-size:17px;display:block}
+.big small{display:block;color:var(--ink2);font-size:12px;margin-top:2px}
 .big .r{margin-left:auto;text-align:right;flex:none}
 .big.locked{opacity:.55}
 .big.locked .bi{filter:grayscale(1)}
 .home-foot{margin-top:16px;text-align:center;color:var(--ink2);font-size:13px;line-height:1.6}
-.home-reset{margin-top:14px;display:flex;justify-content:center}
-.home-reset .btn{min-height:44px;padding:10px 16px;font-size:15px;border:2px dashed #e0c4d4;background:#fff7fb;color:#a14d72;box-shadow:none}
+.home-reset{margin:10px 0 12px;display:flex;justify-content:center;gap:8px;flex-wrap:wrap}
+.home-reset .btn{min-height:44px;padding:10px 14px;font-size:14px;border:2px dashed #e0c4d4;background:#fff7fb;color:#a14d72;box-shadow:none}
 .mask{position:fixed;inset:0;background:rgba(60,40,80,.38);z-index:50;display:none;align-items:flex-end;justify-content:center}
 .mask.show{display:flex;animation:fadein .2s}
 .sheet{background:#fffaf4;width:100%;max-width:560px;max-height:88vh;max-height:88dvh;overflow:auto;border-radius:26px 26px 0 0;padding:16px 16px calc(18px + env(safe-area-inset-bottom));box-shadow:0 -8px 30px rgba(0,0,0,.15)}
@@ -149,7 +153,6 @@ h1,h2,h3,p{margin:0}
   <p class="list-intro" id="listIntro">点房间里的东西仔细看看，把物品拿起来、组合起来，解开密码锁逃出去！</p>
   <div id="listBody"></div>
   <div class="home-foot">进度保存在本页专用存档（与「解谜大冒险」互不影响）· 卡住了就点「💡 提示」</div>
-  <div class="home-reset"><button class="btn" data-act="resetProgress" type="button">🔄 给别人玩 · 清空通关</button></div>
 </div></section>
 <!-- 密室 -->
 <section class="screen" id="scr-room">
@@ -928,12 +931,12 @@ var r7={id:'r7',title:'快乐教室',emoji:'🏫',sub:'语文 · 古诗',
   {id:'board',name:'诗板',box:[130,20,150,90],views:[
     {text:'墙上写着《春晓》（唐·孟浩然），少了一个字：',note:'《春晓》　唐·孟浩然\n春眠不 ___ 晓，处处闻啼鸟。\n\n【整句】春眠不觉晓，处处闻啼鸟。'}
   ]},
-  {id:'box',name:'诗匣',box:[200,160,70,50],views:[
+  {id:'box',name:'诗匣',box:[198,148,78,56],views:[
     {if:['!box_open'],text:'诗匣上有一个汉字转盘。',note:'《春晓》　唐·孟浩然\n春眠不 ___ 晓，处处闻啼鸟。\n\n【整句】春眠不觉晓，处处闻啼鸟。',lock:{kind:'dial',opts:[['天','了','的','一','中','觉']],answer:'觉',prompt:'转到正确的字',ok:{set:['box_open'],give:['key_r7'],text:'诗匣打开了，里面是一把钥匙！'},bad:'不对哦，再读一读这首诗。'}},
     {text:'诗匣已经空了。'}
   ]},
-  {id:'desk',name:'书桌',box:[30,150,120,50],views:[
-    {text:'书桌上有一本诗集，翻开正好是这一页。'}
+  {id:'desk',name:'书桌',box:[24,168,160,88],views:[
+    {text:'教室里摆着一排排书桌。你面前的书桌上摊着一本诗集，翻开正好是这一页。'}
   ]},
   {id:'window',name:'窗户',box:[24,24,90,70],views:[
     {text:'窗外树叶沙沙响，像在朗读古诗。'}
@@ -949,14 +952,20 @@ var r7={id:'r7',title:'快乐教室',emoji:'🏫',sub:'语文 · 古诗',
  ],
  explain:['《春晓》：春眠不觉晓，处处闻啼鸟。','缺的字是「觉」。','打开诗匣拿到钥匙，打开门。'],
  solution:[['code','box','觉'],['use','door','key_r7']],
- art:function(f){var s='';s+=R(0,0,400,300,'#e3f4ff')+R(0,214,400,86,'#cfe0c3');
-  s+=g('window',R(24,24,90,70,'#bfe8ff',8,SK)+C(90,44,10,'#fff2a8'));
-  s+=g('board',R(130,20,150,90,'#2f6b4f',6,' stroke="#a86b38" stroke-width="5"')+T(205,65,11,'📝',' fill="#fff'));
-  s+=g('desk',R(30,150,120,50,'#c98b52',6,SK)+(f.desk_open?R(40,160,60,30,'#d9a26c',4):C(80,175,5,'#5b4636')));
-  s+=g('box',R(200,160,70,50,'#ffb36b',6,SK)+(f.box_open?R(210,168,50,34,'#ffe0b0',3):R(220,175,30,18,'#ffcf4d',3)));
-  s+=g('shelf',R(290,40,90,120,'#b9793f',6,SK)+R(298,70,74,8,'#8a5428',2)+R(298,110,74,8,'#8a5428',2));
-  s+=g('door',R(310,160,70,120,'#c98b52',6,SK)+C(365,220,5,'#ffcf4d',SK));
-  s+=T(60,260,20,'🏫')+T(340,260,18,'✨');
+ art:function(f){var s='';
+  s+=R(0,0,400,300,'#e3f4ff')+R(0,214,400,86,'#cfe0c3')+P('M0 214H400','none',' stroke="#a9c29a" stroke-width="3"');
+  s+=g('window',R(24,24,90,70,'#bfe8ff',8,SK)+P('M69 24v70M24 59h90','none',SK)+C(90,44,10,'#fff2a8')+R(34,86,28,14,'#7ccf6c',3));
+  s+=g('board',R(130,20,150,90,'#2f6b4f',6,' stroke="#a86b38" stroke-width="5"')+T(205,48,11,'春眠不 □ 晓',' fill="#fff"')+T(205,70,11,'处处闻啼鸟',' fill="#d7f5e6"')+R(142,98,24,6,'#fff',2));
+  s+=g('shelf',R(290,40,90,120,'#b9793f',6,SK)+R(298,70,74,8,'#8a5428',2)+R(298,110,74,8,'#8a5428',2)+R(302,48,18,18,'#ff8a8a')+R(324,50,16,16,'#7fb2ff')+R(344,48,20,18,'#ffd166'));
+  /* 课桌椅：左排可点的书桌 + 中间一排装饰书桌 + 椅子 */
+  function chair(x,y){return R(x,y,28,10,'#8fb6e8',3,SK)+R(x+4,y+10,6,22,'#6f94c4')+R(x+18,y+10,6,22,'#6f94c4')+R(x+2,y-16,24,18,'#a8c8ee',4,SK);}
+  function deskSet(x,y,top){return R(x,y,70,12,'#d4a066',4,SK)+R(x+6,y+12,10,28,'#a86b38')+R(x+54,y+12,10,28,'#a86b38')+R(x+10,y+14,50,18,'#c98b52',3,SK)+(top||'');}
+  s+=chair(38,236)+chair(118,236)+chair(198,236);
+  s+=deskSet(28,198,'')+deskSet(108,198,'')+deskSet(188,198,'');
+  s+=g('desk',R(28,168,150,14,'#c98b52',4,SK)+R(36,182,14,48,'#8a5428')+R(156,182,14,48,'#8a5428')+R(48,186,100,34,'#b9793f',4,SK)+R(58,152,46,20,'#fffaf0',3,SK)+T(80,162,12,'📖')+chair(70,250));
+  s+=g('box',R(200,148,74,52,'#ffb36b',6,SK)+(f.box_open?R(210,156,54,36,'#ffe0b0',3):R(222,164,30,18,'#ffcf4d',3))+R(188,196,96,12,'#d4a066',4,SK)+R(196,208,10,26,'#a86b38')+R(266,208,10,26,'#a86b38'));
+  s+=g('door',R(310,160,70,120,'#c98b52',6,SK)+R(320,172,50,44,'#d9a26c',4)+R(320,226,50,44,'#d9a26c',4)+C(365,220,5,'#ffcf4d',SK));
+  s+=T(60,278,18,'🏫')+T(340,278,16,'✨');
   return s;}
 };
 var r8={id:'r8',title:'香香厨房',emoji:'🍳',sub:'英语 · 词汇',
@@ -4896,10 +4905,20 @@ function sumStars(){var s=0;for(var i=0;i<N;i++)s+=bestOf(i);return s;}
 function doneCount(){var s=0;for(var i=0;i<N;i++)if(bestOf(i))s++;return s;}
 function record(i,stars){var key='room:'+i;if(!store.best[key]||stars>store.best[key])store.best[key]=stars;save();}
 function resetAllProgress(){var sound=!!store.sound;store=defStore();store.sound=sound;save();}
-function openResetSheet(){var h=sheetHead('🔄 给别人玩 · 清空进度？');
-  h+='<p class="say">会清空本页<strong>密室大逃脱</strong>的通关星星和半途进度，不能恢复。</p>';
-  h+='<div class="note">声音开关会保留。清空后，别人可以从第 1 关重新玩起。\n\n提示：本页存档键是 mishi_v1，不会动「解谜大冒险」里的进度。</div>';
-  h+='<div class="actions"><button class="btn coral" data-act="resetAllYes">确认清空</button><button class="btn ghost" data-act="close">再想想</button></div>';
+function resetChapterProgress(c){var c0=c*CHAP,c1=Math.min(c0+CHAP,N);
+  for(var i=c0;i<c1;i++){delete store.best['room:'+i];var id=ROOMS[i]&&ROOMS[i].id;if(id)delete store.rooms[id];}
+  save();}
+function chapterRangeLabel(c){var a=c*CHAP+1,b=Math.min((c+1)*CHAP,N);return '第 '+a+'-'+b+' 间';}
+function openResetSheet(){var h=sheetHead('🗑 清空全部通关？');
+  h+='<p class="say">会清空本页<strong>密室大逃脱</strong>全部章节的通关星星和半途进度，不能恢复。</p>';
+  h+='<div class="note">声音开关会保留。清空后可以从第 1 关重新玩起。\n\n不会影响「解谜大冒险」里的进度。</div>';
+  h+='<div class="actions"><button class="btn coral" data-act="resetAllYes">确认清空全部</button><button class="btn ghost" data-act="close">再想想</button></div>';
+  openSheet(h);}
+function openResetChapterSheet(){var lab=chapterRangeLabel(roomChapter);
+  var h=sheetHead('🔄 重置本章？');
+  h+='<p class="say">只清空当前选中的<strong>'+lab+'</strong>通关星星和半途进度，其他章节不受影响。</p>';
+  h+='<div class="note">重置后，本章要从第一间重新逃出。如果后面章节因此还没解锁，需要先再通关本章。</div>';
+  h+='<div class="actions"><button class="btn coral" data-act="resetChapterYes">确认重置本章</button><button class="btn ghost" data-act="close">再想想</button></div>';
   openSheet(h);}
 /* ---------------- 页面切换 ---------------- */
 var nav={screen:'home',idx:0};
@@ -4916,14 +4935,17 @@ function renderHome(chap){if(chap!=null)roomChapter=chap;
   var nc=Math.ceil(N/CHAP);
   for(var c=0;c<nc;c++){var a=c*CHAP+1,b=Math.min((c+1)*CHAP,N);
     h+='<button class="btn '+(roomChapter===c?'primary':'ghost')+'" data-act="chapter" data-c="'+c+'" style="min-height:40px;padding:8px 12px;font-size:14px">第 '+a+'-'+b+' 间</button>';}
-  h+='</div><div class="big-grid">';
+  h+='</div>';
+  h+='<div class="home-reset"><button class="btn" data-act="resetChapter" type="button">🔄 重置本章</button><button class="btn" data-act="resetProgress" type="button">🗑 清空全部通关</button></div>';
+  h+='<div class="room-list-hint">↕ 在下面列表里上下滑动，可以看到本章全部房间（不只前 3 间）</div>';
+  h+='<div class="room-list-panel"><div class="big-grid">';
   var c0=roomChapter*CHAP,c1=c0+CHAP;
   ROOMS.forEach(function(x,i){
     if(i<c0||i>=c1)return;
     var lock=!unlocked(i),b=bestOf(i);
     h+='<button class="big'+(lock?' locked':'')+'" data-act="play" data-i="'+i+'"><div class="bi">'+(lock?'🔒':x.emoji)+'</div><div style="min-width:0"><b>'+(i+1)+'. '+esc(x.title)+'</b><small>'+esc(x.sub)+'</small>'+
       (store.rooms[x.id]&&!b?'<small style="color:#d63e7a;font-weight:800">● 上次玩到一半</small>':'')+'</div><div class="r">'+(lock?'':starsHtml(b))+'</div></button>';});
-  h+='</div>';
+  h+='</div></div>';
   $('#listBody').innerHTML=h;paintMute();show('home');}
 function play(i,force){if(!unlocked(i)){SFX.bad();toast('先完成前一关，才能玩这一关哦！');return;}nav.idx=i;closeSheet(true);startRoom(i,force);paintMute();}
 /* ---------------- 弹窗 ---------------- */
@@ -5039,11 +5061,13 @@ document.addEventListener('click',function(ev){var t=ev.target;
     case 'roomReset':SFX.tap();openSheet(sheetHead('🔄 重新开始？')+'<p class="say">房间会回到一开始的样子，物品栏也会清空。</p><div class="actions"><button class="btn primary" data-act="roomResetYes">重新开始</button><button class="btn ghost" data-act="close">不了</button></div>');break;
     case 'roomResetYes':closeSheet(true);delete store.rooms[RP.room.id];save();startRoom(RP.i,true);break;
     case 'resetProgress':SFX.tap();openResetSheet();break;
-    case 'resetAllYes':closeSheet(true);resetAllProgress();roomChapter=0;SFX.ok();toast('进度已清空，可以从头玩啦！');renderHome();break;
+    case 'resetChapter':SFX.tap();openResetChapterSheet();break;
+    case 'resetChapterYes':closeSheet(true);resetChapterProgress(roomChapter);SFX.ok();toast(chapterRangeLabel(roomChapter)+' 已重置！');renderHome();break;
+    case 'resetAllYes':closeSheet(true);resetAllProgress();roomChapter=0;SFX.ok();toast('全部通关已清空，可以从头玩啦！');renderHome();break;
   }
 });
 document.addEventListener('keydown',function(e){if(e.key==='Escape'){if(!sheetLocked)closeSheet();}});
-window.PZ={E:E,store:function(){return store;},room:function(){return RP;},nav:nav,play:play,unlocked:unlocked,bestOf:bestOf,resetAllProgress:resetAllProgress,renderHome:renderHome,KEY:KEY};
+window.PZ={E:E,store:function(){return store;},room:function(){return RP;},nav:nav,play:play,unlocked:unlocked,bestOf:bestOf,resetAllProgress:resetAllProgress,resetChapterProgress:resetChapterProgress,renderHome:renderHome,KEY:KEY};
 paintMute();renderHome();
 })();
 /*UI-END*/
