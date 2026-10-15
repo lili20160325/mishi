@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#fff0d9">
+<title>密室大逃脱 · 100 关</title>
+<style>
+:root{--ink:#4a3560;--ink2:#7d6b91;--pink:#ff6fa5;--pink2:#ffd6e6;--purple:#8e6bff;--purple2:#ebe4ff;--mint:#22b88a;--mint2:#d4f6ea;--sun:#ffc23c;--sun2:#fff1c7;--sky:#4d9bff;--sky2:#dcecff;--coral:#ff7b6b;--card:#fff;--r:20px;--shadow:0 6px 18px rgba(120,80,160,.13)}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;min-height:100%;overflow-x:hidden}
+body{font-family:"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans CJK SC","Source Han Sans SC",sans-serif;color:var(--ink);background:linear-gradient(165deg,#fff0d9 0%,#ffe6f1 45%,#e6f0ff 100%) fixed;-webkit-user-select:none;user-select:none;overscroll-behavior-y:auto}
+button{font-family:inherit;color:inherit;border:0;cursor:pointer;touch-action:manipulation;background:none}
+button:focus-visible{outline:3px solid var(--purple);outline-offset:2px}
+h1,h2,h3,p{margin:0}
+.screen{display:none;min-height:100vh;min-height:100dvh}
+.screen.active{display:block;animation:fadein .25s ease}
+@keyframes fadein{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.wrap{max-width:1040px;margin:0 auto;padding:12px 14px 28px}
+.card{background:var(--card);border-radius:var(--r);box-shadow:var(--shadow);padding:14px}
+.btn{border-radius:16px;padding:12px 18px;font-size:17px;font-weight:800;background:#fff;box-shadow:0 4px 0 rgba(74,53,96,.13);transition:transform .08s;min-height:48px;display:inline-flex;align-items:center;justify-content:center;gap:6px}
+.btn:active{transform:translateY(3px);box-shadow:0 1px 0 rgba(74,53,96,.13)}
+.btn.primary{background:linear-gradient(180deg,#ff8dba,#ff5d98);color:#fff;box-shadow:0 5px 0 #d94a80}
+.btn.purple{background:linear-gradient(180deg,#a68bff,#7f5cff);color:#fff;box-shadow:0 5px 0 #6243d6}
+.btn.mint{background:linear-gradient(180deg,#46d6aa,#1fb185);color:#fff;box-shadow:0 5px 0 #188d69}
+.btn.sun{background:linear-gradient(180deg,#ffd76a,#ffb820);color:#6b4a00;box-shadow:0 5px 0 #d99500}
+.btn.ghost{background:rgba(255,255,255,.75)}
+.btn.coral{background:linear-gradient(180deg,#ff9a8b,#ff6b5a);color:#fff;box-shadow:0 5px 0 #d94a3a}
+.btn[disabled]{opacity:.45;pointer-events:none}
+.iconbtn{width:46px;height:46px;border-radius:15px;background:rgba(255,255,255,.88);display:inline-flex;align-items:center;justify-content:center;box-shadow:0 3px 0 rgba(74,53,96,.1);font-size:22px;flex:none}
+.tag{display:inline-block;font-size:12px;font-weight:800;padding:3px 9px;border-radius:999px;background:var(--purple2);color:#6a4bd8;white-space:nowrap}
+.tag.pink{background:var(--pink2);color:#d63e7a}.tag.mint{background:var(--mint2);color:#138a66}.tag.sun{background:var(--sun2);color:#a8740a}
+.stars{display:inline-flex;gap:2px;vertical-align:middle}.stars svg{width:18px;height:18px}
+.topbar{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:8px;padding:10px 12px;background:rgba(255,246,236,.92);backdrop-filter:blur(6px);box-shadow:0 2px 10px rgba(120,80,160,.08)}
+.topbar .ttl{flex:1;min-width:0;font-size:18px;font-weight:900;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.topbar .ttl small{display:block;font-size:12px;font-weight:700;color:var(--ink2)}
+.hintbtn{height:46px;border-radius:15px;padding:0 12px;background:linear-gradient(180deg,#ffe58a,#ffc93c);box-shadow:0 3px 0 #dba21a;font-weight:900;font-size:16px;display:inline-flex;align-items:center;gap:4px;flex:none}
+.home-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:6px 2px 4px}
+.logo{font-size:28px;font-weight:900;letter-spacing:1px;background:linear-gradient(90deg,#ff5d98,#8e6bff 60%,#4d9bff);-webkit-background-clip:text;background-clip:text;color:transparent}
+.sub{color:var(--ink2);font-size:14px;margin-top:2px}
+.starpill{display:inline-flex;align-items:center;gap:4px;background:#fff;border-radius:999px;padding:6px 12px;font-weight:900;box-shadow:var(--shadow)}
+.starpill svg{width:20px;height:20px}
+.mascot{display:flex;align-items:center;gap:10px;margin:12px 0}
+.mascot .face{font-size:46px;flex:none;animation:bob 2.4s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-5px)}}
+.bubble{background:#fff;border-radius:16px;padding:10px 14px;font-size:15px;box-shadow:var(--shadow);position:relative;line-height:1.5}
+.prog-banner{background:linear-gradient(135deg,#ff9a6b,#ff5d98);color:#fff;border-radius:20px;padding:14px 16px;box-shadow:0 6px 0 rgba(0,0,0,.12),var(--shadow);margin-bottom:14px}
+.prog-banner b{font-size:22px;display:block}
+.prog-banner span{font-size:14px;opacity:.95}
+.list-intro{margin:4px 2px 12px;color:var(--ink2);font-size:14px;line-height:1.5}
+.chapters{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 12px}
+.big-grid{display:grid;grid-template-columns:1fr;gap:10px}
+@media(min-width:700px){.big-grid{grid-template-columns:1fr 1fr}}
+@media(min-width:1000px){.big-grid{grid-template-columns:1fr 1fr 1fr}}
+.room-list-hint{text-align:center;font-size:13px;font-weight:800;color:#a14d72;margin:0 0 8px;line-height:1.4}
+.room-list-panel{padding:6px 4px 28px;margin:0 -2px 4px;border-radius:18px;background:rgba(255,255,255,.42)}
+.room-list-panel .big{touch-action:pan-y}
+.room-list-panel::-webkit-scrollbar{width:8px}
+.room-list-panel::-webkit-scrollbar-thumb{background:#e0c4d4;border-radius:8px}
+.big{display:flex;align-items:center;gap:12px;background:#fff;border-radius:18px;padding:10px 12px;box-shadow:0 4px 0 rgba(74,53,96,.1);text-align:left;min-height:72px;width:100%}
+.big .bi{font-size:32px;width:54px;height:54px;border-radius:16px;background:var(--sun2);display:flex;align-items:center;justify-content:center;flex:none}
+.big b{font-size:17px;display:block}
+.big small{display:block;color:var(--ink2);font-size:12px;margin-top:2px}
+.big .r{margin-left:auto;text-align:right;flex:none}
+.big.locked{opacity:.55}
+.big.locked .bi{filter:grayscale(1)}
+.home-foot{margin-top:16px;text-align:center;color:var(--ink2);font-size:13px;line-height:1.6}
+.home-reset{margin:10px 0 12px;display:flex;justify-content:center;gap:8px;flex-wrap:wrap}
+.home-reset .btn{min-height:44px;padding:10px 14px;font-size:14px;border:2px dashed #e0c4d4;background:#fff7fb;color:#a14d72;box-shadow:none}
+.mask{position:fixed;inset:0;background:rgba(60,40,80,.38);z-index:50;display:none;align-items:flex-end;justify-content:center}
+.mask.show{display:flex;animation:fadein .2s}
+.sheet{background:#fffaf4;width:100%;max-width:560px;max-height:88vh;max-height:88dvh;overflow:auto;border-radius:26px 26px 0 0;padding:16px 16px calc(18px + env(safe-area-inset-bottom));box-shadow:0 -8px 30px rgba(0,0,0,.15)}
+@media(min-width:700px){.mask{align-items:center}.sheet{border-radius:26px}}
+.sheet-h{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.sheet-h h3{flex:1;font-size:20px;font-weight:900}
+.xbtn{width:42px;height:42px;border-radius:14px;background:#f1e9f7;font-size:20px;font-weight:900;flex:none}
+.say{font-size:16px;line-height:1.65}
+.note{margin:10px 0;background:#fffdf0;border:2px dashed #e6cf8a;border-radius:14px;padding:12px 14px;font-size:16px;line-height:1.75;white-space:pre-line;color:#5b4636}
+.banner{background:var(--mint2);color:#11795a;border-radius:14px;padding:10px 12px;font-weight:800;font-size:15px;margin-bottom:10px;line-height:1.5}
+.banner.bad{background:#ffe3df;color:#c0392b}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.actions .btn{flex:1;min-width:120px}
+.gnote{font-size:13px;color:var(--ink2);line-height:1.5;margin:6px 0}
+.lock{margin-top:12px;background:#fff;border-radius:18px;padding:12px;box-shadow:inset 0 0 0 2px #f0e6f7}
+.lock-p{font-size:14px;color:var(--ink2);font-weight:700;text-align:center;margin-bottom:8px}
+.codebox{display:flex;justify-content:center;gap:8px;margin-bottom:10px}
+.codebox span{width:46px;height:54px;border-radius:12px;background:#f6f1fb;border:3px solid #e2d6f0;display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:900;color:var(--ink)}
+.codebox span.f{border-color:var(--purple);background:#fff}
+.pad{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;max-width:330px;margin:0 auto}
+.pad button,.kb button{background:#f6f1fb;border-radius:14px;min-height:50px;font-size:22px;font-weight:900;box-shadow:0 3px 0 #e2d6f0}
+.pad button:active,.kb button:active{transform:translateY(2px);box-shadow:none}
+.kb{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;max-width:420px;margin:0 auto}
+.kb button{min-height:46px;font-size:19px}
+.dials{display:flex;justify-content:center;gap:16px}
+.dial{display:flex;flex-direction:column;align-items:center;gap:6px}
+.dial .ch{width:68px;height:72px;border-radius:16px;background:#fff7e0;border:3px solid #f1c75b;display:flex;align-items:center;justify-content:center;font-size:38px;font-weight:900;font-family:"Noto Serif CJK SC","Songti SC",serif}
+.dial button{width:68px;height:44px;border-radius:12px;background:#f6f1fb;font-size:20px;box-shadow:0 3px 0 #e2d6f0}
+.choices{display:flex;justify-content:center;gap:12px;flex-wrap:wrap}
+.choices button{width:66px;height:66px;border-radius:16px;box-shadow:0 4px 0 rgba(0,0,0,.18);border:3px solid rgba(255,255,255,.7)}
+.lock .ok{width:100%;margin-top:10px}
+.room-wrap{max-width:1040px;margin:0 auto;padding:10px 12px 24px;display:grid;gap:10px}
+@media(min-width:900px){.room-wrap{grid-template-columns:1.7fr 1fr;align-items:start}}
+.scene-box{background:#fff;border-radius:20px;box-shadow:var(--shadow);overflow:hidden;line-height:0;position:relative}
+#scene{width:100%;height:auto;display:block;aspect-ratio:4/3}
+#scene .obj,#scene .hit{cursor:pointer}
+#scene .obj:hover{filter:brightness(1.06)}
+#scene .hl{fill:none;stroke:#ffcf00;stroke-width:4;stroke-dasharray:8 6;animation:dash 1s linear infinite;pointer-events:none}
+@keyframes dash{to{stroke-dashoffset:-28}}
+.msg{background:#fff;border-radius:16px;padding:12px 14px;font-size:15px;line-height:1.6;box-shadow:var(--shadow);min-height:52px}
+.inv-h{display:flex;align-items:center;justify-content:space-between;font-weight:900;font-size:15px;margin:2px 4px}
+.inv-h small{font-weight:700;color:var(--ink2);font-size:12px}
+.inv{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+.slot{background:rgba(255,255,255,.75);border-radius:14px;min-height:64px;display:flex;flex-direction:column;align-items:center;justify-content:center;border:3px solid transparent;padding:4px 2px;box-shadow:0 3px 0 rgba(74,53,96,.08)}
+.slot .ic{font-size:28px;line-height:1.1}
+.slot .nm{font-size:11px;font-weight:700;color:var(--ink2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.slot.empty{background:rgba(255,255,255,.35);box-shadow:none}
+.slot.sel{border-color:var(--pink);background:#fff1f7;transform:translateY(-3px)}
+.slot.glow .ic{filter:drop-shadow(0 0 6px #ffd23f)}
+.side{display:flex;flex-direction:column;gap:10px}
+.room-tools{display:flex;gap:8px}
+.room-tools .btn{flex:1;font-size:15px;min-height:44px;padding:8px}
+.story p{font-size:16px;line-height:1.75;margin-bottom:6px}
+.win{text-align:center}
+.win .wt{font-size:24px;font-weight:900;margin:6px 0}
+.win .bigstars{display:flex;justify-content:center;gap:8px;margin:8px 0}
+.win .bigstars svg{width:56px;height:56px;transform:scale(0);animation:pop .4s ease forwards}
+.win .bigstars svg:nth-child(2){animation-delay:.2s}.win .bigstars svg:nth-child(3){animation-delay:.4s}
+@keyframes pop{70%{transform:scale(1.2)}to{transform:scale(1)}}
+.win .ws{color:var(--ink2);font-size:14px;margin-bottom:8px}
+.explain{text-align:left;background:#fff;border-radius:16px;padding:12px 14px;margin-top:10px;box-shadow:inset 0 0 0 2px #efe6f7}
+.explain h4{margin:0 0 6px;font-size:16px}
+.explain ol{margin:0;padding-left:22px;font-size:15px;line-height:1.7}
+.ending{background:var(--sun2);border-radius:14px;padding:10px 12px;font-size:15px;line-height:1.6;margin-top:10px;text-align:left}
+.hint-list{display:flex;flex-direction:column;gap:8px}
+.hint-item{background:#fff7d6;border-radius:14px;padding:10px 12px;font-size:16px;line-height:1.6}
+.hint-item b{color:#a8740a}
+.hint-cost{font-size:13px;color:var(--ink2);margin-top:8px;text-align:center}
+#toast{position:fixed;left:50%;bottom:28px;transform:translate(-50%,30px);background:rgba(74,53,96,.94);color:#fff;padding:12px 18px;border-radius:16px;font-size:15px;font-weight:700;z-index:80;opacity:0;pointer-events:none;transition:.25s;max-width:calc(100vw - 32px);text-align:center;line-height:1.5}
+#toast.show{opacity:1;transform:translate(-50%,0)}
+.confetti{position:fixed;top:-20px;width:10px;height:14px;z-index:90;pointer-events:none;animation:fall linear forwards;border-radius:2px}
+@keyframes fall{to{transform:translateY(110vh) rotate(720deg)}}
+.shake{animation:shake .4s}
+@keyframes shake{20%,60%{transform:translateX(-6px)}40%,80%{transform:translateX(6px)}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<!-- 首页：进度 + 章节 + 房间列表 -->
+<section class="screen active" id="scr-home"><div class="wrap">
+  <div class="home-head"><div><div class="logo">密室大逃脱</div><div class="sub">100 关 · 语文 · 数学 · 英语</div></div>
+    <div style="display:flex;gap:8px;align-items:center"><span class="starpill" id="homeStars"></span><button class="iconbtn" data-act="mute" aria-label="声音开关"></button></div></div>
+  <div class="mascot"><div class="face">🦉</div><div class="bubble" id="owlSay">每个房间都有一个小故事。找线索、拿物品、解密码，逃出去吧！</div></div>
+  <div class="prog-banner"><b id="progText">已逃出 0 / 100 间</b><span>每 10 间为一章，通关上一章才能开下一章</span></div>
+  <p class="list-intro" id="listIntro">点房间里的东西仔细看看，把物品拿起来、组合起来，解开密码锁逃出去！</p>
+  <div id="listBody"></div>
+  <div class="home-foot">进度保存在本页专用存档（与「解谜大冒险」互不影响）· 卡住了就点「💡 提示」</div>
+</div></section>
+<!-- 密室 -->
+<section class="screen" id="scr-room">
+  <div class="topbar"><button class="iconbtn" data-act="back" aria-label="返回">←</button><div class="ttl" id="roomTitle"></div><button class="hintbtn" data-act="hint">💡 提示</button><button class="iconbtn" data-act="mute" aria-label="声音开关"></button></div>
+  <div class="room-wrap">
+    <div class="scene-box"><svg id="scene" viewBox="0 0 400 300" role="img" aria-label="房间场景"></svg></div>
+    <div class="side">
+      <div class="msg" id="roomMsg"></div>
+      <div class="inv-h">🎒 物品栏 <small id="invTip">点物品可以选中它</small></div>
+      <div class="inv" id="inv"></div>
+      <div class="room-tools"><button class="btn ghost" data-act="story">📖 看故事</button><button class="btn ghost" data-act="roomReset">🔄 重新开始</button></div>
+    </div>
+  </div>
+</section>
+<div class="mask" id="mask"><div class="sheet" id="sheet" role="dialog" aria-modal="true"></div></div>
+<div id="toast"></div>
+<script>
