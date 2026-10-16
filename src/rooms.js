@@ -56,7 +56,7 @@ var r1={id:'r1',title:'外婆家的书房',emoji:'📚',sub:'面积 · 英语 ·
   {until:'took_battery',obj:'rug',tiers:['手电筒没有电。房间里哪里藏着电池呢？','地上的地毯，有一角翘起来了。','点地毯，把电池拿起来。']},
   {until:'made_torch',tiers:['手电筒和电池，能不能放在一起？','在下面的物品栏里，先点手电筒，再点电池，就能组合。','先点 🔦，再点 🔋。']},
   {until:'shelf_lit',obj:'shelf',tiers:['房间里哪里黑乎乎的看不清？','书架最下面一层很黑。','先在物品栏点亮着的手电筒，再点书架。']},
-  {until:'box_open',obj:'shelf',tiers:['盒子上的单词卡：_____ = 担心。','Unit 1 单词：担心 = worry，一共 5 个字母。','输入 W、O、R、R、Y。']},
+  {until:'box_open',obj:'shelf',tiers:['盒子上的单词卡：_____ = 担心。','Unit 1，5 个字母，首字母 W；意思是心里不安、怕出事。','想想发音：wor-ry，中间辅音双写。']},
   {until:'escaped',obj:'door',tiers:['你已经拿到门钥匙了！','选中门钥匙，再点门。','先点物品栏里的 🗝️，再点右边的门。']}
  ],
  explain:['长方形面积 = 长 × 宽：12.5 × 8 = 100（平方米），所以抽屉密码是 100。','手电筒没有电，要先在地毯下找到电池，把两样东西组合起来。','用亮着的手电筒照黑乎乎的书架，发现蓝色小盒子。','Unit 1：worry = 担心，蓝色小盒子打开，拿到门钥匙。'],
@@ -151,7 +151,7 @@ var r3={id:'r3',title:'机器人厨房',emoji:'🤖',sub:'英语 · 小数 · �
  ],
  combos:[],
  hints:[
-  {until:'fridge_open',obj:'fridge',tiers:['看看冰箱上的英文菜谱，密码就藏在里面。','three = 3，two = 2，five = 5。','按顺序连起来：325。']},
+  {until:'fridge_open',obj:'fridge',tiers:['看看冰箱上的英文菜谱，密码就藏在数量词里。','three、two、five 分别对应哪个数字？按 eggs→milk→sugar 的顺序。','把三个数字按顺序连成三位数（先别偷看答案）。']},
   {until:'took_fridge',obj:'fridge',tiers:['冰箱开了，里面有做蛋糕的材料。','点冰箱，把东西拿起来。','拿起鸡蛋和牛奶。']},
   {until:'cup_open',obj:'cupboard',tiers:['上面的橱柜也有一把锁，旁边有一张购物小票。','2 袋面粉：4.5 × 2 = 9（元），再加上黄油 6.8 元。','9 + 6.8 = 15.8，输入 15.8。']},
   {until:'took_flour',obj:'cupboard',tiers:['橱柜里有面粉。','点橱柜，拿起面粉。','拿起面粉就好。']},
@@ -204,7 +204,7 @@ var r4={id:'r4',title:'星星天文台',emoji:'🔭',sub:'数字成语 · 英语
   {until:'safe_open',obj:'desk',tiers:['书桌上的卷轴写着四个成语，每个少一个数字。','五颜六色、七上八下、九牛一毛、三心二意。','按顺序：5、8、9、2，保险箱密码是 5892。']},
   {until:'took_lens',obj:'safe',tiers:['保险箱开了，里面有东西。','点保险箱，拿起镜片。','拿起镜片就好。']},
   {until:'lens_in',obj:'telescope',tiers:['这块镜片是哪里的？','望远镜前面少了一块镜片。','选中镜片，再点望远镜。']},
-  {until:'box_got',obj:'boxes',tiers:['望远镜里看到的英文说钥匙在哪里？','The key is in the green box. green 是什么颜色？','green 是绿色，打开绿色的盒子。']},
+  {until:'box_got',obj:'boxes',tiers:['望远镜里看到的英文说钥匙在哪里？','找到句子里的颜色词 green——想想红绿灯里“可以走”的那盏。','对照四个盒子的颜色，打开对应的那一个。']},
   {until:'door_code',obj:'door',tiers:['门是梯形的，门上有一道面积题。','梯形面积 =（上底 + 下底）× 高 ÷ 2。','（6 + 10）× 5 ÷ 2 = 40，输入 40。']},
   {until:'escaped',obj:'door',tiers:['密码锁开了，还要用钥匙。','选中铜钥匙，再点梯形门。','先点 🔑，再点左边的门。']}
  ],
