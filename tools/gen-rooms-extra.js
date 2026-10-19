@@ -956,6 +956,7 @@ out.push('function R(x,y,w,h,f,rx,ex){return \'<rect x="\'+x+\'" y="\'+y+\'" wid
 out.push('function T(x,y,s,ch,ex){return \'<text x="\'+x+\'" y="\'+y+\'" font-size="\'+s+\'" text-anchor="middle" dominant-baseline="central"\'+(ex||\'\')+\'>\'+ch+\'</text>\';}');
 out.push('function P(d,f,ex){return \'<path d="\'+d+\'" fill="\'+f+\'"\'+(ex||\'\')+\'/>\';}');
 out.push('function C(x,y,r,f,ex){return \'<circle cx="\'+x+\'" cy="\'+y+\'" r="\'+r+\'" fill="\'+f+\'"\'+(ex||\'\')+\'/>\';}');
+out.push('function el(cx,cy,rx,ry,f,ex){return \'<ellipse cx="\'+cx+\'" cy="\'+cy+\'" rx="\'+rx+\'" ry="\'+ry+\'" fill="\'+f+\'"\'+(ex||\'\')+\'/>\';}');
 out.push('var SK=\' stroke="#5b4636" stroke-width="2.5" stroke-linejoin="round"\';');
 out.push('function g(id,inner){return \'<g class="obj" data-obj="\'+id+\'">\'+inner+\'</g>\';}');
 out.push('var ITEMS=G.PZ_ITEMS;');

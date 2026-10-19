@@ -1,408 +1,514 @@
 'use strict';
-/** Later-room scenes for gen-rooms-extra.js. Each art key is a different place, not a recolor. */
+/** Later-room scenes. Each place keeps its own light, palette, and silhouette. */
 
 function pack(body){
   return `function(f){var s='';${body}\n  return s;}`;
 }
 function doorX(mode){const accent=(mode*37)%7;return 300+(accent%3)*4;}
-function skyDecor(scene){
-  const sky=scene.sky;
-  if(scene.deco==='star') return `
-  for(var i=0;i<16;i++)s+=C((i*61+8)%386,(i*13+6)%96,i%3?1.15:2,'#fff8dc',' opacity=".9"');
-  s+=C(56,42,13,'#fff6c8')+C(64,36,11,'${sky}');`;
-  if(scene.deco==='moon') return `
-  s+=C(312,42,16,'#fff6c8')+C(322,36,13,'${sky}');
-  s+=C(70,34,12,'#fff',' opacity=".8"')+C(86,38,9,'#fff',' opacity=".8"');`;
-  if(scene.deco==='mist') return `
-  s+=C(48,40,16,'#fff',' opacity=".72"')+C(66,44,11,'#fff',' opacity=".72"')+C(188,28,20,'#fff',' opacity=".5"')+C(210,34,13,'#fff',' opacity=".5"');
-  s+=C(330,46,13,'#fff6c2',' opacity=".8"');`;
-  return `
-  s+=C(322,40,16,'#ffe27a')+C(322,40,26,'#ffe27a',' opacity=".28"');
-  s+=C(58,34,13,'#fff')+C(74,38,10,'#fff')+C(44,40,8,'#fff');`;
+function lin(id,a,b){
+  return `<defs><linearGradient id="${id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${a}"/><stop offset="1" stop-color="${b}"/></linearGradient></defs>`;
 }
-
-function ink(scene){return scene.ink||'#3e3428';}
-
+function rad(id,a,b){
+  return `<defs><radialGradient id="${id}" cx="50%" cy="45%" r="55%"><stop offset="0" stop-color="${a}"/><stop offset="1" stop-color="${b}" stop-opacity="0"/></radialGradient></defs>`;
+}
+function el(cx,cy,rx,ry,f,ex){
+  return `<ellipse cx="${cx}" cy="${cy}" rx="${rx}" ry="${ry}" fill="${f}"${ex||''}/>`;
+}
 const ARTS={
   living(scene, mode){
-    const x=doorX(mode), c=ink(scene);
+    const x=doorX(mode);
     return pack(`
-  s+=R(0,0,400,300,'${scene.bg}')+R(0,214,400,86,'${scene.floor}');
-  s+=P('M40 286c40-36 120-36 160 0s120 28 160 0v14H40z','#e7a0a8',' opacity=".9"');
-  s+=R(118,232,150,28,'#f4c7b8',16,SK)+R(126,220,134,22,'#ffe1d6',12,SK);
-  s+=R(250,196,16,70,'#c98b52',4)+C(258,188,10,'#ffe08a',' opacity=".9"')+C(258,188,22,'#ffe08a',' opacity=".25"');
-  s+=g('window',R(22,24,96,74,'${scene.sky}',6,SK)+R(22,24,18,74,'#f7d0d8')+R(100,24,18,74,'#f7d0d8')+P('M70 24v74M22 60h96','none',' stroke="#fff" stroke-width="2" opacity=".7"')+T(70,108,11,'窗帘',' fill="${c}"'));
-  s+=g('board',R(132,18,150,86,'#fffaf2',6,' stroke="#d9a07a" stroke-width="5"')+R(148,32,52,40,'#f6d2b8',4)+C(166,48,8,'#f3b6a0')+C(184,50,8,'#f3b6a0')+T(206,86,12,'全家福',' fill="#5b4636"'));
-  s+=g('desk',R(28,150,128,36,'#e7c39a',8,SK)+R(40,158,64,16,f.desk_open?'#fff6e0':'#d7b088',4)+(f.desk_open?T(72,168,12,'🍪'):C(96,166,4,'#5b4636'))+T(92,202,11,'茶几',' fill="${c}"')+T(140,168,14,'🍵'));
-  s+=g('box',R(188,162,76,50,'#f0a06a',8,SK)+(f.box_open?R(196,170,60,34,'#ffe6c8',3):R(206,176,40,20,'#ffcf4d',3))+T(226,226,11,'玩具箱',' fill="${c}"'));
-  s+=g('shelf',R(286,28,100,118,'#d7c2a4',6,SK)+R(296,78,80,46,'#243044',4)+R(302,84,68,28,'#7ec8ff',2)+T(336,70,16,'📺')+T(336,132,14,'🪴'));
-  s+=g('door',R(${x},156,72,124,'#e7c9a2',6,SK)+C(${x+54},214,5,'#ffcf4d',SK)+R(${x+18},170,36,28,'#c9e7ff',3)+T(${x+36},250,11,'房门',' fill="${c}"'));
-  s+=T(36,270,20,'${scene.emoji}');`);
+  s+='${lin('lvW', scene.sky, scene.bg)}${rad('lvL', '#ffe7a3', '#ffe7a3')}';
+  s+=R(0,0,400,300,'url(#lvW)');
+  s+=R(0,228,400,72,'${scene.floor}');
+  for(var i=0;i<6;i++)s+=P('M0 '+(236+i*10)+'H400','none',' stroke="#e7c89a" stroke-width="1" opacity=".45"');
+  s+=C(268,176,78,'url(#lvL)');
+  s+=R(248,150,8,78,'#8a5a32')+C(252,142,7,'#fff1c2')+C(252,142,16,'#ffe08a',' opacity=".55"');
+  s+=el(200,268,150,22,'#e7b7c4');
+  s+=R(78,236,210,28,'#f7d7cc',18,' stroke="#e7b8aa" stroke-width="2"')+R(92,222,150,22,'#ffe8df',14);
+  s+=g('window',R(22,28,78,64,'${scene.sky2||scene.sky}',4,' stroke="#f3d5c4" stroke-width="6"')+R(22,28,16,64,'#f8c9d4')+R(84,28,16,64,'#f8c9d4')+T(61,108,11,'窗帘',' fill="#3a2e24" stroke="#fff" stroke-width="3" paint-order="stroke"'));
+  s+=g('board',R(132,36,118,70,'#fffaf3',2,' stroke="#e7c4a4" stroke-width="3"')+el(168,62,16,18,'#f3c2b0')+el(196,62,16,18,'#f3c2b0')+C(168,60,3,'#5b4636')+C(196,60,3,'#5b4636')+T(190,92,11,'全家福',' fill="#8a5a48"'));
+  s+=g('desk',el(92,172,58,16,'#e7c7a2')+R(40,164,70,14,f.desk_open?'#fff6e0':'#d7b48a',4)+(f.desk_open?'':C(78,170,3,'#8a5a32'))+T(92,198,11,'茶几',' fill="#3a2e24" stroke="#fff" stroke-width="3" paint-order="stroke"'));
+  s+=g('box',R(196,168,62,40,'#e39b6a',10,' stroke="#c47c48" stroke-width="2"')+(f.box_open?R(204,174,46,26,'#ffe6c8',4):R(210,180,28,14,'#f2c14a',3))+T(226,222,11,'玩具箱',' fill="#3a2e24" stroke="#fff" stroke-width="3" paint-order="stroke"'));
+  s+=g('shelf',R(300,78,78,52,'#1c2430',6)+R(308,86,62,28,'#7eb6d6',2)+R(286,128,100,8,'#cbb89a',2)+T(336,156,12,'🪴'));
+  s+=g('door',R(${x},150,64,128,'#f0d7b8',4,' stroke="#e0c2a0" stroke-width="3"')+C(${x+48},214,4,'#e7b84a')+T(${x+32},292,11,'房门',' fill="#3a2e24" stroke="#fff" stroke-width="3" paint-order="stroke"'));`);
   },
   bedroom(scene, mode){
-    const x=doorX(mode), c=ink(scene);
+    const x=doorX(mode);
     return pack(`
-  s+=R(0,0,400,300,'${scene.bg}')+R(0,200,400,100,'${scene.floor}');
-  s+=R(70,214,210,64,'#f7f1ff',10,SK)+R(78,206,150,22,'#ffe9f3',8,SK)+R(86,198,36,16,'#fff',6)+R(130,198,36,16,'#fff',6);
-  s+=R(250,168,10,90,'#c9b8a0')+C(255,160,9,'#ffe08a')+C(255,160,18,'#ffe08a',' opacity=".3"');
-  s+=g('window',R(22,22,96,74,'${scene.sky}',8,SK)+C(78,52,12,'#fff6c8')+C(84,48,9,'${scene.sky}')+T(70,108,11,'小窗',' fill="${c}"'));
-  s+=g('board',R(132,16,148,88,'#fff5fb',6,' stroke="#e7b6d4" stroke-width="5"')+T(206,48,16,'🌙')+T(206,76,12,'梦的清单',' fill="#7a4e6a"'));
-  s+=g('desk',R(28,150,120,46,'#e6d3ef',6,SK)+R(40,158,52,24,f.desk_open?'#fff':'#d7c0ea',4)+(f.desk_open?'':C(78,170,4,'#5b4636'))+T(88,210,11,'床头柜',' fill="${c}"')+T(128,168,14,'🧸'));
-  s+=g('box',R(188,160,74,50,'#f2b5c8',6,SK)+(f.box_open?R(196,168,58,34,'#ffe4ee',3):R(206,176,36,18,'#ffcf4d',3))+T(224,224,11,'收纳篮',' fill="${c}"'));
-  s+=g('shelf',R(286,24,100,126,'#cbb6e6',6,SK)+R(296,48,80,8,'#a88bc4',2)+R(296,88,80,8,'#a88bc4',2)+T(336,70,16,'👕')+T(336,112,16,'📚'));
-  s+=g('door',R(${x},156,72,124,'#d7c4ef',6,SK)+C(${x+54},216,5,'#ffd34d',SK)+T(${x+36},118,14,'⭐')+T(${x+36},248,11,'卧室门',' fill="${c}"'));
-  s+=T(40,276,18,'${scene.emoji}')+T(200,276,16,'🧦');`);
+  s+='${lin('bdW', scene.sky, scene.bg)}${rad('bdM', '#fff6c8', '#fff6c8')}';
+  s+=R(0,0,400,300,'url(#bdW)');
+  s+=C(86,48,36,'url(#bdM)')+C(96,44,22,'${scene.sky}');
+  for(var i=0;i<12;i++)s+=C((i*67+20)%380,(i*23+16)%90,i%3?1:1.6,'#fff',' opacity=".8"');
+  s+=R(0,214,400,86,'${scene.floor}');
+  s+=R(60,200,230,78,'#efe4ff',16,' stroke="#d5c4ee" stroke-width="2"')+R(78,188,120,24,'#fff',10)+R(210,190,50,20,'#ffd6e8',8);
+  s+=g('window',R(200,22,70,58,'${scene.sky2||'#1a2448'}',20,' stroke="#cbb6e8" stroke-width="4"')+T(235,96,11,'小窗',' fill="#3a2e24" stroke="#fff" stroke-width="3" paint-order="stroke"'));
+  s+=g('board',R(124,118,130,36,'#2a2444',8)+T(188,136,12,'梦的清单',' fill="#f7e6ff"'));
+  s+=g('desk',R(24,160,78,46,'#d9c4ea',8,' stroke="#b89ad4" stroke-width="2"')+R(32,168,40,20,f.desk_open?'#fff':'#cbb0e0',4)+(f.desk_open?'':C(58,178,3,'#6a4e88'))+T(62,220,11,'床头柜',' fill="#3a2e24" stroke="#fff" stroke-width="3" paint-order="stroke"'));
+  s+=g('box',el(230,176,28,16,'#f2b7cc')+(f.box_open?el(230,176,18,10,'#fff0f6'):'')+T(230,204,11,'收纳篮',' fill="#3a2e24" stroke="#fff" stroke-width="3" paint-order="stroke"'));
+  s+=g('shelf',R(300,36,78,150,'#3a3158',6)+R(310,70,58,6,'#6a5a90')+R(310,110,58,6,'#6a5a90')+T(338,92,14,'👕')+T(338,136,12,'📚'));
+  s+=g('door',R(${x},148,60,130,'#4a3d68',6)+C(${x+46},214,4,'#ffe08a')+T(${x+30},292,11,'卧室门',' fill="#3a2e24" stroke="#fff" stroke-width="3" paint-order="stroke"'));`);
   },
   park(scene, mode){
-    const x=doorX(mode), c=ink(scene);
+    const x=doorX(mode);
     return pack(`
-  s+=R(0,0,400,168,'${scene.sky}')+R(0,168,400,132,'${scene.floor}');
-  ${skyDecor(scene)}
-  s+=P('M-10 250C80 210 140 250 210 220S320 250 410 214V300H-10z','#c9e7b0',' opacity=".55"');
-  s+=P('M150 300C170 230 190 210 210 168C230 214 250 236 270 300z','#e7d7b0');
-  s+=C(46,150,28,'#3e9a4a')+R(40,168,12,48,'#8a5a32')+C(340,120,26,'#2f8a40')+R(334,140,12,40,'#8a5a32');
-  s+=T(24,196,16,'🌸')+T(250,188,14,'🌼')+T(120,250,14,'🐦');
-  s+=g('window',R(18,78,90,70,'#b7e39a',8,SK)+T(63,112,22,'🌳')+T(63,156,11,'大树',' fill="${c}"'));
-  s+=g('board',R(130,18,156,84,'#f4fbe8',6,' stroke="#5f8f3a" stroke-width="5"')+T(208,48,16,'🗺️')+T(208,76,12,'游园地图',' fill="#2d5a1e"'));
-  s+=g('desk',R(28,168,124,28,'#a67c52',6,SK)+R(24,160,132,14,'#c49a62',6,SK)+(f.desk_open?R(70,172,40,16,'#e7c99a',3):C(90,182,4,'#5b4636'))+T(90,214,11,'长椅',' fill="${c}"'));
-  s+=g('box',R(188,164,76,48,'#e7b15a',6,SK)+(f.box_open?R(196,172,60,32,'#fff1cc',3):R(206,178,36,18,'#ffcf4d',3))+T(226,226,11,'野餐篮',' fill="${c}"'));
-  s+=g('shelf',R(292,36,92,110,'#f0d78c',6,SK)+P('M292 36h92l-10-16h-72z','#e25b4a')+T(338,90,18,'🍦')+T(338,124,14,'🎈'));
-  s+=g('door',R(${x},150,74,128,'#8d6a3f',6,SK)+R(${x+8},162,26,100,'#6aaa3a',4)+R(${x+40},162,26,100,'#6aaa3a',4)+C(${x+54},214,5,'#ffcf4d',SK)+T(${x+36},292,11,'园门',' fill="${c}"'));
-  s+=T(40,276,20,'${scene.emoji}');`);
+  s+='${lin('pkS', scene.sky, scene.sky2)}';
+  s+=R(0,0,400,300,'url(#pkS)');
+  s+=R(0,168,400,132,'${scene.floor}');
+  s+=C(330,42,22,'#ffe56a')+C(330,42,34,'#ffe56a',' opacity=".25"');
+  s+=C(36,118,34,'#1f7a38')+C(70,104,28,'#46b85a')+C(18,128,22,'#2f9a48')+R(40,130,10,70,'#6b4428');
+  s+=C(300,96,40,'#176b32')+C(348,110,30,'#2f8f44')+R(326,120,12,70,'#5a3a22');
+  s+=P('M70 300 C110 210 150 200 190 168 C230 214 280 230 340 300z','#f3e2b8');
+  for(var i=0;i<9;i++)s+=C(16+i*18,250+(i%3)*8,4,i%2?'#ff8fb8':'#ffe14a');
+  s+=T(150,140,12,'🐦')+T(250,150,11,'🐦');
+  s+=g('window',C(64,150,26,'#2f9a44')+R(58,164,12,40,'#6b4428')+T(64,214,11,'大树',' fill="#3a2e24" stroke="#fff" stroke-width="3" paint-order="stroke"'));
+  s+=g('board',R(128,22,120,52,'#f4ffe4',4,' stroke="#2f7a32" stroke-width="4"')+T(188,48,12,'游园地图',' fill="#14521c"'));
+  s+=g('desk',R(28,176,118,8,'#c9a06a',3)+R(36,184,8,22,'#8a5a32')+R(120,184,8,22,'#8a5a32')+R(48,178,70,6,f.desk_open?'#fff1cc':'#e7c48a',2)+T(86,222,11,'长椅',' fill="#3a2e24" stroke="#fff" stroke-width="3" paint-order="stroke"'));
+  s+=g('box',R(196,166,64,36,'#e7b15a',6,' stroke="#c48a2a" stroke-width="2"')+P('M196 166 h64 l-8-12 h-48z','#e25b4a')+(f.box_open?R(206,172,44,20,'#fff6d8',3):'')+T(228,218,11,'野餐篮',' fill="#3a2e24" stroke="#fff" stroke-width="3" paint-order="stroke"'));
+  s+=g('shelf',R(292,48,70,78,'#fff6d4',4,' stroke="#e07a3a" stroke-width="3"')+P('M284 48 h86 l-10-16 h-66z','#e23b3b')+T(326,86,16,'🍦')+T(326,112,12,'🎈'));
+  s+=g('door',R(${x+8},150,8,120,'#6b4428')+R(${x+58},150,8,120,'#6b4428')+P('M${x+8} 156 Q${x+36} 118 ${x+66} 156','none',' stroke="#2f8a40" stroke-width="8"')+T(${x+36},250,11,'园门',' fill="#3a2e24" stroke="#fff" stroke-width="3" paint-order="stroke"'));`);
   },
   flower(scene, mode){
-    const x=doorX(mode), c=ink(scene);
+    const x=doorX(mode);
     return pack(`
-  s+=R(0,0,400,150,'${scene.sky}')+R(0,150,400,150,'${scene.floor}');
-  ${skyDecor(scene)}
-  for(var i=0;i<5;i++)s+=R(18+i*36,232,30,42,'#6b3e28',4);
-  s+=T(30,228,16,'🌷')+T(70,224,16,'🌻')+T(110,230,16,'🌹')+T(150,222,16,'🌼')+T(190,228,14,'🌺');
-  s+=C(250,210,16,'#8fd4f2',' stroke="#5b4636" stroke-width="2"')+R(246,226,8,20,'#9aa7b2');
-  s+=g('window',R(20,22,92,72,'#d9f5c8',8,SK)+T(66,58,22,'🐝')+T(66,104,11,'花窗',' fill="${c}"'));
-  s+=g('board',R(128,16,158,86,'#fffdf4',6,' stroke="#7dae52" stroke-width="5"')+T(206,46,14,'🏷️')+T(206,74,12,'今日花名',' fill="#2d5a1e"'));
-  s+=g('desk',R(28,156,126,40,'#c48b62',6,SK)+R(40,164,70,20,f.desk_open?'#fff6e0':'#a96b42',4)+(f.desk_open?'':C(92,174,4,'#fff'))+T(90,212,11,'花坛沿',' fill="${c}"'));
-  s+=g('box',R(186,160,78,50,'#f0d36a',6,SK)+(f.box_open?R(194,168,62,34,'#fff6d0',3):R(204,174,40,18,'#e7b84a',3))+T(224,224,11,'种子盒',' fill="${c}"'));
-  s+=g('shelf',R(286,30,98,116,'#8fbf62',6,SK)+T(336,70,18,'🌷')+T(336,108,18,'🪴')+T(336,140,14,'🎀'));
-  s+=g('door',P('M${x} 168 Q${x+36} 120 ${x+72} 168V280H${x}z','#f2a3c0',SK)+R(${x+30},200,12,40,'#fff',0,' opacity=".45"')+T(${x+36},250,11,'花拱门',' fill="${c}"'));
-  s+=T(360,270,18,'🦋');`);
+  s+='${lin('flS', scene.sky, scene.sky2)}${rad('flG', '#fff', '#fff')}';
+  s+=R(0,0,400,300,'url(#flS)');
+  s+=C(200,40,70,'url(#flG)',' opacity=".55"');
+  s+=R(0,150,400,150,'${scene.floor}');
+  s+=el(90,230,70,28,'#c98462');
+  s+=el(200,250,80,26,'#b87455');
+  s+=el(310,228,60,24,'#d09070');
+  var cols=['#ff6fa5','#ffd23f','#fff','#ff8a5b','#e86bff','#ff4d6d'];
+  for(var i=0;i<22;i++)s+=C(40+(i*37)%250,210+(i*19)%70,i%3?5:7,cols[i%6]);
+  for(var k=0;k<8;k++)s+=C(250+(k*16)%120,200+(k*23)%60,4,cols[(k+2)%6]);
+  s+=P('M${x-8} 280 Q${x+30} 90 ${x+78} 280','none',' stroke="#f2a0c0" stroke-width="10"');
+  s+=P('M${x+6} 270 Q${x+30} 120 ${x+62} 270','none',' stroke="#7dce6a" stroke-width="3"');
+  s+=C(250,196,14,'#b9e6f5',' stroke="#fff" stroke-width="3"');
+  s+=g('window',C(62,78,22,'#ffe08a')+C(62,78,8,'#fff')+T(62,118,11,'花窗',' fill="#3a2e24" stroke="#fff" stroke-width="3" paint-order="stroke"'));
+  s+=g('board',R(118,28,130,40,'#fff',20,' stroke="#f2a0c4" stroke-width="3"')+T(182,48,12,'今日花名',' fill="#a14d72"'));
+  s+=g('desk',R(24,168,100,16,'#d7a07a',8)+(f.desk_open?R(40,160,36,12,'#fff6e0',3):C(70,176,4,'#fff'))+T(74,200,11,'花坛沿',' fill="#3a2e24" stroke="#fff" stroke-width="3" paint-order="stroke"'));
+  s+=g('box',R(168,164,52,36,'#f6d56a',6,' stroke="#e0b040" stroke-width="2"')+(f.box_open?R(174,170,40,22,'#fff8d8',3):'')+T(194,214,11,'种子盒',' fill="#3a2e24" stroke="#fff" stroke-width="3" paint-order="stroke"'));
+  s+=g('shelf',R(250,70,36,90,'#8fbf62',4)+C(268,78,8,'#ff6fa5')+C(268,100,8,'#ffd23f')+C(268,122,8,'#fff')+T(268,168,11,'花架',' fill="#3a2e24" stroke="#fff" stroke-width="3" paint-order="stroke"'));
+  s+=g('door',P('M${x} 200 Q${x+34} 130 ${x+68} 200 V280 H${x}z','#ffd0e4',' opacity=".35"')+T(${x+34},250,11,'花拱门',' fill="#3a2e24" stroke="#fff" stroke-width="3" paint-order="stroke"'));
+  s+=T(40,140,14,'🦋');`);
   },
   river(scene, mode){
-    const x=doorX(mode), c=ink(scene);
+    const x=doorX(mode);
     return pack(`
-  s+=R(0,0,400,118,'${scene.sky}')+R(0,118,400,28,'#7dce6a')+R(0,146,400,78,'${scene.water||'#3d9ad6'}')+R(0,220,400,80,'${scene.floor}');
-  ${skyDecor(scene)}
-  for(var i=0;i<7;i++)s+=P('M'+(i*58)+' 168 q16 8 32 0 t32 0','none',' stroke="#e9f7ff" stroke-width="2" opacity=".7"');
-  s+=C(78,176,12,'#e4d8c4',SK)+C(124,196,14,'#d9cdb8',SK)+C(172,174,11,'#efe4d2',SK)+C(220,198,13,'#d5c8b0',SK);
-  s+=T(28,132,18,'🌿')+T(250,128,16,'🌿')+T(36,268,16,'🦆');
-  s+=g('window',R(18,28,90,70,'#9ed98a',8,SK)+P('M36 96 C50 30 90 30 96 90','#2f8f45')+T(64,108,11,'河柳',' fill="${c}"'));
-  s+=g('board',R(128,16,156,80,'#f6e7c4',6,' stroke="#8a5a2b" stroke-width="5"')+T(206,44,16,'🛶')+T(206,72,12,'小心过河',' fill="#5b4636"'));
-  s+=g('desk',R(26,168,124,36,'#cfc6b6',10,SK)+R(40,176,60,18,f.desk_open?'#fff6e0':'#b7b0a2',4)+(f.desk_open?'':C(86,186,4,'#5b4636'))+T(88,220,11,'岸边石桌',' fill="${c}"'));
-  s+=g('box',R(186,164,76,48,'#c98b52',4,SK)+(f.box_open?R(194,172,60,32,'#f0d2a4',3):R(204,178,36,16,'#e2b56a',3))+T(224,226,11,'木箱',' fill="${c}"'));
-  s+=g('shelf',R(292,30,92,108,'#6aaa3a',3)+R(304,40,8,90,'#d7b07a')+R(330,34,8,98,'#d7b07a')+R(356,44,8,82,'#d7b07a')+T(334,78,16,'🎋'));
-  s+=g('door',P('M${x+6} 250 Q${x+36} 200 ${x+70} 250','#e8d7b0')+R(${x+8},188,60,62,'#f4e2c0',8,SK)+T(${x+38},214,20,'⛵')+T(${x+38},258,11,'渡船',' fill="${c}"'));
-  s+=T(360,276,16,'🐟');`);
+  s+='${lin('rvS', scene.sky, scene.sky2)}${lin('rvW', scene.water, scene.water2||scene.sky2)}';
+  s+=R(0,0,400,128,'url(#rvS)');
+  s+=P('M0 118 Q80 96 160 114 T320 104 T400 120 V136 H0z','#3e8f46');
+  s+=R(0,124,400,112,'url(#rvW)');
+  s+=el(200,200,180,16,'#fff',' opacity=".18"');
+  for(var i=0;i<6;i++)s+=P('M'+(i*70)+' 160 q20 8 40 0','none',' stroke="#e7f7ff" stroke-width="2" opacity=".55"');
+  s+=el(86,156,16,8,'#efe6d4')+el(138,184,18,9,'#d9d0bc')+el(196,158,14,7,'#f7f1e4')+el(250,190,17,8,'#e4d8c4');
+  s+=R(0,228,400,72,'${scene.floor}');
+  for(var k=0;k<7;k++)s+=R(8+k*14,108,3,28,'#1f6b32');
+  for(var n=0;n<5;n++)s+=R(300+n*12,112,3,26,'#14532a');
+  s+=P('M18 150 C40 40 70 50 78 150','none',' stroke="#1f6b32" stroke-width="3"')+P('M30 150 C48 70 66 74 70 150','none',' stroke="#2f8a40" stroke-width="2"');
+  s+=C(48,46,10,'#fff6c2')+el(70,168,18,4,'#fff6c2',' opacity=".35"');
+  s+=g('window',P('M40 150 C55 60 90 70 96 148','#246b38')+T(70,168,11,'河柳',' fill="#3a2e24" stroke="#fff" stroke-width="3" paint-order="stroke"'));
+  s+=g('board',R(132,24,8,70,'#6b4428')+R(140,30,108,40,'#f6e2b0',2,' stroke="#6b3e1e" stroke-width="3"')+T(194,50,12,'小心过河',' fill="#5b3a1e"'));
+  s+=g('desk',el(90,186,52,14,'#d5cbb8')+R(48,178,36,10,f.desk_open?'#fff6e0':'#b7aa96',3)+T(90,214,11,'岸边石桌',' fill="#3a2e24" stroke="#fff" stroke-width="3" paint-order="stroke"'));
+  s+=g('box',P('M196 168 h60 l8 40 h-76z','#c98b52')+(f.box_open?P('M204 176 h44 l4 20 h-52z','#f0d2a4'):'')+T(226,224,11,'木箱',' fill="#3a2e24" stroke="#fff" stroke-width="3" paint-order="stroke"'));
+  s+=g('shelf',R(300,40,6,100,'#d7b07a')+R(324,28,6,112,'#c9a06a')+R(348,48,6,92,'#e2c48a')+T(326,150,11,'竹排',' fill="#3a2e24" stroke="#fff" stroke-width="3" paint-order="stroke"'));
+  s+=g('door',P('M${x} 250 Q${x+36} 210 ${x+74} 250 L${x+66} 272 H${x+8}z','#f4e2c0')+P('M${x+36} 188 v28','none',' stroke="#8a5a32" stroke-width="3"')+P('M${x+16} 188 h40','none',' stroke="#f7f1e4" stroke-width="3"')+T(${x+36},236,11,'渡船',' fill="#3a2e24" stroke="#fff" stroke-width="3" paint-order="stroke"'));
+  s+=T(40,250,14,'🦆');`);
   },
   bridge(scene, mode){
-    const x=doorX(mode), c=ink(scene);
+    const x=doorX(mode);
     return pack(`
-  s+=R(0,0,400,150,'${scene.sky}')+R(0,168,400,50,'${scene.water||'#3d9ad6'}')+R(0,214,400,86,'${scene.floor}');
-  ${skyDecor(scene)}
-  s+=P('M20 214 Q120 120 200 214 Q280 120 390 214','#d7d0c4')+P('M20 214 Q120 150 200 214 Q280 150 390 214V250H20z','#c3b8a4',SK);
-  s+=R(30,150,10,64,'#8d6b45')+R(360,150,10,64,'#8d6b45')+C(35,146,6,'#ffb84a')+C(365,146,6,'#ffb84a');
-  for(var i=0;i<6;i++)s+=R(70+i*42,158,4,28,'#efe6d4');
-  s+=g('window',R(18,22,88,64,'#bfe6c8',8,SK)+T(62,54,20,'🌿')+T(62,98,11,'桥柳',' fill="${c}"'));
-  s+=g('board',R(128,14,150,78,'#fff8e4',6,' stroke="#8a5a2b" stroke-width="5"')+T(203,42,14,'🌉')+T(203,68,12,'石拱桥',' fill="#5b4636"'));
-  s+=g('desk',R(28,156,120,36,'#d2c6b2',8,SK)+R(40,164,56,16,f.desk_open?'#fff6e0':'#b7aa96',4)+(f.desk_open?'':C(84,172,4,'#5b4636'))+T(88,208,11,'桥头石凳',' fill="${c}"'));
-  s+=g('box',R(186,160,74,48,'#c98b52',4,SK)+(f.box_open?R(194,168,58,32,'#f3ddb8',3):R(204,174,34,16,'#e2b56a',3))+T(222,222,11,'竹篮',' fill="${c}"'));
-  s+=g('shelf',R(292,28,90,100,'#e7d7b8',6,SK)+T(336,70,18,'🏮')+T(336,110,16,'🎐'));
-  s+=g('door',R(${x},156,72,120,'#b08968',6,SK)+P('M${x} 156l36-22 36 22','#8d6a43')+C(${x+54},214,5,'#ffcf4d',SK)+T(${x+36},250,11,'桥门',' fill="${c}"'));`);
+  s+='${lin('brS', scene.sky, scene.sky2)}${lin('brW', scene.water, scene.water2||'#7eb6d4')}';
+  s+=R(0,0,400,300,'url(#brS)');
+  s+=R(0,176,400,124,'url(#brW)');
+  s+=P('M10 230 Q100 70 200 230 Q300 70 400 230 V268 H10z','#c8c2b6');
+  s+=P('M10 230 Q100 120 200 230 Q300 120 400 230','none',' stroke="#8d887c" stroke-width="8"');
+  for(var i=0;i<9;i++)s+=R(28+i*40,150,6,36,'#efe8dc');
+  s+=R(24,168,10,70,'#6e675c')+R(360,168,10,70,'#6e675c')+C(29,164,5,'#ffb84a')+C(365,164,5,'#ffb84a');
+  s+=g('window',P('M20 150 C40 80 90 90 100 150','#3e8f55')+T(60,168,11,'桥柳',' fill="#3a2e24" stroke="#fff" stroke-width="3" paint-order="stroke"'));
+  s+=g('board',R(140,24,110,36,'#f4efe6',2,' stroke="#6e675c" stroke-width="4"')+T(194,42,13,'石拱桥',' fill="#3a3834"'));
+  s+=g('desk',R(30,168,100,18,'#b7b1a6',4)+R(40,172,40,8,f.desk_open?'#fff6e0':'#8d887c',2)+T(80,204,11,'桥头石凳',' fill="#3a2e24" stroke="#fff" stroke-width="3" paint-order="stroke"'));
+  s+=g('box',R(180,164,60,40,'#a67c52',3)+(f.box_open?R(186,170,48,24,'#f3ddb8',2):'')+T(210,220,11,'竹篮',' fill="#3a2e24" stroke="#fff" stroke-width="3" paint-order="stroke"'));
+  s+=g('shelf',R(300,36,8,80,'#6e675c')+C(304,32,8,'#e23b3b')+R(330,50,8,70,'#6e675c')+C(334,46,8,'#f2c14a')+T(340,140,11,'灯笼',' fill="#3a2e24" stroke="#fff" stroke-width="3" paint-order="stroke"'));
+  s+=g('door',R(${x},156,70,90,'#8d7b68',4)+P('M${x} 156 l35-24 35 24','#5c5148')+T(${x+34},230,11,'桥门',' fill="#3a2e24" stroke="#fff" stroke-width="3" paint-order="stroke"'));`);
   },
   classroom(scene, mode){
-    const x=doorX(mode), c=ink(scene);
-    return pack(`
-  s+=R(0,0,400,300,'${scene.bg}')+R(0,214,400,86,'${scene.floor}');
-  for(var i=0;i<7;i++)s+=R(i*58,250,48,28,'#f4e2c4',4,' stroke="#d7c09a" stroke-width="1"');
-  s+=R(18,214,364,8,'#e7d3a8');
-  s+=g('window',R(16,18,100,78,'${scene.sky}',6,SK)+P('M66 18v78M16 56h100','none',' stroke="#fff" stroke-width="3"')+T(66,108,11,'窗',' fill="${c}"'));
-  s+=g('board',R(126,12,168,104,'#1e8449',4,' stroke="#a86b38" stroke-width="6"')+T(210,42,13,'今天的课',' fill="#fff"')+T(210,66,12,'认真审题',' fill="#d5f5e3"')+T(210,90,11,'1.2 × 0.5',' fill="#abebc6"'));
-  s+=g('desk',R(24,150,132,52,'#c98b52',6,SK)+R(36,160,78,28,f.desk_open?'#f6e0c0':'#a86b38',4)+(f.desk_open?T(74,176,12,'📘'):C(100,174,4,'#fff'))+T(90,216,11,'讲台',' fill="${c}"')+T(140,166,14,'✏️'));
-  s+=g('box',R(186,160,76,50,'#f5c16a',6,SK)+(f.box_open?R(194,168,60,34,'#fff3d6',3):R(204,174,38,18,'#ffcf4d',3))+T(224,224,11,'作业盒',' fill="${c}"'));
-  s+=g('shelf',R(286,22,100,132,'#b9793f',6,SK)+R(296,52,80,8,'#8a5428',2)+R(296,92,80,8,'#8a5428',2)+T(336,74,14,'📕')+T(336,114,14,'🌍'));
-  s+=g('door',R(${x},150,72,126,'#8fb6e8',6,SK)+R(${x+10},162,52,36,'#d6ebff',4)+C(${x+54},220,5,'#ffcf4d',SK)+T(${x+36},252,11,'教室门',' fill="${c}"'));
-  s+=T(48,276,18,'${scene.emoji}');`);
-  },
-  hallway(scene, mode){
-    const x=doorX(mode), c=ink(scene);
+    const x=doorX(mode);
     return pack(`
   s+=R(0,0,400,300,'${scene.bg}');
-  for(var i=0;i<8;i++)s+=R(0,214+i*11,400,11,i%2?'${scene.floor}':'#e7dcc8');
-  s+=P('M120 214 L200 120 L280 214','none',' stroke="#fff" stroke-width="8" opacity=".25"');
-  s+=g('window',R(18,20,96,74,'${scene.sky}',6,SK)+P('M66 20v74M18 56h96','none',' stroke="#fff" stroke-width="3"')+T(66,108,11,'走廊窗',' fill="${c}"'));
-  s+=g('board',R(126,16,160,96,'#fffdf6',4,' stroke="#c98b52" stroke-width="6"')+T(206,46,14,'📌')+T(206,72,12,'失物招领',' fill="#5b4636"')+T(206,94,10,'看看告示',' fill="#888"'));
-  s+=g('desk',R(28,156,128,40,'#d8c4a4',6,SK)+R(40,164,70,20,f.desk_open?'#fff6e0':'#c8b090',4)+(f.desk_open?'':C(96,174,4,'#5b4636'))+T(92,212,11,'休息椅',' fill="${c}"'));
-  s+=g('box',R(186,160,76,50,'#e39b4a',6,SK)+(f.box_open?R(194,168,60,34,'#ffe6c2',3):R(204,174,38,18,'#ffcf4d',3))+T(224,224,11,'失物箱',' fill="${c}"'));
-  s+=g('shelf',R(286,24,100,124,'#6f8fbe',6,SK)+R(296,40,24,48,'#f4f7fb',3)+R(324,40,24,48,'#f4f7fb',3)+R(352,40,24,48,'#f4f7fb',3)+T(336,112,16,'🎒'));
-  s+=g('door',R(${x},150,72,126,'#d98a3a',6,SK)+R(${x+12},164,48,40,'#f8e2c0',4)+C(${x+54},220,5,'#5b4636',SK)+T(${x+36},252,11,'楼梯口',' fill="${c}"'));
-  s+=T(40,276,18,'🪴');`);
+  s+=R(0,236,400,64,'${scene.floor}');
+  s+=P('M40 250 L120 236 L200 268 L80 286z','#ffe9a8',' opacity=".45"');
+  for(var i=0;i<4;i++)s+=R(18+i*92,248,78,28,'#f6e6c8',2,' stroke="#e2d0ae" stroke-width="2"')+R(48+i*92,244,6,32,'#c9a06a');
+  s+=g('window',R(16,18,92,86,'${scene.sky}',2,' stroke="#f7f1e4" stroke-width="6"')+P('M62 18v86M16 60h92','none',' stroke="#fff" stroke-width="3"')+T(62,118,11,'窗',' fill="#3a2e24" stroke="#fff" stroke-width="3" paint-order="stroke"'));
+  s+=g('board',R(122,14,176,108,'#14753a',2,' stroke="#8a5a32" stroke-width="7"')+R(130,108,160,8,'#c9a06a')+T(210,48,16,'今天的课',' fill="#fff"')+T(210,74,13,'认真审题',' fill="#d8ffe6"')+T(210,98,12,'先读再算',' fill="#b6f0cc"'));
+  s+=g('desk',R(22,156,120,48,'#d7b07a',3,' stroke="#a67c52" stroke-width="2"')+R(34,166,64,22,f.desk_open?'#fff3d8':'#b8894a',2)+(f.desk_open?'':C(100,176,4,'#fff'))+T(80,220,11,'讲台',' fill="#3a2e24" stroke="#fff" stroke-width="3" paint-order="stroke"'));
+  s+=g('box',R(168,168,58,36,'#f0c14a',3)+(f.box_open?R(174,174,46,22,'#fff6d0',2):R(180,178,28,12,'#e2a820',2))+T(196,220,11,'作业盒',' fill="#3a2e24" stroke="#fff" stroke-width="3" paint-order="stroke"'));
+  s+=g('shelf',R(292,20,92,140,'#f7f1e4',2,' stroke="#d7c4a4" stroke-width="3"')+R(300,36,10,28,'#e25b4a')+R(312,40,8,24,'#3d8bfd')+R(322,34,12,30,'#f2c14a')+R(336,42,8,22,'#3ecf8e')+R(300,90,10,28,'#9b59b6')+R(312,86,14,32,'#e67e22')+T(336,150,11,'书架',' fill="#3a2e24" stroke="#fff" stroke-width="3" paint-order="stroke"'));
+  s+=g('door',R(${x},140,66,140,'#dfeaf6',2,' stroke="#9bb7d4" stroke-width="4"')+R(${x+14},154,38,36,'${scene.sky2||scene.sky}',2)+C(${x+50},214,4,'#c9a06a')+T(${x+32},292,11,'教室门',' fill="#3a2e24" stroke="#fff" stroke-width="3" paint-order="stroke"'));`);
+  },
+  hallway(scene, mode){
+    const x=doorX(mode);
+    return pack(`
+  s+='${lin('hwW', scene.bg, scene.sky)}';
+  s+=R(0,0,400,300,'url(#hwW)');
+  s+=P('M0 210 L160 150 H240 L400 210 V300 H0z','${scene.floor}');
+  for(var i=0;i<7;i++)s+=P('M'+(40+i*46)+' 300 L'+(170+i*8)+' 160','none',' stroke="#fff" stroke-width="2" opacity=".35"');
+  s+=R(0,150,70,160,'#d5dbe4')+R(330,150,70,160,'#d5dbe4');
+  s+=g('window',R(8,28,70,70,'${scene.sky2||scene.sky}',2,' stroke="#fff" stroke-width="4"')+P('M43 28v70M8 62h70','none',' stroke="#d5e6f5" stroke-width="3"')+T(43,114,11,'走廊窗',' fill="#3a2e24" stroke="#fff" stroke-width="3" paint-order="stroke"'));
+  s+=g('board',R(118,36,150,70,'#f7f4ea',2,' stroke="#c5b89a" stroke-width="3"')+T(192,62,13,'失物招领',' fill="#5b4636"')+T(192,84,11,'红围巾 · 水壶',' fill="#888"'));
+  s+=g('desk',R(24,176,110,16,'#c9d0da',6)+R(30,192,10,28,'#9aa3b0')+R(112,192,10,28,'#9aa3b0')+(f.desk_open?R(50,170,30,10,'#fff',2):'')+T(78,236,11,'休息椅',' fill="#3a2e24" stroke="#fff" stroke-width="3" paint-order="stroke"'));
+  s+=g('box',R(168,176,56,40,'#e39b4a',4)+(f.box_open?R(174,182,44,24,'#ffe6c2',2):'')+T(196,232,11,'失物箱',' fill="#3a2e24" stroke="#fff" stroke-width="3" paint-order="stroke"'));
+  s+=g('shelf',R(292,40,88,130,'#4e6a92',4)+R(300,52,22,36,'#eef3f8',2)+R(326,52,22,36,'#eef3f8',2)+R(352,52,22,36,'#eef3f8',2)+T(336,120,12,'🎒'));
+  s+=g('door',R(${x},150,64,120,'#e07a32',3)+R(${x+12},164,40,28,'#f8e2c0',2)+T(${x+32},250,11,'楼梯口',' fill="#3a2e24" stroke="#fff" stroke-width="3" paint-order="stroke"'));`);
   },
   forest(scene, mode){
-    const x=doorX(mode), c=ink(scene);
+    const x=doorX(mode);
     return pack(`
-  s+=R(0,0,400,300,'${scene.bg}')+R(0,0,400,70,'#1e4d32',0,' opacity=".35"');
-  s+=R(0,210,400,90,'${scene.floor}');
-  s+=P('M180 300 C200 200 210 160 220 120 C230 170 250 220 270 300z','#c8ad84');
-  ${scene.deco==='star'?"for(var i=0;i<10;i++)s+=C(30+(i*37)%340,40+(i*19)%80,2,'#d6ff9a',' opacity=\".8\"');":skyDecor(scene)}
-  s+=R(8,40,18,180,'#6b442c')+R(360,30,22,190,'#6b442c')+C(18,36,26,'#1f6b3a')+C(372,28,30,'#1f6b3a');
-  s+=C(40,248,8,'#e25b4a')+C(70,260,6,'#f0d36a')+C(250,252,7,'#e8e0d0');
-  s+=g('window',R(24,70,80,70,'#2f8f45',8,SK)+T(64,104,20,'🌲')+T(64,150,11,'树洞',' fill="${c}"'));
-  s+=g('board',R(128,20,150,82,'#e7d3a4',6,' stroke="#6b442c" stroke-width="5"')+T(203,50,14,'🪵')+T(203,76,12,'林中小路',' fill="#3e2a1c"'));
-  s+=g('desk',C(90,176,34,'#a67c52',SK)+R(40,168,50,22,f.desk_open?'#e7c8a0':'#8a5a32',4)+(f.desk_open?'':C(78,178,4,'#fff'))+T(90,214,11,'树桩',' fill="${c}"'));
-  s+=g('box',R(186,160,74,50,'#b8894a',6,SK)+(f.box_open?R(194,168,58,34,'#f0ddb4',3):R(204,174,36,18,'#e2b56a',3))+T(222,224,11,'小木箱',' fill="${c}"'));
-  s+=g('shelf',R(292,36,90,110,'#8a5a32',4,SK)+R(300,50,16,80,'#6b442c')+R(330,44,16,90,'#6b442c')+R(356,56,16,74,'#6b442c')+T(336,100,14,'🍄'));
-  s+=g('door',R(${x},150,74,126,'#c49a62',6,SK)+P('M${x} 150l37-28 37 28','#8d4a3a')+R(${x+22},176,30,28,'#f6e2a8',3)+C(${x+54},220,5,'#ffcf4d',SK)+T(${x+36},252,11,'小木屋',' fill="${c}"'));`);
+  s+='${lin('foS', scene.sky, scene.bg)}';
+  s+=R(0,0,400,300,'url(#foS)');
+  s+=R(0,0,400,90,'#0e3320',' opacity=".45"');
+  s+=P('M120 40 L150 120 L90 120z','#ffe9a8',' opacity=".18"')+P('M200 20 L250 140 L150 140z','#fff6c8',' opacity=".12"');
+  s+=R(0,214,400,86,'${scene.floor}');
+  s+=P('M150 300 C190 200 200 160 210 120 C230 180 260 230 300 300z','#b08960');
+  s+=R(6,20,22,230,'#3e2a1c')+R(48,40,16,200,'#4a3424')+R(360,10,26,240,'#2c2118')+C(16,24,30,'#143d24')+C(56,36,22,'#1c5a32')+C(374,16,36,'#102e1c');
+  s+=C(36,250,6,'#e25b4a')+C(70,262,5,'#f2c14a')+C(250,258,5,'#f7f1e4')+C(280,246,6,'#c46b4a');
+  s+=g('window',C(78,120,24,'#102e1c')+C(78,120,10,'#0a1a12')+T(78,160,11,'树洞',' fill="#3a2e24" stroke="#fff" stroke-width="3" paint-order="stroke"'));
+  s+=g('board',R(130,36,8,80,'#5a3a22')+R(138,48,100,46,'#e7d3a4',2,' stroke="#3e2a1c" stroke-width="3"')+T(188,72,12,'林中小路',' fill="#3e2a1c"'));
+  s+=g('desk',el(86,186,36,16,'#8a5a32')+el(86,180,22,8,f.desk_open?'#e7c8a0':'#6b4423')+T(86,214,11,'树桩',' fill="#3a2e24" stroke="#fff" stroke-width="3" paint-order="stroke"'));
+  s+=g('box',R(176,168,60,40,'#a67c52',3)+(f.box_open?R(182,174,48,24,'#f0ddb4',2):'')+T(206,224,11,'小木箱',' fill="#3a2e24" stroke="#fff" stroke-width="3" paint-order="stroke"'));
+  s+=g('shelf',R(300,70,10,90,'#4a3424')+R(322,50,12,110,'#3e2a1c')+R(346,80,10,80,'#5a3a22')+C(328,150,7,'#e25b4a')+T(330,180,11,'木柴',' fill="#3a2e24" stroke="#fff" stroke-width="3" paint-order="stroke"'));
+  s+=g('door',R(${x},156,68,110,'#c49a62',3)+P('M${x} 156 l34-26 34 26','#8d4a3a')+R(${x+20},178,28,22,'#f6e2a8',2)+T(${x+34},250,11,'小木屋',' fill="#3a2e24" stroke="#fff" stroke-width="3" paint-order="stroke"'));`);
   },
   beach(scene, mode){
-    const x=doorX(mode), c=ink(scene);
+    const x=doorX(mode);
     return pack(`
-  s+=R(0,0,400,132,'${scene.sky}')+R(0,132,400,52,'${scene.water||'#3aa0d8'}')+R(0,184,400,116,'${scene.floor}');
-  ${skyDecor(scene)}
-  for(var i=0;i<6;i++)s+=P('M'+(i*70)+' 150 q20 10 40 0 t40 0','none',' stroke="#e7f7ff" stroke-width="3" opacity=".75"');
-  s+=C(40,230,4,'#fff')+C(90,250,3,'#ffe08a')+C(150,236,4,'#f7c6c6')+C(240,258,3,'#fff')+T(48,268,14,'🐚');
-  s+=P('M300 210 l30-40 30 40z','#ff8f8f',' opacity=".9"')+R(328,210,4,30,'#c98b52');
-  s+=g('window',R(16,24,88,70,'#ffe08a',8,' opacity=".3"')+T(60,58,22,'🌴')+T(60,104,11,'椰树',' fill="${c}"'));
-  s+=g('board',R(124,16,156,80,'#fff8e6',6,' stroke="#e07a4a" stroke-width="5"')+T(202,46,14,'⛱️')+T(202,72,12,'沙滩须知',' fill="#8a3e16"'));
-  s+=g('desk',R(28,168,120,28,'#e7c99a',10,SK)+(f.desk_open?R(50,172,40,16,'#fff6e0',3):C(88,182,4,'#c98b52'))+T(88,214,11,'沙桌',' fill="${c}"'));
-  s+=g('box',R(186,160,74,48,'#5dade2',6,SK)+(f.box_open?R(194,168,58,32,'#eaf6ff',3):R(204,174,36,16,'#ffcf4d',3))+T(222,222,11,'冷藏箱',' fill="${c}"'));
-  s+=g('shelf',R(300,40,78,100,'#f2c14a',6,SK)+R(312,36,8,70,'#c98b52')+T(338,78,18,'🛟')+T(338,118,14,'🩱'));
-  s+=g('door',R(${x},156,72,100,'#f6e2b8',6,SK)+P('M${x} 156l36-20 36 20','#e07a4a')+T(${x+36},200,18,'🏠')+T(${x+36},246,11,'沙滩屋',' fill="${c}"'));
-  s+=T(250,120,16,'🕊️');`);
+  s+='${lin('bcS', scene.sky, scene.sky2)}${lin('bcW', scene.water, scene.water2||'#b7e6f5')}';
+  s+=R(0,0,400,168,'url(#bcS)');
+  s+=C(300,70,28,'#ffe56a')+C(300,70,46,'#ffe56a',' opacity=".3"');
+  s+=R(0,150,400,46,'url(#bcW)');
+  for(var i=0;i<5;i++)s+=P('M0 '+(162+i*6)+' q40 6 80 0 t80 0 t80 0 t80 0 t80 0','none',' stroke="#fff" stroke-width="2" opacity=".45"');
+  s+=R(0,190,400,110,'${scene.floor}');
+  s+=el(40,230,10,4,'#fff')+el(90,250,8,3,'#f7c6c6')+el(160,236,9,3,'#ffe08a')+P('M250 150 C270 90 300 100 310 160','#2f8a40')+R(276,150,8,40,'#c98b52');
+  s+=P('M330 200 l28-36 28 36z','#ff7a7a',' opacity=".85"')+R(356,200,4,24,'#e7c99a');
+  s+=g('window',P('M20 160 C40 40 90 50 100 160','#2f8a40')+T(60,150,11,'椰树',' fill="#3a2e24" stroke="#fff" stroke-width="3" paint-order="stroke"'));
+  s+=g('board',R(118,28,130,36,'#fff',18,' stroke="#e07a4a" stroke-width="3"')+T(182,46,12,'沙滩须知',' fill="#8a3e16"'));
+  s+=g('desk',el(86,186,50,12,'#f3ddb0')+(f.desk_open?el(70,180,16,6,'#fff6e0'):'')+T(86,210,11,'沙桌',' fill="#3a2e24" stroke="#fff" stroke-width="3" paint-order="stroke"'));
+  s+=g('box',R(176,166,58,36,'#3aa0d8',6)+(f.box_open?R(182,172,46,22,'#e7f6ff',3):'')+T(204,218,11,'冷藏箱',' fill="#3a2e24" stroke="#fff" stroke-width="3" paint-order="stroke"'));
+  s+=g('shelf',C(320,90,22,'#f2c14a',' stroke="#e07a32" stroke-width="6"')+R(316,90,8,50,'#e07a32')+T(320,160,11,'救生圈',' fill="#3a2e24" stroke="#fff" stroke-width="3" paint-order="stroke"'));
+  s+=g('door',R(${x},168,70,70,'#f6e2b8',4)+P('M${x} 168 l35-22 35 22','#e07a4a')+T(${x+34},230,11,'沙滩屋',' fill="#3a2e24" stroke="#fff" stroke-width="3" paint-order="stroke"'));`);
   },
   farm(scene, mode){
-    const x=doorX(mode), c=ink(scene);
+    const x=doorX(mode);
     return pack(`
-  s+=R(0,0,400,150,'${scene.sky}')+R(0,150,400,150,'${scene.floor}');
-  ${skyDecor(scene)}
-  for(var i=0;i<8;i++)s+=R(0,168+i*16,400,8,i%2?'#8fbf4a':'#7aaa3a',0,' opacity=".55"');
-  s+=R(250,120,8,70,'#6b442c')+C(254,112,10,'#f2c14a')+R(236,128,36,8,'#6b442c')+T(254,108,12,'🌾');
-  s+=g('window',R(16,22,90,70,'#d9f2b0',8,SK)+T(61,56,20,'🚜')+T(61,102,11,'田边',' fill="${c}"'));
-  s+=g('board',R(124,16,156,80,'#fff8e0',6,' stroke="#8a5a2b" stroke-width="5"')+T(202,46,14,'🌽')+T(202,72,12,'丰收告示',' fill="#5b4636"'));
-  s+=g('desk',R(24,156,126,42,'#c98b52',6,SK)+R(36,164,70,22,f.desk_open?'#fff1d0':'#a86b38',4)+(f.desk_open?'':C(90,176,4,'#fff'))+T(86,214,11,'木桌',' fill="${c}"')+T(132,170,14,'🥛'));
-  s+=g('box',R(184,160,76,50,'#e0a15a',6,SK)+(f.box_open?R(192,168,60,34,'#f8e2c0',3):R(202,174,38,18,'#ffcf4d',3))+T(222,224,11,'菜筐',' fill="${c}"'));
-  s+=g('shelf',R(286,28,96,118,'#b7d47a',4,' stroke="#5f8f3a" stroke-width="3"')+T(334,70,18,'🥕')+T(334,108,18,'🍅')+T(334,140,14,'🥚'));
-  s+=g('door',R(${x},148,78,128,'#c0392b',6,SK)+P('M${x} 148l39-26 39 26','#922b21')+R(${x+26},190,26,50,'#f6e2b0',3)+C(${x+54},214,5,'#ffcf4d',SK)+T(${x+38},252,11,'谷仓',' fill="${c}"'));
-  s+=T(40,276,16,'🐔');`);
+  s+='${lin('fmS', scene.sky, scene.sky2)}';
+  s+=R(0,0,400,150,'url(#fmS)');
+  s+=C(60,40,16,'#ffe56a');
+  for(var i=0;i<7;i++)s+=R(0,150+i*22,400,22,i%2?'#7cb342':'#c6d84a');
+  s+=R(210,78,6,78,'#5a3a22')+C(213,74,8,'#f2c14a')+R(196,96,40,5,'#5a3a22')+R(186,108,54,4,'#5a3a22');
+  s+=g('window',R(16,28,70,50,'#e7f6c8',4,' stroke="#7cb342" stroke-width="3"')+T(50,90,11,'田边',' fill="#3a2e24" stroke="#fff" stroke-width="3" paint-order="stroke"'));
+  s+=g('board',R(100,24,120,40,'#fff8dc',2,' stroke="#c98b52" stroke-width="4"')+T(160,44,12,'丰收告示',' fill="#5b3a1e"'));
+  s+=g('desk',R(20,168,110,28,'#e7c48a',3,' stroke="#a67c52" stroke-width="2"')+R(30,174,40,14,f.desk_open?'#fff6e0':'#c98b52',2)+T(74,212,11,'木桌',' fill="#3a2e24" stroke="#fff" stroke-width="3" paint-order="stroke"'));
+  s+=g('box',R(150,172,60,36,'#d7a05a',3)+(f.box_open?R(156,178,48,22,'#f8e2c0',2):'')+T(180,224,11,'菜筐',' fill="#3a2e24" stroke="#fff" stroke-width="3" paint-order="stroke"'));
+  s+=g('shelf',R(230,150,50,70,'#8fbf4a',3)+C(244,166,6,'#e25b4a')+C(262,180,6,'#f2c14a')+C(248,196,6,'#ff8a3a')+T(255,236,11,'蔬果',' fill="#3a2e24" stroke="#fff" stroke-width="3" paint-order="stroke"'));
+  s+=g('door',R(${x},120,84,150,'#c0392b')+P('M${x} 120 l42-36 42 36','#922b21')+R(${x+28},170,28,60,'#f6e2b0',2)+T(${x+40},290,11,'谷仓',' fill="#fff"'));
+  s+=T(30,270,14,'🐔');`);
   },
   lotus(scene, mode){
-    const x=doorX(mode), c=ink(scene);
+    const x=doorX(mode);
     return pack(`
-  s+=R(0,0,400,110,'${scene.sky}')+R(0,110,400,190,'${scene.water||'#2f8fbf'}');
-  ${skyDecor(scene)}
-  s+=C(50,200,22,'#1f7a4a')+C(90,230,18,'#1f7a4a')+C(150,190,16,'#248a55')+C(40,250,14,'#1b6b40');
-  s+=T(50,196,16,'🪷')+T(150,186,16,'🌸')+T(90,226,12,'🐸');
-  s+=R(20,168,150,14,'#c9a06a',4,SK);
-  s+=g('window',R(18,22,88,64,'#d7f6ff',8,SK)+T(62,52,18,'🐉')+T(62,98,11,'远山',' fill="${c}"'));
-  s+=g('board',R(124,14,156,78,'#f4ffe8',6,' stroke="#2f8f4a" stroke-width="5"')+T(202,42,14,'🪷')+T(202,68,12,'荷塘',' fill="#1e5a32"'));
-  s+=g('desk',R(24,160,130,28,'#d7b07a',6,SK)+R(36,166,50,14,f.desk_open?'#fff6e0':'#b8894a',3)+(f.desk_open?'':C(78,174,3,'#5b4636'))+T(88,206,11,'木码头',' fill="${c}"'));
-  s+=g('box',R(186,158,74,48,'#e7c07a',6,SK)+(f.box_open?R(194,166,58,32,'#fff3d2',3):R(204,172,34,16,'#ffcf4d',3))+T(222,220,11,'竹篮',' fill="${c}"'));
-  s+=g('shelf',R(292,24,92,110,'#f3e2c4',6,SK)+P('M292 24h92l-16-16h-60z','#c0392b')+T(338,78,18,'🏮')+T(338,116,16,'🍵'));
-  s+=g('door',C(${x+36},210,40,'#f6e2b8',SK)+C(${x+36},210,26,'${scene.water||'#2f8fbf'}')+T(${x+36},250,11,'月洞门',' fill="${c}"'));
-  s+=T(250,140,16,'🪁');`);
+  s+='${lin('ltS', scene.sky, scene.sky2)}${lin('ltW', scene.water, scene.water2||'#7ec8ea')}';
+  s+=R(0,0,400,90,'url(#ltS)');
+  s+=P('M0 78 Q80 60 160 84 T320 70 T400 88 V100 H0z','#9ecf8a',' opacity=".7"');
+  s+=R(0,88,400,212,'url(#ltW)');
+  s+=el(60,180,34,14,'#1c6b40')+el(120,230,28,12,'#145c38')+el(200,160,26,12,'#1f7a48')+el(70,260,22,10,'#145c38');
+  s+=C(60,168,8,'#ffd0e4')+C(200,148,9,'#ff8fb8')+C(120,218,6,'#fff');
+  s+=R(16,150,120,10,'#c9a06a',4);
+  s+=g('window',P('M20 70 Q50 40 90 72','none',' stroke="#7d9a6a" stroke-width="6"')+T(54,96,11,'远山',' fill="#3a2e24" stroke="#fff" stroke-width="3" paint-order="stroke"'));
+  s+=g('board',R(120,18,120,36,'#f4ffe8',16,' stroke="#2f8f4a" stroke-width="3"')+T(180,36,12,'荷塘',' fill="#145c32"'));
+  s+=g('desk',R(16,156,130,12,'#d7b07a',4)+(f.desk_open?R(40,150,28,8,'#fff6e0',2):'')+T(80,186,11,'木码头',' fill="#3a2e24" stroke="#fff" stroke-width="3" paint-order="stroke"'));
+  s+=g('box',el(210,176,26,14,'#e7c07a')+(f.box_open?el(210,176,16,8,'#fff3d2'):'')+T(210,204,11,'竹篮',' fill="#3a2e24" stroke="#fff" stroke-width="3" paint-order="stroke"'));
+  s+=g('shelf',P('M300 40 h70 l-12 14 h-46z','#c0392b')+R(312,54,48,50,'#f7efe0',3)+T(336,120,11,'水榭',' fill="#3a2e24" stroke="#fff" stroke-width="3" paint-order="stroke"'));
+  s+=g('door',el(${x+34},200,36,48,'#f6e2b8')+el(${x+34},200,22,32,'${scene.water}')+T(${x+34},262,11,'月洞门',' fill="#3a2e24" stroke="#fff" stroke-width="3" paint-order="stroke"'));`);
   },
   camp(scene, mode){
-    const x=doorX(mode), c=ink(scene);
+    const x=doorX(mode);
     return pack(`
-  s+=R(0,0,400,168,'${scene.sky}')+R(0,168,400,132,'${scene.floor}');
-  ${skyDecor(scene)}
-  s+=R(8,90,16,100,'#2c4a32')+C(16,80,24,'#1e4d32')+R(360,70,18,120,'#2c4a32')+C(370,64,28,'#1e4d32');
-  s+=C(120,230,16,'#ff9a3c')+C(120,226,8,'#ffe08a')+R(116,230,8,16,'#6b442c')+T(150,236,14,'🔥');
-  s+=g('window',R(20,24,86,64,'#1b3a4a',8,SK)+T(63,54,18,'🏕️')+T(63,100,11,'远林',' fill="${c}"'));
-  s+=g('board',R(124,16,156,80,'#f6e7c8',6,' stroke="#6b442c" stroke-width="5"')+T(202,46,14,'📌')+T(202,72,12,'露营约定',' fill="#3e2a1c"'));
-  s+=g('desk',R(24,170,130,18,'#8a5a32',4,SK)+R(20,162,138,12,'#a67c52',4,SK)+(f.desk_open?R(70,166,30,10,'#e7c8a0',2):C(90,176,3,'#fff'))+T(88,204,11,'木头凳',' fill="${c}"'));
-  s+=g('box',R(184,158,76,50,'#5d7a8a',6,SK)+(f.box_open?R(192,166,60,34,'#d5e6ee',3):R(202,172,38,18,'#ffcf4d',3))+T(222,222,11,'冷藏盒',' fill="${c}"'));
-  s+=g('shelf',R(292,36,90,108,'#6b442c',4,SK)+T(336,78,18,'🎒')+T(336,118,16,'🥾'));
-  s+=g('door',P('M${x+8} 270 L${x+38} 168 L${x+68} 270z','#f2a3a0',SK)+P('M${x+38} 190 v70','none',' stroke="#6b442c" stroke-width="2"')+T(${x+38},248,11,'帐篷',' fill="${c}"'));`);
+  s+='${lin('cpS', scene.sky, scene.sky2)}${rad('cpF', '#ffb15a', '#ff7a2a')}';
+  s+=R(0,0,400,300,'url(#cpS)');
+  for(var i=0;i<18;i++)s+=C((i*53+12)%390,(i*17+8)%120,i%4?1:1.8,'#fff8dc',' opacity=".9"');
+  s+=R(0,176,400,124,'${scene.floor}');
+  s+=P('M8 176 L28 70 L48 176z','#102818')+P('M340 176 L372 40 L400 176z','#0e2416');
+  s+=C(110,230,46,'url(#cpF)')+P('M100 236 l10-28 12 20 8-16 10 24z','#ffcf70')+R(108,236,6,16,'#4a3424');
+  s+=g('window',P('M24 150 L48 70 L72 150z','#143222')+T(48,168,11,'远林',' fill="#3a2e24" stroke="#fff" stroke-width="3" paint-order="stroke"'));
+  s+=g('board',R(130,40,120,36,'#f6e7c8',2,' stroke="#4a3424" stroke-width="3"')+T(190,58,12,'露营约定',' fill="#3e2a1c"'));
+  s+=g('desk',R(20,186,120,10,'#6b4428',3)+R(16,178,128,8,'#8a5a32',2)+(f.desk_open?R(60,174,24,6,'#e7c8a0',1):'')+T(80,214,11,'木头凳',' fill="#3a2e24" stroke="#fff" stroke-width="3" paint-order="stroke"'));
+  s+=g('box',R(168,170,58,36,'#3d5a68',4)+(f.box_open?R(174,176,46,22,'#d5e6ee',2):'')+T(196,222,11,'冷藏盒',' fill="#3a2e24" stroke="#fff" stroke-width="3" paint-order="stroke"'));
+  s+=g('shelf',R(292,80,8,70,'#3e2a1c')+R(292,78,40,28,'#6b4428',3)+T(312,130,11,'背包',' fill="#3a2e24" stroke="#fff" stroke-width="3" paint-order="stroke"'));
+  s+=g('door',P('M${x} 272 L${x+36} 150 L${x+72} 272z','#f0a0a0')+P('M${x+36} 180 V260','none',' stroke="#5a3030" stroke-width="2"')+T(${x+36},248,11,'帐篷',' fill="#3a2e24" stroke="#fff" stroke-width="3" paint-order="stroke"'));`);
   },
   treehouse(scene, mode){
-    const x=doorX(mode), c=ink(scene);
+    const x=doorX(mode);
     return pack(`
-  s+=R(0,0,400,300,'${scene.sky}');
-  ${skyDecor(scene)}
-  s+=R(0,230,400,70,'${scene.floor}');
-  s+=R(70,120,36,180,'#8a5a32',6)+C(40,70,28,'#3aaa4a')+C(120,50,36,'#2f9a40')+C(180,80,24,'#46b85a')+C(20,110,18,'#2f8a40');
-  s+=R(150,150,200,16,'#c9a06a',3,SK);
-  s+=P('M200 166 q40 20 20 70','none',' stroke="#d7b07a" stroke-width="4"');
-  s+=g('window',R(168,96,70,48,'#fff6d0',6,SK)+T(203,120,16,'🪟')+T(203,154,11,'树窗',' fill="${c}"'));
-  s+=g('board',R(126,16,150,70,'#f6e7c4',6,' stroke="#6b442c" stroke-width="5"')+T(201,42,14,'🌳')+T(201,64,12,'大树屋',' fill="#3e2a1c"'));
-  s+=g('desk',R(24,168,110,36,'#d7b07a',6,SK)+R(36,176,48,16,f.desk_open?'#fff6e0':'#b8894a',3)+(f.desk_open?'':C(70,184,3,'#5b4636'))+T(78,218,11,'树枝台',' fill="${c}"'));
-  s+=g('box',R(186,164,70,46,'#c98b52',4,SK)+(f.box_open?R(194,170,54,32,'#f3ddb8',3):R(202,176,34,16,'#e2b56a',3))+T(220,224,11,'宝箱',' fill="${c}"'));
-  s+=g('shelf',R(286,40,70,90,'#6aaa3a',6,SK)+T(320,80,18,'🐿️')+T(320,116,14,'🍃'));
-  s+=g('door',R(${x},148,70,78,'#e7c48a',6,SK)+P('M${x} 148l35-22 35 22','#c0392b')+R(${x+22},166,26,24,'#c9e7ff',3)+C(${x+54},200,4,'#ffcf4d',SK)+T(${x+34},242,11,'树屋门',' fill="${c}"'));
-  s+=T(40,270,18,'🐦');`);
+  s+='${lin('thS', scene.sky, scene.sky2)}';
+  s+=R(0,0,400,300,'url(#thS)');
+  s+=C(40,40,40,'#1f8a3c')+C(110,24,48,'#146b30')+C(190,36,36,'#2f9a48')+C(300,20,50,'#0f5a28')+C(370,48,32,'#1f7a38');
+  s+=R(0,250,400,50,'${scene.floor}');
+  s+=R(48,70,42,220,'#7a4e2c');
+  s+=R(90,150,250,14,'#d7b07a');
+  s+=P('M160 164 q60 30 30 90','none',' stroke="#c9a06a" stroke-width="4"');
+  s+=g('window',R(150,96,64,40,'#fff3c4',4,' stroke="#7a4e2c" stroke-width="4"')+T(182,150,11,'树窗',' fill="#3a2e24" stroke="#fff" stroke-width="3" paint-order="stroke"'));
+  s+=g('board',R(230,70,110,32,'#f6e7c4',2,' stroke="#5a3a22" stroke-width="3"')+T(284,86,12,'大树屋',' fill="#3e2a1c"'));
+  s+=g('desk',R(100,156,90,20,'#e2c48a',3)+(f.desk_open?R(120,150,30,10,'#fff6e0',2):'')+T(144,196,11,'树枝台',' fill="#3a2e24" stroke="#fff" stroke-width="3" paint-order="stroke"'));
+  s+=g('box',R(210,164,52,32,'#c98b52',3)+(f.box_open?R(216,170,40,18,'#f3ddb8',2):'')+T(236,212,11,'宝箱',' fill="#3a2e24" stroke="#fff" stroke-width="3" paint-order="stroke"'));
+  s+=g('shelf',C(330,120,22,'#3aaa4a')+C(330,120,8,'#6b4428')+T(330,160,11,'松鼠洞',' fill="#3a2e24" stroke="#fff" stroke-width="3" paint-order="stroke"'));
+  s+=g('door',R(${x},128,64,70,'#f0d7a8',4)+P('M${x} 128 l32-20 32 20','#c0392b')+R(${x+18},146,28,22,'#cfe8ff',2)+T(${x+32},220,11,'树屋门',' fill="#3a2e24" stroke="#fff" stroke-width="3" paint-order="stroke"'));`);
   },
   greenhouse(scene, mode){
-    const x=doorX(mode), c=ink(scene);
+    const x=doorX(mode);
     return pack(`
-  s+=R(0,0,400,300,'${scene.sky}');
-  for(var i=0;i<8;i++)s+=R(i*50,0,48,300,'#fff',0,' opacity=".08"');
-  for(var j=0;j<6;j++)s+=P('M0 '+(j*50)+'H400','none',' stroke="#fff" stroke-width="2" opacity=".25"');
-  s+=R(0,220,400,80,'${scene.floor}');
-  s+=T(40,190,20,'🌿')+T(80,200,18,'🌵')+T(250,188,18,'🌸');
-  s+=g('window',R(16,18,96,78,'#e9fff2',6,' stroke="#9ad7b2" stroke-width="4"')+T(64,56,20,'🪴')+T(64,108,11,'玻璃',' fill="${c}"'));
-  s+=g('board',R(124,14,160,90,'#f4fff4',6,' stroke="#3d9a62" stroke-width="5"')+T(204,44,14,'💧')+T(204,70,12,'浇水时间',' fill="#1e5a32"')+T(204,90,10,'周一 · 周四',' fill="#3d9a62"'));
-  s+=g('desk',R(22,154,132,50,'#cfe3c4',6,SK)+R(34,164,70,26,f.desk_open?'#fff':'#b7d3a8',4)+(f.desk_open?'':C(90,178,4,'#3d6b4a'))+T(88,218,11,'育苗台',' fill="${c}"')+T(138,172,14,'🌱'));
-  s+=g('box',R(184,160,76,50,'#e7b15a',6,SK)+(f.box_open?R(192,168,60,34,'#fff3d0',3):R(202,174,38,18,'#ffcf4d',3))+T(222,224,11,'花盆箱',' fill="${c}"'));
-  s+=g('shelf',R(286,22,100,130,'#8fbf8a',6,SK)+T(336,60,16,'🌿')+T(336,98,16,'🌺')+T(336,136,14,'🧴'));
-  s+=g('door',R(${x},148,72,128,'#d8f3e4',6,' stroke="#3d9a62" stroke-width="4"')+P('M${x+36} 148v128','none',' stroke="#3d9a62" stroke-width="3"')+C(${x+54},214,5,'#f2c14a',SK)+T(${x+36},252,11,'温室门',' fill="${c}"'));`);
+  s+='${lin('ghS', scene.sky, scene.floor)}';
+  s+=R(0,0,400,300,'url(#ghS)');
+  for(var i=0;i<9;i++)s+=P('M'+(i*48)+' 0 V300','none',' stroke="#fff" stroke-width="2" opacity=".35"');
+  for(var j=0;j<6;j++)s+=P('M0 '+(j*52)+' H400','none',' stroke="#fff" stroke-width="2" opacity=".28"');
+  s+=P('M40 300 C80 160 140 120 200 300','#b7e39a',' opacity=".55"')+P('M180 300 C240 140 320 160 360 300','#8fce7a',' opacity=".5"');
+  s+=g('window',R(16,20,80,70,'#f4fff8',4,' stroke="#9ad7b2" stroke-width="4"')+T(56,108,11,'玻璃',' fill="#3a2e24" stroke="#fff" stroke-width="3" paint-order="stroke"'));
+  s+=g('board',R(120,22,150,64,'#f7fff6',4,' stroke="#3d9a62" stroke-width="4"')+T(194,46,13,'浇水时间',' fill="#145c32"')+T(194,68,11,'周一 · 周四',' fill="#3d9a62"'));
+  s+=g('desk',R(20,160,120,40,'#d5ead0',4,' stroke="#7dae8a" stroke-width="2"')+R(30,168,50,18,f.desk_open?'#fff':'#b7d7b0',2)+C(130,172,8,'#3aaa4a')+T(78,216,11,'育苗台',' fill="#3a2e24" stroke="#fff" stroke-width="3" paint-order="stroke"'));
+  s+=g('box',R(168,166,56,36,'#e7b15a',4)+(f.box_open?R(174,172,44,22,'#fff3d0',2):'')+T(196,218,11,'花盆箱',' fill="#3a2e24" stroke="#fff" stroke-width="3" paint-order="stroke"'));
+  s+=g('shelf',R(250,40,40,140,'#7dba78',6)+C(270,60,10,'#2f8a40')+C(270,90,12,'#ff8fb8')+C(270,124,9,'#3aaa4a')+T(270,196,11,'绿植',' fill="#3a2e24" stroke="#fff" stroke-width="3" paint-order="stroke"'));
+  s+=g('door',R(${x},140,68,130,'#e7fff2',2,' stroke="#3d9a62" stroke-width="4"')+P('M${x+34} 140 V270','none',' stroke="#3d9a62" stroke-width="3"')+T(${x+34},250,11,'温室门',' fill="#3a2e24" stroke="#fff" stroke-width="3" paint-order="stroke"'));`);
   },
   rain(scene, mode){
-    const x=doorX(mode), c=ink(scene);
+    const x=doorX(mode);
     return pack(`
-  s+=R(0,0,400,300,'${scene.sky}')+R(0,200,400,100,'${scene.floor}');
-  for(var i=0;i<28;i++)s+=P('M'+((i*47)%400)+' '+((i*29)%180)+' l-6 16','none',' stroke="#d5e6f5" stroke-width="2" opacity=".7"');
-  s+=P('M40 250c30-16 50-8 70 0s40 8 60-4','none',' stroke="#9ec4de" stroke-width="6" opacity=".45"');
-  s+=R(300,120,8,90,'#5d6d7e')+C(304,112,10,'#ffe08a')+C(304,112,20,'#ffe08a',' opacity=".25"');
-  s+=g('window',R(16,20,96,74,'#c5d8e8',6,SK)+T(64,56,20,'☂️')+T(64,106,11,'橱窗',' fill="${c}"'));
-  s+=g('board',R(124,16,156,84,'#fffdf8',6,' stroke="#7f8c9d" stroke-width="5"')+T(202,46,14,'☔')+T(202,72,12,'雨天慢行',' fill="#2c3e50"'));
-  s+=g('desk',R(24,156,126,42,'#b7c4ce',6,SK)+R(36,164,64,22,f.desk_open?'#eef5f8':'#8fa0ae',4)+(f.desk_open?'':C(86,176,4,'#fff'))+T(86,214,11,'候车椅',' fill="${c}"'));
-  s+=g('box',R(184,160,74,50,'#e74c3c',6,SK)+(f.box_open?R(192,168,58,34,'#f5b7b1',3):R(202,174,34,18,'#ffcf4d',3))+T(220,224,11,'邮筒',' fill="${c}"'));
-  s+=g('shelf',R(286,28,96,112,'#5d6d7e',6,SK)+T(334,70,16,'📰')+T(334,112,16,'☂️'));
-  s+=g('door',R(${x},148,74,120,'#f2d16b',6,SK)+P('M${x-6} 148h86l-10 16H${x+4}z','#e67e22')+R(${x+16},176,42,40,'#fff6d8',3)+T(${x+36},250,11,'小店',' fill="${c}"'));
-  s+=T(40,270,18,'🐸');`);
+  s+='${lin('rnS', scene.sky, scene.bg)}';
+  s+=R(0,0,400,300,'url(#rnS)');
+  s+=R(0,200,400,100,'${scene.floor}');
+  s+=el(80,250,50,10,'#7ea4c0',' opacity=".55"')+el(200,270,36,8,'#9ec4de',' opacity=".4"');
+  for(var i=0;i<36;i++)s+=P('M'+((i*29)%410)+' '+((i*17)%200)+' l-8 18','none',' stroke="#e7f2fb" stroke-width="1.6" opacity=".75"');
+  s+=R(250,70,6,120,'#4a5968')+C(253,64,12,'#ffe08a')+C(253,64,28,'#ffe08a',' opacity=".25"');
+  s+=g('window',R(16,24,84,64,'#d5e4f0',4,' stroke="#9aafc0" stroke-width="4"')+T(58,108,11,'橱窗',' fill="#3a2e24" stroke="#fff" stroke-width="3" paint-order="stroke"'));
+  s+=g('board',R(120,28,140,48,'#f7f4ea',2,' stroke="#7f8c9d" stroke-width="4"')+T(190,52,13,'雨天慢行',' fill="#2c3e50"'));
+  s+=g('desk',R(20,176,110,18,'#9aafc0',6)+R(28,194,8,24,'#6d7c8a')+R(110,194,8,24,'#6d7c8a')+(f.desk_open?R(50,170,28,8,'#fff',2):'')+T(74,234,11,'候车椅',' fill="#3a2e24" stroke="#fff" stroke-width="3" paint-order="stroke"'));
+  s+=g('box',R(160,168,40,70,'#d64545',8)+R(168,188,24,8,'#f7f1e4')+T(180,252,11,'邮筒',' fill="#3a2e24" stroke="#fff" stroke-width="3" paint-order="stroke"'));
+  s+=g('shelf',R(230,50,70,100,'#3e4c5a',3)+T(264,90,14,'📰')+T(264,130,14,'☂️'));
+  s+=g('door',R(${x},150,70,110,'#f2d16b',3)+P('M${x-8} 150 h86 l-8 14 H${x}z','#e67e22')+T(${x+34},240,11,'小店',' fill="#3a2e24" stroke="#fff" stroke-width="3" paint-order="stroke"'));`);
   },
   market(scene, mode){
-    const x=doorX(mode), c=ink(scene);
+    const x=doorX(mode);
     return pack(`
-  s+=R(0,0,400,300,'${scene.bg}')+R(0,214,400,86,'${scene.floor}');
-  for(var i=0;i<8;i++)s+=R(i*50,0,50,46,i%2?'#e74c3c':'#f5d76e');
-  s+=R(0,46,400,10,'#f7f1e4');
-  s+=g('window',R(16,64,96,70,'#fff8e8',6,SK)+T(64,98,20,'🥬')+T(64,146,11,'摊位',' fill="${c}"'));
-  s+=g('board',R(124,62,160,84,'#fff',6,' stroke="#e74c3c" stroke-width="5"')+T(204,92,13,'今日菜价',' fill="#c0392b"')+T(204,116,11,'青菜 3.5',' fill="#5b4636"')+T(204,134,11,'苹果 6.8',' fill="#5b4636"'));
-  s+=g('desk',R(22,156,130,50,'#e8d3b0',6,SK)+R(40,148,40,16,'#f7f1e4',3)+R(34,166,70,26,f.desk_open?'#fff':'#d9c4a4',4)+(f.desk_open?'':C(88,180,4,'#5b4636'))+T(88,220,11,'秤台',' fill="${c}"'));
-  s+=g('box',R(184,160,76,50,'#c98b52',4,SK)+(f.box_open?R(192,168,60,34,'#f3ddb8',3):R(202,174,38,18,'#e2b56a',3))+T(222,224,11,'菜筐',' fill="${c}"'));
-  s+=g('shelf',R(286,64,100,120,'#b9793f',6,SK)+T(336,100,18,'🐟')+T(336,140,18,'🍎')+T(336,172,14,'🧄'));
-  s+=g('door',R(${x},150,72,124,'#27ae60',6,SK)+T(${x+36},200,20,'🚪')+T(${x+36},248,11,'菜场口',' fill="#f7f1e4"'));
-  s+=T(40,276,16,'🥕');`);
+  s+=R(0,0,400,300,'${scene.bg}');
+  s+=R(0,210,400,90,'${scene.floor}');
+  for(var i=0;i<10;i++)s+=R(i*40,0,40,58,i%2?'#e23b3b':'#f5d76e');
+  s+=R(0,58,400,8,'#fff6e0');
+  s+=C(40,160,16,'#3aaa4a')+C(78,168,14,'#e25b4a')+C(112,156,12,'#f2c14a')+C(150,170,13,'#ff8a3a');
+  s+=g('window',R(16,78,80,60,'#fff8e6',3,' stroke="#e23b3b" stroke-width="4"')+T(56,156,11,'摊位',' fill="#3a2e24" stroke="#fff" stroke-width="3" paint-order="stroke"'));
+  s+=g('board',R(120,78,150,70,'#fff',2,' stroke="#e23b3b" stroke-width="5"')+T(194,100,14,'今日菜价',' fill="#c0392b"')+T(194,122,12,'青菜 3.5',' fill="#5b4636"')+T(194,140,12,'苹果 6.8',' fill="#5b4636"'));
+  s+=g('desk',R(18,168,120,36,'#f7f1e4',3,' stroke="#c9b89a" stroke-width="2"')+R(28,176,36,16,f.desk_open?'#fff':'#e7d3b0',2)+T(78,220,11,'秤台',' fill="#3a2e24" stroke="#fff" stroke-width="3" paint-order="stroke"'));
+  s+=g('box',R(160,172,56,34,'#c98b52',2)+(f.box_open?R(166,178,44,20,'#f3ddb8',2):'')+T(188,222,11,'菜筐',' fill="#3a2e24" stroke="#fff" stroke-width="3" paint-order="stroke"'));
+  s+=g('shelf',R(230,80,70,110,'#a86b38',3)+C(248,100,8,'#e25b4a')+C(270,118,8,'#f2c14a')+C(252,140,8,'#3aaa4a')+T(264,176,11,'货摊',' fill="#3a2e24" stroke="#fff" stroke-width="3" paint-order="stroke"'));
+  s+=g('door',R(${x},140,66,130,'#1f8a4c')+T(${x+32},250,11,'菜场口',' fill="#f7fff4"'));`);
   },
   snow(scene, mode){
-    const x=doorX(mode), c=ink(scene);
+    const x=doorX(mode);
     return pack(`
-  s+=R(0,0,400,168,'${scene.sky}')+R(0,168,400,132,'${scene.floor}');
-  ${skyDecor(scene)}
-  for(var i=0;i<18;i++)s+=C((i*73)%400,(i*41)%150,i%3?1.4:2.2,'#fff',' opacity=".85"');
-  s+=R(250,150,70,70,'#f7fbff',8,SK)+C(268,168,6,'#5b4636')+C(292,168,6,'#5b4636')+P('M272 188 q10 8 20 0','none',' stroke="#e07a7a" stroke-width="2"')+R(282,188,4,22,'#f0a0a0');
-  s+=R(20,120,14,70,'#2f6b4a')+P('M8 120 l20-28 20 28z','#eef8f2')+R(40,100,12,90,'#2f6b4a')+P('M28 100 l18-24 18 24z','#eef8f2');
-  s+=g('window',R(18,22,86,64,'#d6ecff',8,SK)+T(61,52,18,'❄️')+T(61,98,11,'雪窗',' fill="${c}"'));
-  s+=g('board',R(120,16,150,78,'#fff',6,' stroke="#9ec4de" stroke-width="5"')+T(195,44,14,'☃️')+T(195,70,12,'雪地小路',' fill="#3e5670"'));
-  s+=g('desk',R(24,160,120,36,'#f7fbff',8,' stroke="#9ec4de" stroke-width="3"')+R(40,168,50,16,f.desk_open?'#fff6e0':'#e4eef6',4)+(f.desk_open?'':C(80,176,4,'#7f8c9d'))+T(84,212,11,'雪凳',' fill="${c}"'));
-  s+=g('box',R(184,158,74,48,'#e74c3c',6,SK)+(f.box_open?R(192,166,58,32,'#f5d0cc',3):R(202,172,34,16,'#ffcf4d',3))+T(220,220,11,'雪橇',' fill="${c}"'));
-  s+=g('shelf',R(292,36,88,100,'#8a5a32',4,SK)+R(300,48,14,70,'#6b442c')+R(326,42,14,78,'#6b442c')+R(352,52,14,64,'#6b442c')+T(334,90,12,'🪵'));
-  s+=g('door',R(${x},148,74,120,'#f2e2c8',6,SK)+P('M${x} 148l37-26 37 26','#c0392b')+R(${x+22},176,30,28,'#ffe08a',3)+C(${x+54},220,5,'#ffcf4d',SK)+T(${x+36},248,11,'木屋',' fill="${c}"'));`);
+  s+='${lin('snS', scene.sky, scene.sky2)}';
+  s+=R(0,0,400,300,'url(#snS)');
+  s+=R(0,170,400,130,'${scene.floor}');
+  s+=P('M0 190 Q40 160 80 190 T160 188 T240 176 T320 190 T400 170 V300 H0z','#fff');
+  for(var i=0;i<20;i++)s+=C((i*61)%400,(i*29)%160,i%3?1.3:2.2,'#fff',' opacity=".9"');
+  s+=P('M16 170 L36 90 L56 170z','#d7e6dc')+R(32,150,8,40,'#6e8f7a')+P('M48 180 L70 110 L92 180z','#e7f2ea');
+  s+=C(250,150,22,'#fff')+C(292,156,18,'#fff')+C(262,142,3,'#3e5670')+C(278,142,3,'#3e5670')+P('M266 156 q8 6 16 0','none',' stroke="#e07a7a" stroke-width="2"');
+  s+=g('window',R(100,28,60,48,'#d6ecff',8,' stroke="#fff" stroke-width="4"')+T(130,92,11,'雪窗',' fill="#3a2e24" stroke="#fff" stroke-width="3" paint-order="stroke"'));
+  s+=g('board',R(170,36,120,36,'#fff',4,' stroke="#b7c9dc" stroke-width="3"')+T(230,54,12,'雪地小路',' fill="#3e5670"'));
+  s+=g('desk',el(70,190,46,12,'#fff')+el(70,186,20,6,f.desk_open?'#fff6e0':'#e4eef8')+T(70,214,11,'雪凳',' fill="#3a2e24" stroke="#fff" stroke-width="3" paint-order="stroke"'));
+  s+=g('box',P('M160 200 L210 168 L250 200z','#e25b4a')+R(188,198,28,8,'#f7f1e4',2)+T(200,222,11,'雪橇',' fill="#3a2e24" stroke="#fff" stroke-width="3" paint-order="stroke"'));
+  s+=g('shelf',R(300,120,8,50,'#8a5a32')+R(318,100,8,70,'#6b4428')+R(336,128,8,42,'#a67c52')+T(324,188,11,'木柴',' fill="#3a2e24" stroke="#fff" stroke-width="3" paint-order="stroke"'));
+  s+=g('door',R(${x},130,70,110,'#f7efe4',3)+P('M${x} 130 l35-28 35 28','#c0392b')+R(${x+22},160,26,22,'#ffe08a',2)+T(${x+34},260,11,'木屋',' fill="#3a2e24" stroke="#fff" stroke-width="3" paint-order="stroke"'));`);
   }
 };
-
-const OUT_VAR=[
-  null,
-  {sky:'#3d4d7a',bg:'#2c3a66',floor:'#1e4630',water:'#1d4e7a',deco:'moon',ink:'#f4efe4'},
-  {sky:'#e7f6ff',bg:'#e8f6ff',floor:'#d7efc8',water:'#b7dff5',deco:'mist',ink:'#3e3428'},
-  {sky:'#1b2144',bg:'#16192f',floor:'#152015',water:'#14243f',deco:'star',ink:'#f7f1e4'}
-];
-const IN_VAR=[
-  null,
-  {sky:'#ffc98a',bg:'#f0d0b0',floor:'#c9a078',deco:'moon',ink:'#3e3428'},
-  {sky:'#d9ecff',bg:'#f7f3ea',floor:'#e6d8c4',deco:'mist',ink:'#3e3428'},
-  {sky:'#14182e',bg:'#2a2744',floor:'#1c1a30',deco:'star',ink:'#f7f1e4'}
-];
 
 function props(desk, board, box, shelf, door, window, decorNote, nightNote){
   return {desk, board, box, shelf, door, window, decorNote, nightNote};
 }
+function L(sky, sky2, floor, water, ink, water2, deco){
+  return {sky, sky2, floor, water, water2:water2||water, ink, deco:deco||'sun'};
+}
 
 const LATER=[
-  {art:'living', outdoor:false, emoji:'🛋️', emojiDusk:'🌇', emojiNight:'🌙',
-    bg:'#ffe6c9', floor:'#e4c49a', sky:'#cfe9ff', ink:'#3e3428', deco:'sun',
+  {art:'living', outdoor:false, emoji:'🛋️', emojiDusk:'🌇', emojiNight:'🌙', deco:'sun',
     titles:['温馨客厅','傍晚客厅','清晨小房间','夜灯小房间'],
+    looks:[
+      L('#fff1df','#ffe0c2','#e7c49a','#ffe0c2','#6a4632'),
+      L('#f0b48a','#c98a62','#c49a78','#f0b48a','#4a3024','#f0b48a','moon'),
+      L('#f7f3ea','#e7f0f8','#eadcc8','#e7f0f8','#5b4636','#e7f0f8','mist'),
+      L('#2a2438','#3a3048','#241e30','#2a2438','#f7efe4','#2a2438','star')
+    ],
     props:props('茶几','全家福','玩具箱','电视柜','房门','窗帘','沙发软软的，台灯亮着暖光。','夜里只剩一盏小灯，窗帘拉上了。')},
-  {art:'bedroom', outdoor:false, emoji:'🛏️', emojiDusk:'🌇', emojiNight:'🌙',
-    bg:'#f6e9ff', floor:'#e7d4f2', sky:'#d9e6ff', ink:'#3e3428', deco:'sun',
+  {art:'bedroom', outdoor:false, emoji:'🛏️', emojiDusk:'🌇', emojiNight:'🌙', deco:'star',
     titles:['月亮卧室','夕阳卧室','薄雾卧室','星空卧室'],
+    looks:[
+      L('#1c2448','#3a2a58','#2a2444','#1c2448','#f4eaff'),
+      L('#c46a4a','#6a3a58','#4a3048','#c46a4a','#fff1e4','#c46a4a','moon'),
+      L('#d7e4f4','#efe6f8','#e4d8ee','#d7e4f4','#4a3a58','#d7e4f4','mist'),
+      L('#0e1430','#1a1840','#16122c','#0e1430','#f7f1ff','#0e1430','star')
+    ],
     props:props('床头柜','梦的清单','收纳篮','衣柜','卧室门','小窗','枕头鼓鼓的，故事书摊在床上。','星星从窗户探进来。')},
-  {art:'park', outdoor:true, emoji:'🌳', emojiDusk:'🌆', emojiNight:'🌃',
-    bg:'#dff7e8', floor:'#8fd99a', sky:'#c9f2ff', water:'#8fd4f2', ink:'#243024', deco:'sun',
+  {art:'park', outdoor:true, emoji:'🌳', emojiDusk:'🌆', emojiNight:'🌃', deco:'sun',
     titles:['林荫公园','黄昏公园','清晨公园','星空公园'],
+    looks:[
+      L('#7ecbff','#e7f8c8','#3aaa4a','#7ec8f0','#143018'),
+      L('#f0a060','#6a8a4a','#2f6a32','#c47a4a','#f7f1e4','#c47a4a','moon'),
+      L('#e7f6ff','#f4ffe8','#b7e39a','#d5eef8','#1e3a24','#d5eef8','mist'),
+      L('#102033','#163024','#143222','#102033','#e8ffe8','#102033','star')
+    ],
     props:props('长椅','游园地图','野餐篮','售货亭','园门','大树','鸽子在小路边散步，风吹得树叶沙沙响。','路灯亮了，长椅上有一点湿。')},
-  {art:'flower', outdoor:true, emoji:'🌷', emojiDusk:'🌇', emojiNight:'🌙',
-    bg:'#e8ffe8', floor:'#b7e39a', sky:'#e7f8ff', ink:'#243024', deco:'sun',
+  {art:'flower', outdoor:true, emoji:'🌷', emojiDusk:'🌇', emojiNight:'🌙', deco:'sun',
     titles:['彩虹花园','暮色花园','晨露花园','夜香花园'],
+    looks:[
+      L('#ffd0e4','#fff6ea','#f3d7c4','#ffd6ea','#7a3a4a'),
+      L('#e07aa0','#c46a88','#c9a090','#e07aa0','#fff0f4','#e07aa0','moon'),
+      L('#fff0f6','#f7fff4','#efe2d0','#fff0f6','#6a4050','#fff0f6','mist'),
+      L('#3a2040','#5a3058','#3a2838','#3a2040','#ffe6f2','#3a2040','star')
+    ],
     props:props('花坛沿','花名牌','种子盒','花架','花拱门','花窗','蜜蜂在花心里嗡嗡，花瓣上还有露水。','夜来香轻轻地香。')},
-  {art:'river', outdoor:true, emoji:'🛶', emojiDusk:'🌅', emojiNight:'🌌',
-    bg:'#c9f2ff', floor:'#8fd36a', sky:'#b9e6ff', water:'#3d9ad6', ink:'#1e3a32', deco:'sun',
+  {art:'river', outdoor:true, emoji:'🛶', emojiDusk:'🌅', emojiNight:'🌌', deco:'sun',
     titles:['石头过河','暮色过河','晨雾过河','星夜过河'],
+    looks:[
+      L('#3d8fd4','#d7f1ff','#2f8a44','#0e5f98','#e8f6ff','#7ec8ea'),
+      L('#e07a3a','#6a4a78','#245c38','#163e5c','#f7f1e4','#c46a3a','moon'),
+      L('#d5e4ee','#f4f8fb','#b7d4b0','#c5dce8','#1e3a44','#e7f2f8','mist'),
+      L('#071428','#12304e','#0e3328','#071e36','#d7f1ff','#1a4a72','star')
+    ],
     props:props('岸边石桌','渡口牌','木箱','竹排','渡船','河柳','河水哗哗响，石头一颗颗露在水面上。','月亮掉进河里，渡船轻轻晃。')},
-  {art:'bridge', outdoor:true, emoji:'🌉', emojiDusk:'🌇', emojiNight:'🌃',
-    bg:'#e7f4ff', floor:'#d5e6c8', sky:'#cfeaff', water:'#4aa3e0', ink:'#243044', deco:'sun',
+  {art:'bridge', outdoor:true, emoji:'🌉', emojiDusk:'🌇', emojiNight:'🌃', deco:'sun',
     titles:['石拱桥头','晚霞石桥','薄雾石桥','灯火石桥'],
+    looks:[
+      L('#9ec7ea','#e7eef4','#d9d3c8','#3d88b8','#2c3338','#8ec4de'),
+      L('#e08a55','#6a5a78','#b7b1a6','#2a4a68','#f7f1e4','#c47a55','moon'),
+      L('#e7eef2','#f7f4ea','#e4e0d8','#c5d5e0','#3a4044','#e7eef2','mist'),
+      L('#141820','#2a3038','#1c2228','#0e2436','#f4efe6','#1a3a55','star')
+    ],
     props:props('桥头石凳','桥名牌','竹篮','灯笼架','桥门','桥柳','桥洞下面水声轻轻的，栏杆摸上去凉凉的。','桥灯一盏盏亮起来。')},
-  {art:'classroom', outdoor:false, emoji:'🏫', emojiDusk:'🌇', emojiNight:'🌙',
-    bg:'#e7f4ff', floor:'#f0e2c4', sky:'#cfe9ff', ink:'#3e3428', deco:'sun',
+  {art:'classroom', outdoor:false, emoji:'🏫', emojiDusk:'🌇', emojiNight:'🌙', deco:'sun',
     titles:['阳光教室','放学教室','早读教室','夜自习教室'],
+    looks:[
+      L('#f7f4ea','#fffaf2','#f0e2c4','#cfe6ff','#4a3a28','#fff'),
+      L('#f0d2b0','#fff1df','#e2c8a4','#ffd0a8','#4a3a28','#ffd0a8','moon'),
+      L('#f4f7f2','#f7fbff','#efe6d4','#d7e8f8','#3e4a3a','#d7e8f8','mist'),
+      L('#243044','#1c2838','#2a241c','#1a2838','#f7f1e4','#1a2838','star')
+    ],
     props:props('讲台','黑板','作业盒','书架','教室门','窗','黑板上还有没擦掉的算式，粉笔灰轻轻飘。','只有一排灯还亮着。')},
-  {art:'hallway', outdoor:false, emoji:'🏫', emojiDusk:'🌇', emojiNight:'🌙',
-    bg:'#f4f0e6', floor:'#e7dcc8', sky:'#d5e8f8', ink:'#3e3428', deco:'sun',
+  {art:'hallway', outdoor:false, emoji:'🏫', emojiDusk:'🌇', emojiNight:'🌙', deco:'sun',
     titles:['校园走廊','放学走廊','清晨走廊','夜灯走廊'],
+    looks:[
+      L('#e7edf4','#f7f4ea','#d5dbe4','#d5e6f5','#2c3e50'),
+      L('#f0c8a8','#e7d8c8','#c9c2b4','#ffd0a8','#3a3028','#ffd0a8','moon'),
+      L('#eef3f6','#f7fbff','#e4e8ee','#e7f2f8','#3a4450','#e7f2f8','mist'),
+      L('#1c2430','#2a3340','#1a222c','#141c28','#f4f7fb','#141c28','star')
+    ],
     props:props('休息椅','布告栏','失物箱','储物柜','楼梯口','走廊窗','地砖被踩得发亮，布告栏上别满了纸条。','走廊灯一格一格亮着。')},
-  {art:'forest', outdoor:true, emoji:'🌲', emojiDusk:'🌇', emojiNight:'✨',
-    bg:'#cfe8c8', floor:'#6aaa4a', sky:'#d7f0e4', ink:'#1e2e1e', deco:'sun',
+  {art:'forest', outdoor:true, emoji:'🌲', emojiDusk:'🌇', emojiNight:'✨', deco:'sun',
     titles:['森林小路','黄昏林间','晨雾森林','萤火森林'],
+    looks:[
+      L('#1e4d32','#cfe8c4','#2f6a38','#1e4d32','#e8ffe4'),
+      L('#6a3a28','#c47a3a','#3a4a28','#6a3a28','#ffe8c8','#6a3a28','moon'),
+      L('#d5e4d8','#eef6ea','#b7cfc0','#d5e4d8','#243028','#d5e4d8','mist'),
+      L('#07140e','#10281c','#0c1c12','#07140e','#d6ffb0','#07140e','star')
+    ],
     props:props('树桩','指路牌','小木箱','木柴堆','小木屋','树洞','阳光从叶子缝里漏下来，蘑菇一圈一圈。','萤火虫提着小灯笼。')},
-  {art:'beach', outdoor:true, emoji:'🏖️', emojiDusk:'🌅', emojiNight:'🌙',
-    bg:'#fff4d6', floor:'#f6e2b0', sky:'#c9f2ff', water:'#3aa0d8', ink:'#5a4630', deco:'sun',
+  {art:'beach', outdoor:true, emoji:'🏖️', emojiDusk:'🌅', emojiNight:'🌙', deco:'sun',
     titles:['贝壳沙滩','晚霞沙滩','晨光沙滩','月夜沙滩'],
+    looks:[
+      L('#7ecbff','#fff6d8','#f6e2b0','#1f8fd0','#5a4630','#b7e6ff'),
+      L('#ff8a5b','#ffd0a0','#e7c49a','#c45a3a','#fff6e8','#ffb080','moon'),
+      L('#e7f6ff','#fffaf0','#f7edd4','#c5e4f2','#5a5040','#e7f6ff','mist'),
+      L('#0e1c38','#1a3058','#1c2438','#0a2748','#f7f1e4','#16385c','star')
+    ],
     props:props('沙桌','沙滩牌','冷藏箱','救生圈架','沙滩屋','椰树','浪花一排排走上来，沙子里藏着小贝壳。','月亮把海面铺成一条银路。')},
-  {art:'farm', outdoor:true, emoji:'🚜', emojiDusk:'🌇', emojiNight:'🌙',
-    bg:'#fff8dc', floor:'#c6e08a', sky:'#d7f3ff', ink:'#3e3420', deco:'sun',
+  {art:'farm', outdoor:true, emoji:'🚜', emojiDusk:'🌇', emojiNight:'🌙', deco:'sun',
     titles:['田野农庄','傍晚农庄','清晨农田','星夜谷仓'],
+    looks:[
+      L('#8fd4ff','#fff4c8','#8fbf4a','#8fd4ff','#3e3418'),
+      L('#e07a3a','#f0c080','#6a8a32','#e07a3a','#fff6e0','#e07a3a','moon'),
+      L('#e7f4ea','#f7fff0','#d5e8a8','#e7f4ea','#3e4428','#e7f4ea','mist'),
+      L('#121c28','#1c2830','#1a2810','#121c28','#f7f1c8','#121c28','star')
+    ],
     props:props('木桌','丰收牌','菜筐','蔬果架','谷仓','田边','田垄绿绿的，稻草人举着手。','谷仓里有干草的味道。')},
-  {art:'lotus', outdoor:true, emoji:'🪷', emojiDusk:'🌇', emojiNight:'🌙',
-    bg:'#e7fff6', floor:'#1f7a8a', sky:'#d7f6ff', water:'#2f8fbf', ink:'#f7f1e4', deco:'sun',
+  {art:'lotus', outdoor:true, emoji:'🪷', emojiDusk:'🌇', emojiNight:'🌙', deco:'sun',
     titles:['荷花池塘','暮色荷塘','晨雾荷塘','月下荷塘'],
+    looks:[
+      L('#c9f2ff','#e7fff6','#1f7a8a','#1478a8','#f7fff8','#7ec8ea'),
+      L('#e09070','#6a5078','#163e55','#1a4060','#fff0e8','#c46a55','moon'),
+      L('#e7f6f8','#f4fffc','#d5eee8','#c5e4ea','#1e4a44','#e7f6f8','mist'),
+      L('#0c1c30','#163048','#0e2430','#0a3050','#e8fff6','#123048','star')
+    ],
     props:props('木码头','荷塘牌','竹篮','水榭','月洞门','远山','荷叶圆圆的，蜻蜓停在尖角上。','月洞门里倒映着灯。')},
-  {art:'camp', outdoor:true, emoji:'⛺', emojiDusk:'🔥', emojiNight:'🌌',
-    bg:'#2a3a55', floor:'#3e5a38', sky:'#24344e', ink:'#f7f1e4', deco:'star',
+  {art:'camp', outdoor:true, emoji:'⛺', emojiDusk:'🔥', emojiNight:'🌌', deco:'star',
     titles:['星空露营','黄昏营地','晨雾营地','深夜营火'],
+    looks:[
+      L('#121a33','#24344e','#1c3324','#121a33','#f7f1e4'),
+      L('#e07a3a','#4a3058','#3a4030','#e07a3a','#fff1e0','#e07a3a','moon'),
+      L('#c5d5c8','#e7eee4','#8aa888','#c5d5c8','#1e2e22','#c5d5c8','mist'),
+      L('#070b18','#12182c','#10180f','#070b18','#ffe7c2','#070b18','star')
+    ],
     props:props('木头凳','露营牌','冷藏盒','背包架','帐篷','远林','松树黑黑的，营火噼啪响。','火星轻轻往天上飘。')},
-  {art:'treehouse', outdoor:true, emoji:'🌳', emojiDusk:'🌇', emojiNight:'🌙',
-    bg:'#d7f3e4', floor:'#7dba62', sky:'#c9f0ff', ink:'#243024', deco:'sun',
+  {art:'treehouse', outdoor:true, emoji:'🌳', emojiDusk:'🌇', emojiNight:'🌙', deco:'sun',
     titles:['大树屋','晚霞树屋','晨光树屋','星夜树屋'],
+    looks:[
+      L('#79c8f0','#d7f6e4','#6aaa4a','#79c8f0','#143018'),
+      L('#e09058','#8a6048','#4a6a32','#e09058','#fff1e0','#e09058','moon'),
+      L('#e7f6ff','#f4fff4','#c6e4b8','#e7f6ff','#244028','#e7f6ff','mist'),
+      L('#102033','#163028','#102818','#102033','#e8ffe4','#102033','star')
+    ],
     props:props('树枝台','树屋牌','宝箱','松鼠洞','树屋门','树窗','叶子沙沙响，绳子梯子晃一晃。','树屋里的小灯像一颗星。')},
-  {art:'greenhouse', outdoor:false, emoji:'🪴', emojiDusk:'🌇', emojiNight:'✨',
-    bg:'#e7fff2', floor:'#cfe8c4', sky:'#e9fff6', ink:'#1e3a2a', deco:'sun',
+  {art:'greenhouse', outdoor:false, emoji:'🪴', emojiDusk:'🌇', emojiNight:'✨', deco:'sun',
     titles:['玻璃温室','黄昏温室','晨露温室','灯下温室'],
+    looks:[
+      L('#d8ffe8','#f4fff6','#c6efd0','#d8ffe8','#145c32'),
+      L('#f0c090','#e7f0c8','#d7c8a0','#f0c090','#3a4a28','#f0c090','moon'),
+      L('#f4fff8','#ffffff','#e7f6ea','#f4fff8','#245c3a','#f4fff8','mist'),
+      L('#10281c','#163828','#102018','#10281c','#d8ffe8','#10281c','star')
+    ],
     props:props('育苗台','浇水牌','花盆箱','绿植架','温室门','玻璃','玻璃上有小水珠，空气暖暖香香的。','植物灯把叶子照得亮亮的。')},
-  {art:'rain', outdoor:true, emoji:'🌧️', emojiDusk:'🌃', emojiNight:'🌙',
-    bg:'#d5e0ea', floor:'#9aa8b5', sky:'#c5d0dc', water:'#9ec4de', ink:'#f7f1e4', deco:'mist',
+  {art:'rain', outdoor:true, emoji:'🌧️', emojiDusk:'🌃', emojiNight:'🌙', deco:'mist',
     titles:['雨中街道','傍晚小雨','清晨细雨','夜雨街头'],
+    looks:[
+      L('#8aa0b4','#c5d0dc','#6d7c8a','#8aa0b4','#f4f7fb'),
+      L('#6a5a68','#a08078','#4a5560','#6a5a68','#f7f1e4','#6a5a68','moon'),
+      L('#d5e0e8','#eef3f6','#b7c4ce','#d5e0e8','#2c3e50','#d5e0e8','mist'),
+      L('#121820','#1c2834','#151c24','#121820','#e7f2fb','#121820','star')
+    ],
     props:props('候车椅','雨天牌','邮筒','报摊','小店','橱窗','雨丝斜斜的，水洼里倒映着屋檐。','路灯在雨里晕开一圈光。')},
-  {art:'market', outdoor:false, emoji:'🥬', emojiDusk:'🏮', emojiNight:'🌙',
-    bg:'#fff6e8', floor:'#e7d3b0', sky:'#fff1d6', ink:'#3e3428', deco:'sun',
+  {art:'market', outdoor:false, emoji:'🥬', emojiDusk:'🏮', emojiNight:'🌙', deco:'sun',
     titles:['清晨菜场','黄昏菜场','雾中菜场','灯笼菜场'],
+    looks:[
+      L('#fff6e4','#fffaf2','#e7d3b0','#fff6e4','#5b3a1e'),
+      L('#f0b080','#fff0d8','#d7b898','#f0b080','#4a3018','#f0b080','moon'),
+      L('#f4f7f2','#f7f4ea','#e4d8c4','#f4f7f2','#3e3a28','#f4f7f2','mist'),
+      L('#2a2018','#3a2820','#241c14','#2a2018','#fff6e0','#2a2018','star')
+    ],
     props:props('秤台','菜价牌','菜筐','货摊','菜场口','摊位','吆喝声热热闹闹，青菜上还带着水珠。','灯笼亮了，摊主开始收摊。')},
-  {art:'snow', outdoor:true, emoji:'❄️', emojiDusk:'🌅', emojiNight:'🌙',
-    bg:'#eef6ff', floor:'#f7fbff', sky:'#e7f2ff', ink:'#3e5670', deco:'sun',
+  {art:'snow', outdoor:true, emoji:'❄️', emojiDusk:'🌅', emojiNight:'🌙', deco:'sun',
     titles:['雪地木屋','晚霞雪屋','晨雪小路','星夜雪屋'],
+    looks:[
+      L('#d6ecff','#f7fbff','#f4f8fc','#d6ecff','#3e5670'),
+      L('#f0b8c8','#ffe8dc','#f7e6ea','#f0b8c8','#5a4050','#f0b8c8','moon'),
+      L('#eef6fb','#ffffff','#f7fbff','#eef6fb','#4a6070','#eef6fb','mist'),
+      L('#1a2740','#24344e','#e8eef6','#1a2740','#2a3a52','#1a2740','star')
+    ],
     props:props('雪凳','雪地牌','雪橇','木柴堆','木屋','雪窗','雪软软的，脚印一串串通向木屋。','窗里的光把雪照成金色。')}
 ];
 
 function applyVariant(base, v){
-  const s=Object.assign({}, base);
-  const pal=(base.outdoor?OUT_VAR:IN_VAR)[v]||null;
-  if(pal) Object.assign(s, pal);
-  s.variant=v;
-  s.deco=(pal&&pal.deco)||base.deco||'sun';
-  s.ink=s.ink||base.ink||'#3e3428';
+  const look=(base.looks&&base.looks[Math.min(v, base.looks.length-1)])||{};
+  const s=Object.assign({}, base, look, {variant:v});
   const title=base.titles[Math.min(v, base.titles.length-1)];
   s.name=title;
   s.titlePick=title;
   s.emoji=(v===3&&base.emojiNight)||(v===1&&base.emojiDusk)||base.emoji;
+  s.deco=look.deco||base.deco||'sun';
+  s.bg=look.sky2||look.sky;
   if(v===3&&base.props.nightNote) s.props=Object.assign({}, base.props, {decorNote:base.props.nightNote});
   return s;
 }
