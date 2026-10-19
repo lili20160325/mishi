@@ -3,6 +3,7 @@
 /** Generate rooms-extra.js with r6..r100. Run: node tools/gen-rooms-extra.js */
 const fs = require('fs');
 const path = require('path');
+const sceneBank = require('./scene-art');
 
 // ---- puzzle banks (grade 5, original wording / public-domain poems) ----
 const POEMS = [
@@ -152,6 +153,212 @@ const MATH = [];
   MATH.push({kind:'discount', note:`【算一算】一件原价 ${price} 元的外套打 ${zhe} 折。应付多少元？`, answer:ans, explain:`${price} × ${rate} = ${ans}`, hintStep:`打 ${zhe} 折就是用原价乘 0.${zhe}。`});
 });
 
+// ---- 循环小数 & 小数四则（和上面的题交错出现） ----
+const MINUS='\u2212';
+function D(s){const [i,f='']=String(s).split('.');return {n:BigInt(i+f), d:10n**BigInt(f.length)};}
+function addD(a,b){return {n:a.n*b.d+b.n*a.d, d:a.d*b.d};}
+function subD(a,b){return {n:a.n*b.d-b.n*a.d, d:a.d*b.d};}
+function mulD(a,b){return {n:a.n*b.n, d:a.d*b.d};}
+function divD(a,b){return {n:a.n*b.d, d:a.d*b.n};}
+function fmtD(a){
+  let n=a.n,d=a.d;if(n%d===0n)return String(n/d);
+  const scale=1000000n;const v=(n*scale)/d;let s=String(v);const neg=s[0]==='-';if(neg)s=s.slice(1);
+  while(s.length<7)s='0'+s;
+  const ip=s.slice(0,-6)||'0', fp=s.slice(-6).replace(/0+$/,'');
+  return (neg?'-':'')+ip+(fp?'.'+fp:'');
+}
+function gcdN(a,b){a=Math.abs(a);b=Math.abs(b);while(b){const t=a%b;a=b;b=t;}return a||1;}
+function cycleInfo(num, den){
+  num=((num%den)+den)%den;
+  const seen=new Map();
+  let rem=num, digits='';
+  for(let i=0;i<den+3;i++){
+    if(rem===0) return {finite:true, prefix:digits, cycle:''};
+    if(seen.has(rem)){const st=seen.get(rem);return {finite:false, prefix:digits.slice(0,st), cycle:digits.slice(st)};}
+    seen.set(rem, digits.length);
+    rem*=10;
+    digits+=String(Math.floor(rem/den));
+    rem%=den;
+  }
+  throw new Error('cycle '+num+'/'+den);
+}
+function pureFrac(cycle){
+  const num=Number(cycle), den=10**cycle.length-1, g=gcdN(num, den);
+  return {n:num/g, d:den/g};
+}
+function decShow(info){
+  let shown=info.prefix||'';
+  if(info.cycle){shown+=info.cycle; while(shown.length<4) shown+=info.cycle;}
+  return '0.'+(shown||'0')+'…';
+}
+function addMath(kind, note, answer, explain, hintStep){
+  const a=String(answer);
+  if(!/^\d+(\.\d+)?$/.test(a)||/^0\d/.test(a)) throw new Error('bad answer '+a+' | '+note);
+  MATH.push({kind, note, answer:a, explain, hintStep});
+}
+const H={
+  rep_len:'用竖式除一除，余数重复就停。只数一直重复的那几位有几位，前面不循环的数字不要算进去。',
+  rep_block:'先除到开始循环。循环节是重复的那一段，按顺序连成一个数，比如重复 1 和 8 就填 18。不循环的数字不要写。',
+  rep_from:'看小数点后面，从第几位起才开始一直重复。如果第一位就不停地重复，答案就是 1。',
+  rep_den:'纯循环小数：循环几位，分母就是几个 9。一位用 9，两位用 99，写好再约分，约完的分母才是答案。',
+  rep_num:'先写成“循环节 / 几个 9”，再约分。约完以后的分子才是要填的数。',
+  rep_which:'约分后分母只剩 2 和 5，商是有限小数；分母里还有 3、7、11 这类因数，商通常会循环。四个里只有一个。',
+  rep_as_dec:'把分数除开，一直除到余数重复。只把重复的数字按顺序连起来。',
+  dec_add:'小数点对齐再相加。位数不一样时，空着的位可以看成 0。',
+  dec_sub:'小数点对齐再相减。位数少的一边补 0，不够减就向前一位借。',
+  dec_mul:'先按整数相乘，再点小数点：两个因数一共有几位小数，积就有几位小数。',
+  dec_div:'除数是小数时，先把除数变成整数，被除数的小数点也向右移同样的位数，再除。',
+  dec_mix:'看清每一步在求什么，一步一步算。有加减又有乘，先乘再加减。'
+};
+[[1,3],[2,11],[1,7],[1,6],[4,11],[1,9],[5,6],[3,11]].forEach(([a,b])=>{
+  const info=cycleInfo(a,b);
+  addMath('rep_len', `【算一算】循环小数：计算 ${a}÷${b}，商的循环节有几位数字？`, info.cycle.length,
+    `${a}÷${b}=${decShow(info)}，循环节是 ${info.cycle}，有 ${info.cycle.length} 位。`, H.rep_len);
+});
+[[1,3],[2,11],[2,3],[3,11],[4,9],[5,11],[1,6],[8,9]].forEach(([a,b])=>{
+  const info=cycleInfo(a,b);
+  if(/^0/.test(info.cycle)) throw new Error('leading zero cycle '+a+'/'+b);
+  addMath('rep_block', `【算一算】循环小数：计算 ${a}÷${b}，把循环节按顺序连起来是多少？`, info.cycle,
+    `${a}÷${b}=${decShow(info)}。${info.prefix?('前面的 '+info.prefix+' 不循环，'):''}循环节连起来是 ${info.cycle}。`, H.rep_block);
+});
+[[1,6],[5,6],[1,3],[2,11],[5,12],[7,12],[1,15],[7,15]].forEach(([a,b])=>{
+  const info=cycleInfo(a,b);
+  addMath('rep_from', `【算一算】循环小数：计算 ${a}÷${b}，从小数点后第几位开始循环？`, info.prefix.length+1,
+    `${a}÷${b}=${decShow(info)}，从小数点后第 ${info.prefix.length+1} 位开始循环。`, H.rep_from);
+});
+[[1,3],[2,11],[2,3],[4,9],[3,11],[6,11],[1,11],[8,9]].forEach(([a,b])=>{
+  const info=cycleInfo(a,b);
+  if(info.prefix) throw new Error('not pure '+a+'/'+b);
+  const fr=pureFrac(info.cycle);
+  const show=decShow(info);
+  addMath('rep_den', `【算一算】循环小数：${show}（循环节是 ${info.cycle}）化成最简分数，分母是多少？`, fr.d,
+    `${show} 的循环节是 ${info.cycle}，写成 ${Number(info.cycle)}/${10**info.cycle.length-1}，约分得 ${fr.n}/${fr.d}，分母是 ${fr.d}。`, H.rep_den);
+});
+[[2,11],[1,3],[5,9],[3,11],[4,11],[2,9],[7,9],[9,11]].forEach(([a,b])=>{
+  const info=cycleInfo(a,b);
+  if(info.prefix) throw new Error('not pure '+a+'/'+b);
+  const fr=pureFrac(info.cycle);
+  const show=decShow(info);
+  addMath('rep_num', `【算一算】循环小数：${show}（循环节是 ${info.cycle}）化成最简分数，分子是多少？`, fr.n,
+    `${show} 写成 ${Number(info.cycle)}/${10**info.cycle.length-1}，约分得 ${fr.n}/${fr.d}，分子是 ${fr.n}。`, H.rep_num);
+});
+[[[1,2],[3,4],[1,3],[2,5]],[[3,5],[7,2],[2,11],[8,5]],[[9,2],[1,4],[5,6],[7,5]],[[4,5],[3,8],[2,3],[15,4]],[[7,4],[1,8],[4,9],[9,5]],[[11,2],[3,6],[1,7],[16,5]],[[21,6],[2,9],[25,4],[14,5]],[[5,2],[8,4],[3,11],[9,3]]].forEach((opts)=>{
+  const marks=opts.map(([a,b])=>!cycleInfo(a,b).finite);
+  const hits=marks.map((v,i)=>v?i+1:0).filter(Boolean);
+  if(hits.length!==1) throw new Error('which '+JSON.stringify(opts)+' '+hits);
+  const bits=opts.map(([a,b],i)=>{
+    const info=cycleInfo(a,b);
+    const show=info.finite?('0.'+info.prefix).replace(/0\.$/,'0').replace(/(\.\d*?)0+$/,'$1').replace(/\.$/,'') : decShow(info);
+    // finite display: if prefix is the terminating digits
+    const finiteShow=info.finite?(Number(a)/Number(b)).toString():'';
+    return `${'①②③④'[i]} ${a}÷${b}=${info.finite?finiteShow:decShow(info)}${info.finite?' 有限小数':' 循环小数'}`;
+  });
+  const body=opts.map(([a,b],i)=>`${'①②③④'[i]} ${a}÷${b}`).join(' ');
+  addMath('rep_which', `【算一算】循环小数：下面哪个算式的商是循环小数？${body}。填序号。`, hits[0],
+    bits.join('，')+`。所以填 ${hits[0]}。`, H.rep_which);
+});
+[[2,11],[1,3],[5,6],[4,11],[7,9],[1,6]].forEach(([a,b])=>{
+  const info=cycleInfo(a,b);
+  if(/^0/.test(info.cycle)) throw new Error('lead cycle frac '+a+'/'+b);
+  const g=gcdN(a,b);
+  addMath('rep_as_dec', `【算一算】循环小数：最简分数 ${a/g}/${b/g} 写成小数，把循环节按顺序连起来是多少？`, info.cycle,
+    `${a/g}/${b/g}=${decShow(info)}，循环节连起来是 ${info.cycle}。`, H.rep_as_dec);
+});
+function bare(kind, expr, ans, explain){addMath(kind, `【算一算】小数四则：${expr} = ?`, ans, explain, H[kind]);}
+[['3.75','0.6'],['0.8','1.25'],['12.5','0.08'],['6','0.75']].forEach(([a,b])=>{
+  const ans=fmtD(addD(D(a),D(b)));
+  bare('dec_add', `${a} + ${b}`, ans, `${a} + ${b} = ${ans}。小数点对齐再相加。`);
+});
+[['1.2','0.85'],['2.5','1.75'],['0.6','0.45'],['3.25','1.8']].forEach(([a,b])=>{
+  const ans=fmtD(addD(D(a),D(b)));
+  addMath('dec_add', `【算一算】小数应用：小黄早上跑了 ${a} 千米，晚上又跑了 ${b} 千米。一共跑了多少千米？`, ans,
+    `${a} + ${b} = ${ans}（千米）。`, H.dec_add);
+});
+[['8.4','2.75'],['5','0.25'],['10.5','1.08'],['6.25','4.5']].forEach(([a,b])=>{
+  const ans=fmtD(subD(D(a),D(b)));
+  bare('dec_sub', `${a} ${MINUS} ${b}`, ans, `${a} ${MINUS} ${b} = ${ans}。小数点对齐，位数少的补 0。`);
+});
+[['2.4','1.85'],['5.6','3.25'],['8','2.75'],['3.5','0.8']].forEach(([a,b])=>{
+  const ans=fmtD(subD(D(a),D(b)));
+  addMath('dec_sub', `【算一算】小数应用：红绳长 ${a} 米，蓝绳长 ${b} 米。红绳比蓝绳长多少米？`, ans,
+    `${a} ${MINUS} ${b} = ${ans}（米）。`, H.dec_sub);
+});
+[['2.5','0.75'],['1.8','0.35'],['3.6','1.25'],['4.2','1.05']].forEach(([a,b])=>{
+  const ans=fmtD(subD(D(a),D(b)));
+  addMath('dec_sub', `【算一算】小数应用：一盒牛奶有 ${a} 升，喝掉 ${b} 升。还剩多少升？`, ans,
+    `${a} ${MINUS} ${b} = ${ans}（升）。`, H.dec_sub);
+});
+[['2.4','0.15'],['0.8','1.25'],['3.5','0.4'],['12.5','0.08']].forEach(([a,b])=>{
+  const ans=fmtD(mulD(D(a),D(b)));
+  bare('dec_mul', `${a} × ${b}`, ans, `${a} × ${b} = ${ans}。先按整数乘，再点上小数点。`);
+});
+[['1.25',6],['2.4',5],['0.75',8],['0.45',10]].forEach(([a,n])=>{
+  const ans=fmtD(mulD(D(a),D(String(n))));
+  addMath('dec_mul', `【算一算】小数应用：彩笔每支 ${a} 元，买了 ${n} 支。一共多少元？`, ans,
+    `${a} × ${n} = ${ans}（元）。`, H.dec_mul);
+});
+[['0.4','3.5'],['0.25','6'],['1.2','2.5'],['0.6','2.5']].forEach(([a,b])=>{
+  const ans=fmtD(mulD(D(a),D(b)));
+  addMath('dec_mul', `【算一算】小数应用：操场一圈 ${a} 千米，跑了 ${b} 圈。一共跑了多少千米？`, ans,
+    `${a} × ${b} = ${ans}（千米）。`, H.dec_mul);
+});
+[['6.3','0.3'],['7.2','0.16'],['4.5','0.75'],['0.96','0.3']].forEach(([a,b])=>{
+  const ans=fmtD(divD(D(a),D(b)));
+  bare('dec_div', `${a} ÷ ${b}`, ans, `${a} ÷ ${b} = ${ans}。`);
+});
+[['3.6',8],['4.8',6],['7.5',5],['1.2',8]].forEach(([a,n])=>{
+  const ans=fmtD(divD(D(a),D(String(n))));
+  addMath('dec_div', `【算一算】小数应用：${a} 升果汁平均分进 ${n} 个杯子。每个杯子多少升？`, ans,
+    `${a} ÷ ${n} = ${ans}（升）。`, H.dec_div);
+});
+[['4.5','0.75'],['3.6','0.4'],['2.4','0.6'],['6.3','0.9']].forEach(([a,b])=>{
+  const ans=fmtD(divD(D(a),D(b)));
+  addMath('dec_div', `【算一算】小数应用：一根丝带长 ${a} 米，每段长 ${b} 米。可以剪成几段？`, ans,
+    `${a} ÷ ${b} = ${ans}（段）。`, H.dec_div);
+});
+[[4,'18.8'],[5,'12.5'],[8,'6.4'],[2,'5.5']].forEach(([n,a])=>{
+  const ans=fmtD(divD(D(a),D(String(n))));
+  addMath('dec_div', `【算一算】小数应用：${n} 支钢笔一共 ${a} 元。每支多少元？`, ans,
+    `${a} ÷ ${n} = ${ans}（元）。`, H.dec_div);
+});
+[['12.6','0.45','3.05'],['8.5','1.25','0.8'],['4','0.75','1.2'],['10.5','0.08','2.4']].forEach(([a,b,c])=>{
+  const ans=fmtD(subD(addD(D(a),D(b)),D(c)));
+  bare('dec_mix', `${a} + ${b} ${MINUS} ${c}`, ans, `${a} + ${b} ${MINUS} ${c} = ${ans}。先加再减。`);
+});
+[['6.5','2.35','1.8'],['8','3.25','2.4'],['5.6','1.75','0.9'],['7.25','2.5','1.5']].forEach(([a,b,c])=>{
+  const ans=fmtD(subD(subD(D(a),D(b)),D(c)));
+  addMath('dec_mix', `【算一算】小数应用：一块布长 ${a} 米，做裙子用去 ${b} 米，做裤子用去 ${c} 米。还剩多少米？`, ans,
+    `${a} ${MINUS} ${b} ${MINUS} ${c} = ${ans}（米）。`, H.dec_mix);
+});
+[['3.75',2,'10'],['1.25',4,'10'],['2.4',3,'10'],['1.8',5,'10']].forEach(([a,n,p])=>{
+  const ans=fmtD(subD(D(p), mulD(D(a),D(String(n)))));
+  addMath('dec_mix', `【算一算】小数应用：面包每个 ${a} 元，买了 ${n} 个，付了 ${p} 元。应找回多少元？`, ans,
+    `${a} × ${n} = ${fmtD(mulD(D(a),D(String(n))))}，${p} ${MINUS} 它 = ${ans}（元）。`, H.dec_mix);
+});
+[['12.8',2,'0.6',5],['8.5',3,'1.25',4],['6.4',2,'0.75',8],['4.25',4,'0.8',5]].forEach(([a,n1,b,n2])=>{
+  const ans=fmtD(addD(mulD(D(a),D(String(n1))), mulD(D(b),D(String(n2)))));
+  addMath('dec_mix', `【算一算】小数应用：故事书每本 ${a} 元，买 ${n1} 本；书签每张 ${b} 元，买 ${n2} 张。一共多少元？`, ans,
+    `${a}×${n1} + ${b}×${n2} = ${ans}（元）。`, H.dec_mix);
+});
+[['5','1.25','0.8'],['8.5','2.75','1.2'],['3.6','0.85','2.4'],['6.4','2.15','1.5']].forEach(([a,b,c])=>{
+  const ans=fmtD(addD(subD(D(a),D(b)),D(c)));
+  addMath('dec_mix', `【算一算】小数应用：米袋里有 ${a} 千克，吃掉 ${b} 千克后又买来 ${c} 千克。现在有多少千克？`, ans,
+    `${a} ${MINUS} ${b} + ${c} = ${ans}（千克）。`, H.dec_mix);
+});
+(function mixMath(){
+  const buckets=new Map(), order=[];
+  for(const it of MATH){
+    if(!buckets.has(it.kind)){buckets.set(it.kind,[]); order.push(it.kind);}
+    buckets.get(it.kind).push(it);
+  }
+  const prefer=['shop','rep_len','dec_add','frame','rep_block','dec_sub','rect_dm','rep_den','dec_mul','eq2','rep_which','dec_div','remain','rep_num','dec_mix','trap','rep_from','tri2','rep_as_dec','tree','speed','discount'];
+  const keys=prefer.filter(k=>buckets.has(k));
+  for(const k of order) if(!keys.includes(k)) keys.push(k);
+  const max=Math.max(...keys.map(k=>buckets.get(k).length));
+  const mixed=[];
+  for(let i=0;i<max;i++) for(const k of keys){const b=buckets.get(k); if(b[i]) mixed.push(b[i]);}
+  MATH.length=0; mixed.forEach(x=>MATH.push(x));
+})();
 
 const SCENES = [
   {name:'书房', emoji:'📚', bg:'#ffe9c7', floor:'#e7b98a', subjects:['语文','数学']},
@@ -189,7 +396,14 @@ const TITLES = [
 
 function escJs(s){return String(s).replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/\n/g,'\\n');}
 
+function sceneFor(idx){
+  if(idx<24) return SCENES[idx % SCENES.length];
+  const j=idx-24, bank=sceneBank.LATER;
+  return sceneBank.applyVariant(bank[j % bank.length], Math.floor(j / bank.length));
+}
 function artFn(scene, mode){
+  const custom=sceneBank.drawArt(scene, mode);
+  if(custom) return custom;
   const bg=scene.bg, fl=scene.floor, em=scene.emoji, nm=scene.name;
   const accent = (mode*37)%7;
   const doorX = 300 + (accent%3)*4;
@@ -349,6 +563,7 @@ function artFn(scene, mode){
 
 /** Scene-fitting object display names (ids stay desk/board/box/shelf/door for engine) */
 function propsFor(scene){
+  if(scene.props) return scene.props;
   const n=scene.name;
   if(n==='厨房') return {desk:'桌子', board:'菜谱板', box:'食材盒', shelf:'碗架', door:'厨房门', window:'窗户', decorNote:'灶台暖暖的，锅铲挂在墙上。'};
   if(n==='操场'||n==='体育馆') return {desk:'长椅', board:'记分板', box:'器材箱', shelf:'球架', door:'场馆门', window:'看台', decorNote:'外面传来啦啦队的加油声。'};
@@ -376,9 +591,11 @@ function makeRoom(idx){
   // idx 0 -> r6 ... 94 -> r100
   const idNum = idx+6;
   const id = 'r'+idNum;
-  const scene = SCENES[idx % SCENES.length];
-  const title = TITLES[idx % TITLES.length] + (idx>=TITLES.length ? (Math.floor(idx/TITLES.length)+1) : '');
+  const scene = sceneFor(idx);
+  const title = scene.titlePick || (TITLES[idx % TITLES.length] + (idx>=TITLES.length ? (Math.floor(idx/TITLES.length)+1) : ''));
   const mode = idx % 8; // 8 play patterns
+  let mathKind='';
+  function takeMath(){const m=nextMath(); mathKind=m.kind; return m;}
   const P = propsFor(scene);
   const keyItem = 'key_'+id;
   const scrapItem = 'scrap_'+id;
@@ -403,7 +620,7 @@ function makeRoom(idx){
 
   if(mode===0){
     // Escape: math lock → key → door (keep ~1/8)
-    const m = nextMath();
+    const m = takeMath();
     sub = '数学 · 挑战';
     story = [
       mentionXiaohuang ? `小黄走进了${scene.name}，门在身后轻轻关上。` : `你来到了${scene.name}。`,
@@ -438,7 +655,7 @@ function makeRoom(idx){
     items={[keyItem]:{name:'小钥匙',icon:'🗝️',desc:'一把亮闪闪的小钥匙。'}};
   } else if(mode===1){
     // Quiz win: correct lock → win immediately (no key/door needed; door decorative)
-    const m = nextMath();
+    const m = takeMath();
     sub = '数学 · 闯关';
     story = [
       `欢迎来到「${title}」挑战站！`,
@@ -466,7 +683,7 @@ function makeRoom(idx){
     items={};
   } else if(mode===2){
     // Give to NPC: unlock gift → use on npc
-    const m = nextMath();
+    const m = takeMath();
     const npcName = scene.name==='厨房' ? '机器人小厨' : (idx%2===0 ? '小花猫' : '小管家');
     const npcEmoji = scene.name==='厨房' ? '🤖' : (idx%2===0 ? '🐱' : '🧑‍🏫');
     const want = scene.name==='厨房' ? '点心' : '礼物';
@@ -504,7 +721,7 @@ function makeRoom(idx){
     items={[giftItem]:{name:want,icon:scene.name==='厨房'?'🧁':'🎁',desc:`给${npcName}的${want}。`}};
   } else if(mode===3){
     // Cook/assemble: take A + take B → combine → use on oven/robot
-    const m = nextMath();
+    const m = takeMath();
     const rid = nextRid();
     sub = idx%2===0 ? '数学 · 动手' : '数学 · 益智';
     const targetName = scene.name==='厨房' ? '烤箱' : (scene.name==='实验室' ? '实验台机器' : '组装台');
@@ -550,7 +767,7 @@ function makeRoom(idx){
     };
   } else if(mode===4){
     // Dual lock: both correct → second lock wins (stamp optional)
-    const m = nextMath();
+    const m = takeMath();
     const useEn = idx%2===0;
     let lock2note, lock2ans, lock2kind, lock2explain, lock2hint, lock2len, lock2opts;
     if(useEn){
@@ -605,7 +822,7 @@ function makeRoom(idx){
     items={};
   } else if(mode===5){
     // Pass badge: combine scrap+tool → swipe on reader (not door)
-    const m = nextMath();
+    const m = takeMath();
     sub = '数学 · 通行证';
     story = [
       `「${title}」要刷通行证才能完成任务。`,
@@ -716,7 +933,7 @@ function makeRoom(idx){
 
   return {
     id, title, emoji: scene.emoji, sub, story, objects, combos, hints, explain, solution,
-    scene, mode, art: artFn(scene, mode), items
+    scene, mode, mathKind, art: artFn(scene, mode), items
   };
 }
 
@@ -739,6 +956,7 @@ out.push('function R(x,y,w,h,f,rx,ex){return \'<rect x="\'+x+\'" y="\'+y+\'" wid
 out.push('function T(x,y,s,ch,ex){return \'<text x="\'+x+\'" y="\'+y+\'" font-size="\'+s+\'" text-anchor="middle" dominant-baseline="central"\'+(ex||\'\')+\'>\'+ch+\'</text>\';}');
 out.push('function P(d,f,ex){return \'<path d="\'+d+\'" fill="\'+f+\'"\'+(ex||\'\')+\'/>\';}');
 out.push('function C(x,y,r,f,ex){return \'<circle cx="\'+x+\'" cy="\'+y+\'" r="\'+r+\'" fill="\'+f+\'"\'+(ex||\'\')+\'/>\';}');
+out.push('function el(cx,cy,rx,ry,f,ex){return \'<ellipse cx="\'+cx+\'" cy="\'+cy+\'" rx="\'+rx+\'" ry="\'+ry+\'" fill="\'+f+\'"\'+(ex||\'\')+\'/>\';}');
 out.push('var SK=\' stroke="#5b4636" stroke-width="2.5" stroke-linejoin="round"\';');
 out.push('function g(id,inner){return \'<g class="obj" data-obj="\'+id+\'">\'+inner+\'</g>\';}');
 out.push('var ITEMS=G.PZ_ITEMS;');
@@ -833,5 +1051,9 @@ const modeCount={};
 rooms.forEach(r=>{modeCount[r.mode]=(modeCount[r.mode]||0)+1;});
 console.log('subject tags', mix);
 console.log('mode counts (0 escape..7 english)', modeCount);
+const kc={}; rooms.forEach(r=>{if(r.mathKind)kc[r.mathKind]=(kc[r.mathKind]||0)+1;});
+console.log('math kinds used', kc);
+const sc={}; rooms.forEach(r=>{const k=(r.scene.art||r.scene.name)+(r.scene.variant!=null?('@'+r.scene.variant):''); sc[k]=(sc[k]||0)+1;});
+console.log('scenes', sc);
 const r8=rooms.find(r=>r.id==='r8');
 console.log('r8', r8.title, 'mode', r8.mode, 'objs', r8.objects.map(o=>o.name).join(','));

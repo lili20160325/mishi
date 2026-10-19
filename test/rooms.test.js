@@ -10,6 +10,26 @@ const key=st=>Object.keys(st.flags).filter(k=>st.flags[k]).sort().join(',')+'|'+
 /* ---- 精确小数 ---- */
 const dec=s=>{const [i,f='']=String(s).split('.');return {n:BigInt(i+f),d:10n**BigInt(f.length)};};
 const mul=(a,b)=>({n:a.n*b.n,d:a.d*b.d}),add=(a,b)=>({n:a.n*b.d+b.n*a.d,d:a.d*b.d}),eqv=(a,b)=>a.n*b.d===b.n*a.d;
+const sub=(a,b)=>({n:a.n*b.d-b.n*a.d,d:a.d*b.d}),div=(a,b)=>({n:a.n*b.d,d:a.d*b.n});
+function gcdN(a,b){a=Math.abs(a);b=Math.abs(b);while(b){const t=a%b;a=b;b=t;}return a||1;}
+function cycleInfo(num, den){
+  num=((num%den)+den)%den;
+  const seen=new Map();
+  let rem=num, digits='';
+  for(let i=0;i<den+3;i++){
+    if(rem===0) return {finite:true, prefix:digits, cycle:''};
+    if(seen.has(rem)){const st=seen.get(rem);return {finite:false, prefix:digits.slice(0,st), cycle:digits.slice(st)};}
+    seen.set(rem, digits.length);
+    rem*=10;
+    digits+=String(Math.floor(rem/den));
+    rem%=den;
+  }
+  throw new Error('cycle '+num+'/'+den);
+}
+function pureFrac(cycle){
+  const num=Number(cycle), den=10**cycle.length-1, g=gcdN(num, den);
+  return {n:num/g, d:den/g};
+}
 const lockOf=(r,obj,flags)=>{const st={flags:Object.fromEntries((flags||[]).map(f=>[f,true])),inv:[],done:false};return E.view(r,st,obj).lock;};
 const noteOf=(r,obj,flags)=>{const st={flags:Object.fromEntries((flags||[]).map(f=>[f,true])),inv:[],done:false};return E.view(r,st,obj).note||'';};
 /* ---- ③ 独立算密码：只读孩子看到的纸条文字 ---- */
@@ -87,6 +107,45 @@ function fmtDec(a){
 }
 function autoCalc(note){
   let m;
+  // 循环小数
+  if((m=note.match(/循环小数：计算 (\d+)÷(\d+)，商的循环节有几位数字？/))){
+    const info=cycleInfo(+m[1], +m[2]); if(info.finite) throw 'finite len'; return String(info.cycle.length);
+  }
+  if((m=note.match(/循环小数：计算 (\d+)÷(\d+)，把循环节按顺序连起来是多少？/))){
+    const info=cycleInfo(+m[1], +m[2]); if(info.finite||/^0/.test(info.cycle)) throw 'bad block'; return info.cycle;
+  }
+  if((m=note.match(/循环小数：计算 (\d+)÷(\d+)，从小数点后第几位开始循环？/))){
+    const info=cycleInfo(+m[1], +m[2]); if(info.finite) throw 'finite from'; return String(info.prefix.length+1);
+  }
+  if((m=note.match(/循环小数：0\.\d+…（循环节是 (\d+)）化成最简分数，(分母|分子)是多少？/))){
+    const fr=pureFrac(m[1]); return String(m[2]==='分母'?fr.d:fr.n);
+  }
+  if((m=note.match(/循环小数：最简分数 (\d+)\/(\d+) 写成小数，把循环节按顺序连起来是多少？/))){
+    const info=cycleInfo(+m[1], +m[2]); if(info.finite||/^0/.test(info.cycle)) throw 'bad asdec'; return info.cycle;
+  }
+  if((m=note.match(/下面哪个算式的商是循环小数？① (\d+)÷(\d+) ② (\d+)÷(\d+) ③ (\d+)÷(\d+) ④ (\d+)÷(\d+)/))){
+    const opts=[]; for(let i=0;i<4;i++) opts.push([+m[1+i*2], +m[2+i*2]]);
+    const hits=opts.map(([a,b],i)=>cycleInfo(a,b).finite?0:i+1).filter(Boolean);
+    if(hits.length!==1) throw 'which '+hits; return String(hits[0]);
+  }
+  // 小数四则 / 小数应用
+  if((m=note.match(/小数四则：([\d.]+) \+ ([\d.]+) − ([\d.]+) = \?/))) return fmtDec(sub(add(dec(m[1]),dec(m[2])),dec(m[3])));
+  if((m=note.match(/小数四则：([\d.]+) \+ ([\d.]+) = \?/))) return fmtDec(add(dec(m[1]),dec(m[2])));
+  if((m=note.match(/小数四则：([\d.]+) − ([\d.]+) = \?/))) return fmtDec(sub(dec(m[1]),dec(m[2])));
+  if((m=note.match(/小数四则：([\d.]+) × ([\d.]+) = \?/))) return fmtDec(mul(dec(m[1]),dec(m[2])));
+  if((m=note.match(/小数四则：([\d.]+) ÷ ([\d.]+) = \?/))) return fmtDec(div(dec(m[1]),dec(m[2])));
+  if((m=note.match(/早上跑了 ([\d.]+) 千米，晚上又跑了 ([\d.]+) 千米/))) return fmtDec(add(dec(m[1]),dec(m[2])));
+  if((m=note.match(/红绳长 ([\d.]+) 米，蓝绳长 ([\d.]+) 米/))) return fmtDec(sub(dec(m[1]),dec(m[2])));
+  if((m=note.match(/一盒牛奶有 ([\d.]+) 升，喝掉 ([\d.]+) 升/))) return fmtDec(sub(dec(m[1]),dec(m[2])));
+  if((m=note.match(/彩笔每支 ([\d.]+) 元，买了 (\d+) 支/))) return fmtDec(mul(dec(m[1]),dec(m[2])));
+  if((m=note.match(/操场一圈 ([\d.]+) 千米，跑了 ([\d.]+) 圈/))) return fmtDec(mul(dec(m[1]),dec(m[2])));
+  if((m=note.match(/([\d.]+) 升果汁平均分进 (\d+) 个杯子/))) return fmtDec(div(dec(m[1]),dec(m[2])));
+  if((m=note.match(/一根丝带长 ([\d.]+) 米，每段长 ([\d.]+) 米/))) return fmtDec(div(dec(m[1]),dec(m[2])));
+  if((m=note.match(/(\d+) 支钢笔一共 ([\d.]+) 元/))) return fmtDec(div(dec(m[2]),dec(m[1])));
+  if((m=note.match(/一块布长 ([\d.]+) 米，做裙子用去 ([\d.]+) 米，做裤子用去 ([\d.]+) 米/))) return fmtDec(sub(sub(dec(m[1]),dec(m[2])),dec(m[3])));
+  if((m=note.match(/面包每个 ([\d.]+) 元，买了 (\d+) 个，付了 ([\d.]+) 元/))) return fmtDec(sub(dec(m[3]), mul(dec(m[1]),dec(m[2]))));
+  if((m=note.match(/故事书每本 ([\d.]+) 元，买 (\d+) 本；书签每张 ([\d.]+) 元，买 (\d+) 张/))) return fmtDec(add(mul(dec(m[1]),dec(m[2])), mul(dec(m[3]),dec(m[4]))));
+  if((m=note.match(/米袋里有 ([\d.]+) 千克，吃掉 ([\d.]+) 千克后又买来 ([\d.]+) 千克/))) return fmtDec(add(sub(dec(m[1]),dec(m[2])),dec(m[3])));
   // 多步购物
   if((m=note.match(/【算一算】笔记本每本 ([\d.]+) 元，买 (\d+) 本；橡皮每块 ([\d.]+) 元，买 (\d+) 块/)))
     return fmtDec(add(mul(dec(m[1]),dec(m[2])),mul(dec(m[3]),dec(m[4]))));
