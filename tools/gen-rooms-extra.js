@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 'use strict';
-/** Generate rooms-extra.js with r6..r100. Run: node tools/gen-rooms-extra.js */
+/** Generate rooms-extra.js: 30 rooms = old r21..r50 (skip early 20). Run: node tools/gen-rooms-extra.js */
 const fs = require('fs');
 const path = require('path');
 const sceneBank = require('./scene-art');
@@ -1154,7 +1154,12 @@ function nextRid(){const r=RIDDLES[ridI%RIDDLES.length];ridI++;return r;}
 function nextIdiom(){const i=IDIOMS[idiomI%IDIOMS.length];idiomI++;return i;}
 function nextWord(){const w=WORDS[wordI%WORDS.length];wordI++;return w;}
 
-for(let i=0;i<95;i++) rooms.push(makeRoom(i));
+// 小黄已刷透前 20 关（手工 r1–r5 + 生成 r6–r20），本版只上线其后 30 关（原 r21–r50）
+// 仍按 0..44 顺序 makeRoom，保证题库指针与旧版 r21–r50 一致，再 slice 掉前 15 个生成关
+const SKIP_GEN = 15; // makeRoom idx 0..14 → 旧 r6..r20
+const KEEP = 30;     // 旧 r21..r50
+for(let i=0;i<SKIP_GEN+KEEP;i++) rooms.push(makeRoom(i));
+rooms.splice(0, SKIP_GEN);
 
 // Emit rooms-extra.js
 let out = [];
@@ -1264,5 +1269,5 @@ const kc={}; rooms.forEach(r=>{if(r.mathKind)kc[r.mathKind]=(kc[r.mathKind]||0)+
 console.log('math kinds used', kc);
 const sc={}; rooms.forEach(r=>{const k=(r.scene.art||r.scene.name)+(r.scene.variant!=null?('@'+r.scene.variant):''); sc[k]=(sc[k]||0)+1;});
 console.log('scenes', sc);
-const r8=rooms.find(r=>r.id==='r8');
-console.log('r8', r8.title, 'mode', r8.mode, 'objs', r8.objects.map(o=>o.name).join(','));
+console.log('first', rooms[0]&&rooms[0].id, rooms[0]&&rooms[0].title, 'last', rooms[rooms.length-1]&&rooms[rooms.length-1].id);
+console.log('total rooms', rooms.length);

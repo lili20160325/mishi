@@ -7,10 +7,10 @@ function $$(s,r){return Array.prototype.slice.call((r||document).querySelectorAl
 function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
 var QS=new URLSearchParams(location.search);
 /* ---------------- 存档（本页专用，与解谜大冒险 puzzle_v1 互不影响） ---------------- */
-var KEY='mishi_v1';
-function defStore(){return {v:1,sound:true,best:{},rooms:{}};}
+var KEY='mishi_v2'; /* 30 关重编，与旧 100 关进度隔离 */
+function defStore(){return {v:2,sound:true,best:{},rooms:{}};}
 var store;try{if(QS.has('reset'))localStorage.removeItem(KEY);store=JSON.parse(localStorage.getItem(KEY)||'null');}catch(e){store=null;}
-if(!store||store.v!==1)store=defStore();['best','rooms'].forEach(function(k){if(!store[k])store[k]={};});
+if(!store||store.v!==2)store=defStore();['best','rooms'].forEach(function(k){if(!store[k])store[k]={};});
 function save(){try{localStorage.setItem(KEY,JSON.stringify(store));}catch(e){}}
 /* ---------------- 声音 ---------------- */
 var actx=null;
@@ -108,7 +108,7 @@ function winSheet(o){SFX.win();confetti();record(nav.idx,o.stars);
   if(o.explain&&o.explain.length)h+='<div class="explain"><h4>🦉 解谜思路</h4><ol>'+o.explain.map(function(x){return '<li>'+esc(x)+'</li>';}).join('')+'</ol></div>';
   var hasNext=nav.idx+1<N;
   h+='<div class="actions">'+(hasNext?'<button class="btn primary" data-act="next">下一关 ➜</button>':'')+'<button class="btn ghost" data-act="retry">再玩一次</button><button class="btn ghost" data-act="tolist">返回列表</button></div>';
-  if(!hasNext)h+='<div class="hint-cost">🏆 100 间密室全部通关啦，太厉害了！</div>';
+  if(!hasNext)h+='<div class="hint-cost">🏆 30 间密室全部通关啦，太厉害了！</div>';
   h+='</div>';openSheet(h,{locked:true});}
 function statLine(parts){return parts.filter(Boolean).join(' · ');}
 
