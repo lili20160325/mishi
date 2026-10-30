@@ -7,7 +7,7 @@ function $$(s,r){return Array.prototype.slice.call((r||document).querySelectorAl
 function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
 var QS=new URLSearchParams(location.search);
 /* ---------------- 存档（本页专用，与解谜大冒险 puzzle_v1 互不影响） ---------------- */
-var KEY='mishi_v2'; /* 30 关重编，与旧 100 关进度隔离 */
+var KEY='mishi_v3'; /* 厚密室双锁重做，进度重开 */
 function defStore(){return {v:2,sound:true,best:{},rooms:{}};}
 var store;try{if(QS.has('reset'))localStorage.removeItem(KEY);store=JSON.parse(localStorage.getItem(KEY)||'null');}catch(e){store=null;}
 if(!store||store.v!==2)store=defStore();['best','rooms'].forEach(function(k){if(!store[k])store[k]={};});

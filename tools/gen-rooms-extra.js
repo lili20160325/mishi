@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 'use strict';
-/** Generate rooms-extra.js: 30 rooms = old r21..r50 (skip early 20). Run: node tools/gen-rooms-extra.js */
+/** Generate rooms-extra.js: 30 thick escape rooms (3 chapters × 10). Run: node tools/gen-rooms-extra.js */
 const fs = require('fs');
 const path = require('path');
 const sceneBank = require('./scene-art');
@@ -748,418 +748,529 @@ function dialOptsFromFull(full, missing){
 }
 
 function makeRoom(idx){
-  // idx 0 -> r6 ... 94 -> r100
-  const idNum = idx+6;
-  const id = 'r'+idNum;
+  // 30 关真·密室：每关 ≥2 锁 + 多层步骤；idx 0..29 → id r1..r30
+  const idNum = idx + 1;
+  const id = 'r' + idNum;
+  const chap = Math.floor(idx / 10); // 0,1,2
+  const chapMeta = [
+    {name:'第一章 · 校园清晨', vibe:'清晨的校园忽然响起警报，一扇扇门自动锁上了。', goal:'逃出教学楼'},
+    {name:'第二章 · 午后奇遇', vibe:'午后的小镇像走进了奇幻故事，出口被谜题挡住。', goal:'穿过奇遇街'},
+    {name:'第三章 · 夜色逃脱', vibe:'夜色降临，最后的密室亮起幽幽的灯。', goal:'打开夜色大门'}
+  ][chap];
   const scene = sceneFor(idx);
-  const title = scene.titlePick || (TITLES[idx % TITLES.length] + (idx>=TITLES.length ? (Math.floor(idx/TITLES.length)+1) : ''));
-  const mode = idx % 8; // 8 play patterns
-  let mathKind='';
-  function takeMath(){const m=nextMath(); mathKind=m.kind; return m;}
+  const titleBase = scene.titlePick || TITLES[idx % TITLES.length];
+  const title = titleBase + (idx >= TITLES.length ? String(Math.floor(idx / TITLES.length) + 1) : '');
+  // 6 种厚玩法轮换，保证每关至少 2 把锁
+  const mode = idx % 6;
+  let mathKind = '';
+  function takeMath(){ const m = nextMath(); mathKind = m.kind; return m; }
   const P = propsFor(scene);
-  const keyItem = 'key_'+id;
-  const scrapItem = 'scrap_'+id;
-  const toolItem = 'tool_'+id;
-  const comboItem = 'combo_'+id;
-  const giftItem = 'gift_'+id;
-  const partA = 'partA_'+id;
-  const partB = 'partB_'+id;
-  const mealItem = 'meal_'+id;
+  const keyItem = 'key_' + id;
+  const scrapItem = 'scrap_' + id;
+  const toolItem = 'tool_' + id;
+  const comboItem = 'combo_' + id;
+  const giftItem = 'gift_' + id;
+  const partA = 'partA_' + id;
+  const partB = 'partB_' + id;
 
   let sub, story, objects, combos, hints, explain, solution, items;
-  const mentionXiaohuang = idx%7===0;
-  const hi = (until, obj, tiers)=>({until, ...(obj?{obj}:{}) , tiers});
+  const hi = (until, obj, tiers) => ({ until, ...(obj ? { obj } : {}), tiers });
+  const hasDot = (ans) => String(ans).includes('.');
+  const numLock = (ans, ok, bad) => ({
+    kind: 'num', len: String(ans).length, dot: hasDot(ans), answer: String(ans),
+    prompt: '输入密码', ok, bad: bad || '密码不对哦，再算一算。'
+  });
+  const alphaLock = (ans, ok, bad) => ({
+    kind: 'alpha', len: ans.length, answer: ans, prompt: '输入英文大写',
+    ok, bad: bad || '不对哦，再想想英文怎么说。'
+  });
+  const dialLock = (ans, opts, ok, bad) => ({
+    kind: 'dial', opts: [opts], answer: ans, prompt: '转到正确的字',
+    ok, bad: bad || '不对哦，再想想。'
+  });
 
-  // shared decorative views
-  const decorObjs = (extra=[]) => {
-    const base = [
-      {id:'window', name:P.window, box:[24,24,90,70], views:[{text:P.decorNote}]},
+  // 装饰物：干扰信息 + 气氛（不含可独立算出的第二道锁题，避免测试串题）
+  function decoys(extraNotes){
+    const winText = extraNotes && extraNotes.window
+      ? extraNotes.window
+      : (chap === 2
+        ? '窗外夜色沉沉，远处有几盏灯一闪一闪，像在倒数。'
+        : chap === 1
+          ? '窗外传来卖气球的吆喝，可现在出不去。'
+          : '窗外的升旗台空荡荡的，旗绳被风吹得啪啪响。');
+    const shelfText = extraNotes && extraNotes.shelf
+      ? extraNotes.shelf
+      : '架子上散落着旧练习册、一张画错的草图，还有半截粉笔——看起来都不是密码。';
+    return [
+      { id: 'window', name: P.window, box: [24, 24, 90, 70], views: [{ text: winText }] },
+      ...(extraNotes && extraNotes.extra ? extraNotes.extra : [])
     ];
-    return base.concat(extra);
-  };
-
-  if(mode===0){
-    // Escape: math lock → key → door (keep ~1/8)
-    const m = takeMath();
-    sub = '数学 · 挑战';
-    story = [
-      mentionXiaohuang ? `小黄走进了${scene.name}，门在身后轻轻关上。` : `你来到了${scene.name}。`,
-      `${P.desk}上锁着一个小抽屉，旁边有道题。`,
-      `解开密码拿到钥匙，打开${P.door}，挑战就成功啦！`
-    ];
-    const hasDot = String(m.answer).includes('.');
-    objects = [
-      {id:'door', name:P.door, box:[310,160,70,120], views:[
-        {text:`${P.door}锁着，需要钥匙。`, use:[{item:keyItem, win:true, text:`钥匙一转，${P.door}开了！「${title}」挑战成功！`}], wrong:'要用钥匙才能开门。'}
-      ]},
-      {id:'desk', name:P.desk, box:[30,150,120,50], views:[
-        {if:['!desk_open'], text:`${P.desk}上有密码锁，旁边贴着纸条：`, note:m.note,
-          lock:{kind:'num', len:String(m.answer).length, dot:hasDot, answer:String(m.answer), prompt:'输入密码',
-            ok:{set:['desk_open'], text:'打开了！里面有一把钥匙。'}, bad:'密码不对哦，再算一算。'}},
-        {if:['desk_open','!took_key'], text:'里面有一把钥匙。', take:{give:[keyItem], set:['took_key'], text:'你拿到了钥匙。'}},
-        {text:'已经空了。'}
-      ]},
-      {id:'board', name:P.board, box:[130,20,150,90], views:[{text:`${P.board}上写着：仔细审题，一步一步算。`}]},
-      {id:'shelf', name:P.shelf, box:[290,40,90,120], views:[{text:`${P.shelf}上摆着一些小物件。`}]},
-      {id:'box', name:P.box, box:[200,160,70,50], views:[{text:`${P.box}是空的。`}]},
-      ...decorObjs()
-    ];
-    combos=[];
-    hints=[
-      hi('desk_open','desk',[`先看看${P.desk}上的纸条。`,'纸条上有一道数学题，算出答案就是密码。', m.hintStep || '一步一步算，注意单位换算和运算顺序。']),
-      hi('took_key','desk',['抽屉开了。',`点${P.desk}，拿起钥匙。`,'把钥匙拿起来。']),
-      hi('escaped','door',['你有钥匙了！',`选中钥匙，再点${P.door}。`,'先点钥匙，再点目标。'])
-    ];
-    explain=[m.explain,'打开抽屉拿到钥匙。',`用钥匙打开${P.door}，挑战成功。`];
-    solution=[['code','desk',String(m.answer)],['take','desk'],['use','door',keyItem]];
-    items={[keyItem]:{name:'小钥匙',icon:'🗝️',desc:'一把亮闪闪的小钥匙。'}};
-  } else if(mode===1){
-    // Quiz win: correct lock → win immediately (no key/door needed; door decorative)
-    const m = takeMath();
-    sub = '数学 · 闯关';
-    story = [
-      `欢迎来到「${title}」挑战站！`,
-      mentionXiaohuang ? `小黄指着${P.desk}：“把这道题做对，就算过关！”` : `${P.desk}上有一道题，做对就通关。`,
-      `不一定要出门——答对就是胜利！`
-    ];
-    const hasDot = String(m.answer).includes('.');
-    objects = [
-      {id:'desk', name:P.desk, box:[30,150,120,50], views:[
-        {if:['!desk_open'], text:`${P.desk}上的挑战题：`, note:m.note,
-          lock:{kind:'num', len:String(m.answer).length, dot:hasDot, answer:String(m.answer), prompt:'输入答案',
-            ok:{set:['desk_open'], win:true, text:`答对啦！「${title}」挑战成功！`}, bad:'再算一算。'}},
-        {text:'题目已经解开啦。'}
-      ]},
-      {id:'door', name:P.door, box:[310,160,70,120], views:[{text:`${P.door}开着，不过这关不用出门——答对题就行。`}]},
-      {id:'board', name:P.board, box:[130,20,150,90], views:[{text:`${P.board}上写着：答对即通关！`}]},
-      {id:'shelf', name:P.shelf, box:[290,40,90,120], views:[{text:`${P.shelf}上有奖杯模型。`}]},
-      {id:'box', name:P.box, box:[200,160,70,50], views:[{text:'盒子里有一张空白答题卡。'}]},
-      ...decorObjs()
-    ];
-    combos=[];
-    hints=[hi('escaped','desk',[`点开${P.desk}上的题。`,'仔细看【算一算】，多步时先算哪一步？', m.hintStep || '按公式一步步算，别漏单位。'])];
-    explain=[m.explain,'在桌子/长椅等物件上输入答案。','答对题目，直接挑战成功。'];
-    solution=[['code','desk',String(m.answer)]];
-    items={};
-  } else if(mode===2){
-    // Give to NPC: unlock gift → use on npc
-    const m = takeMath();
-    const npcName = scene.name==='厨房' ? '机器人小厨' : (idx%2===0 ? '小花猫' : '小管家');
-    const npcEmoji = scene.name==='厨房' ? '🤖' : (idx%2===0 ? '🐱' : '🧑‍🏫');
-    const want = scene.name==='厨房' ? '点心' : '礼物';
-    sub = '数学 · 助人';
-    story = [
-      `你走进${scene.name}，遇见了${npcName}。`,
-      mentionXiaohuang ? `小黄说：“帮${npcName}拿到${want}吧！”` : `${npcName}说：“帮我拿到${want}，任务就完成啦！”`,
-      `先解开${P.desk}上的题，再把${want}交给${npcName}。`
-    ];
-    const hasDot = String(m.answer).includes('.');
-    objects = [
-      {id:'door', name:npcName, box:[310,150,70,120], views:[
-        {text:`${npcName}眨眨眼：“我想要${want}！”`, use:[{item:giftItem, take:[giftItem], win:true, text:`${npcName}开心地收下了！「${title}」任务完成！`}], wrong:`${npcName}摇摇头：“我要的是${want}哦。”`}
-      ]},
-      {id:'desk', name:P.desk, box:[30,150,120,50], views:[
-        {if:['!desk_open'], text:`${P.desk}抽屉锁着，纸条上有题：`, note:m.note,
-          lock:{kind:'num', len:String(m.answer).length, dot:hasDot, answer:String(m.answer), prompt:'输入密码',
-            ok:{set:['desk_open'], text:`抽屉开了，里面有一份${want}！`}, bad:'再算算。'}},
-        {if:['desk_open','!took_gift'], text:`里面有一份${want}。`, take:{give:[giftItem], set:['took_gift'], text:`你拿到了${want}。`}},
-        {text:'抽屉空了。'}
-      ]},
-      {id:'board', name:P.board, box:[130,20,150,90], views:[{text:`${P.board}上写着：送给${npcName}就过关。`}]},
-      {id:'shelf', name:P.shelf, box:[290,40,90,120], views:[{text:`${P.shelf}上摆着${npcEmoji}的照片。`}]},
-      {id:'box', name:P.box, box:[200,160,70,50], views:[{text:'空空的。'}]},
-      ...decorObjs()
-    ];
-    combos=[];
-    hints=[
-      hi('desk_open','desk',[`先解开${P.desk}的密码。`,'看纸条上的题，可能要算两步。', m.hintStep || '先写出算式再计算。']),
-      hi('took_gift','desk',[`把${want}拿起来。`,`点${P.desk}拿起。`,'拿起来。']),
-      hi('escaped','door',[`把${want}交给${npcName}。`,`选中${want}，再点${npcName}。`,'先点物品，再点对方。'])
-    ];
-    explain=[m.explain,`拿到${want}。`,`交给${npcName}，任务完成。`];
-    solution=[['code','desk',String(m.answer)],['take','desk'],['use','door',giftItem]];
-    items={[giftItem]:{name:want,icon:scene.name==='厨房'?'🧁':'🎁',desc:`给${npcName}的${want}。`}};
-  } else if(mode===3){
-    // Cook/assemble: take A + take B → combine → use on oven/robot
-    const m = takeMath();
-    const rid = nextRid();
-    sub = idx%2===0 ? '数学 · 动手' : '数学 · 益智';
-    const targetName = scene.name==='厨房' ? '烤箱' : (scene.name==='实验室' ? '实验台机器' : '组装台');
-    story = [
-      `「${title}」要动手做一件东西！`,
-      mentionXiaohuang ? `小黄东找西找：“两样材料在哪里？”` : `先解开密码拿到材料，再拼起来。`,
-      `做好以后放到${targetName}上，就算完成任务。`
-    ];
-    const hasDot = String(m.answer).includes('.');
-    objects = [
-      {id:'door', name:targetName, box:[310,160,70,120], views:[
-        {text:`${targetName}等着成品。`, use:[{item:comboItem, take:[comboItem], win:true, text:`放上去——成功！「${title}」做好啦！`}], wrong:'要把两样材料拼好再放上来。'}
-      ]},
-      {id:'desk', name:P.desk, box:[30,150,120,50], views:[
-        {if:['!desk_open'], text:`${P.desk}锁着：`, note:m.note,
-          lock:{kind:'num', len:String(m.answer).length, dot:hasDot, answer:String(m.answer), prompt:'输入密码',
-            ok:{set:['desk_open'], text:'开了！里面有材料 A。'}, bad:'再算一算。'}},
-        {if:['desk_open','!took_a'], text:'里面有材料 A。', take:{give:[partA], set:['took_a'], text:'你拿到了材料 A。'}},
-        {text:'空了。'}
-      ]},
-      {id:'shelf', name:P.shelf, box:[290,40,90,120], views:[
-        {if:['!took_b'], text:`${P.shelf}上有材料 B。`, take:{give:[partB], set:['took_b'], text:'你拿到了材料 B。'}},
-        {text:'没有东西了。'}
-      ]},
-      {id:'board', name:P.board, box:[130,20,150,90], views:[{text:`${P.board}：材料 A + 材料 B = 成品。顺便一题：${rid.q}`, note:'温馨提示：在物品栏把两样材料点在一起组合。'}]},
-      {id:'box', name:P.box, box:[200,160,70,50], views:[{text:'空箱子。'}]},
-      ...decorObjs()
-    ];
-    combos=[{a:partA,b:partB,give:[comboItem],set:['made_combo'],text:'两样材料拼在一起，成品做好了！'}];
-    hints=[
-      hi('desk_open','desk',[`先开${P.desk}。`,'算纸条上的题。', m.hintStep || '列出算式，仔细算。']),
-      hi('took_a','desk',['拿起材料 A。','点开拿起。','拿起来。']),
-      hi('took_b','shelf',[`看看${P.shelf}。`,'拿起材料 B。','点架子拿。']),
-      hi('made_combo',null,['两样材料可以组合。','物品栏先点一个再点另一个。','拼成成品。']),
-      hi('escaped','door',[`把成品放到${targetName}。`,'选中成品再点目标。','放上去就过关。'])
-    ];
-    explain=[m.explain,'拿到材料 A 和 B。',`组合成成品，放到${targetName}。`];
-    solution=[['code','desk',String(m.answer)],['take','desk'],['take','shelf'],['combine',partA,partB],['use','door',comboItem]];
-    items={
-      [partA]:{name:'材料A',icon:'🧩',desc:'一块材料。'},
-      [partB]:{name:'材料B',icon:'🔧',desc:'另一块材料。'},
-      [comboItem]:{name:'成品',icon:'⭐',glow:1,desc:'拼好的成品。'}
-    };
-  } else if(mode===4){
-    // Dual lock: both correct → second lock wins (stamp optional)
-    const m = takeMath();
-    const useEn = idx%3!==1; // 英语约 2/3，语文（成语/词语）约 1/3
-    let lock2note, lock2ans, lock2kind, lock2explain, lock2hint, lock2len, lock2opts;
-    if(useEn){
-      const e = nextEn();
-      lock2note = `【英语题】${e.q}\n（线索：${e.hint}）`;
-      lock2ans = e.a; lock2kind='alpha'; lock2len=e.a.length;
-      lock2explain = `${e.q} → ${e.a}`;
-      lock2hint = [e.hint, '根据词性、首字母和课本单元想想，不要偷看答案哦。'];
-      sub = '数学 · 英语';
-    } else {
-      // 语文：成语 / 词语交替（古诗留给 mode6）
-      const useIdiom = idx%2===0;
-      if(useIdiom){
-        const idm = nextIdiom();
-        const dialOpts = dialOptsFromFull(idm.full, idm.missing);
-        lock2note = `【成语填空】${idm.blank}\n（想一想这个成语缺哪个字）`;
-        lock2ans = idm.missing; lock2kind='dial'; lock2opts=[dialOpts];
-        lock2explain = `成语「${idm.full}」缺「${idm.missing}」。${idm.hint}`;
-        lock2hint = ['这是一个四字成语，看空格前后想想。', '结合上下字的搭配来猜。', idm.hint];
-      } else {
-        const w = nextWord();
-        const dialOpts = dialOptsFromFull(w.full, w.missing);
-        lock2note = `【词语填空】${w.blank}\n（写出正确的字，组成词语）`;
-        lock2ans = w.missing; lock2kind='dial'; lock2opts=[dialOpts];
-        lock2explain = `词语「${w.full}」缺「${w.missing}」。${w.hint}`;
-        lock2hint = ['这是课表里的双字词，看空着的位置。', '想想常见搭配。', w.hint];
-      }
-      sub = '数学 · 语文';
-    }
-    story = [
-      `双锁挑战站「${title}」！`,
-      mentionXiaohuang ? `小黄说：“两道题都做对，就过关！”` : `先过${P.desk}，再过${P.box}。`,
-      `两关都对，不用找门——直接挑战成功！`
-    ];
-    const hasDot = String(m.answer).includes('.');
-    const boxViews = [
-      {if:['!box_open'], text:`${P.box}上还有第二关：`, note:lock2note,
-        lock: lock2kind==='alpha'
-          ? {kind:'alpha', len:lock2len, answer:lock2ans, prompt:'输入英文', ok:{set:['box_open'], win:true, text:`两关都过啦！「${title}」挑战成功！`}, bad:'再想想。'}
-          : {kind:'dial', opts:lock2opts, answer:lock2ans, prompt:'转字', ok:{set:['box_open'], win:true, text:`两关都过啦！「${title}」挑战成功！`}, bad:'再读读诗。'}},
-      {text:'第二关已经完成。'}
-    ];
-    objects = [
-      {id:'desk', name:P.desk, box:[30,150,120,50], views:[
-        {if:['!desk_open'], text:`第一关（数学）：`, note:m.note,
-          lock:{kind:'num', len:String(m.answer).length, dot:hasDot, answer:String(m.answer), prompt:'输入密码',
-            ok:{set:['desk_open'], text:'第一关过了！去看第二关吧。'}, bad:'再算算。'}},
-        {text:'第一关已经打开了。'}
-      ]},
-      {id:'box', name:P.box, box:[200,160,70,50], views:boxViews},
-      {id:'door', name:P.door, box:[310,160,70,120], views:[{text:`${P.door}只是装饰，这关不用出门。`}]},
-      {id:'board', name:P.board, box:[130,20,150,90], views:[{text:'提示：先第一关，后第二关。两关都对就赢！'}]},
-      {id:'shelf', name:P.shelf, box:[290,40,90,120], views:[{text:`${P.shelf}上放着完成印章模型。`}]},
-      ...decorObjs()
-    ];
-    combos=[];
-    hints=[
-      hi('desk_open','desk',['先过第一关数学题。','仔细看【算一算】，可能不止一步。', m.hintStep || '按题目要求列式计算。']),
-      hi('escaped','box',['去开第二关。', lock2hint[0], lock2hint[1]])
-    ];
-    explain=[m.explain, lock2explain, '两关都对，挑战成功。'];
-    solution=[['code','desk',String(m.answer)],['code','box',lock2ans]];
-    items={};
-  } else if(mode===5){
-    // Pass badge: combine scrap+tool → swipe on reader (not door)
-    const m = takeMath();
-    sub = '数学 · 通行证';
-    story = [
-      `「${title}」要刷通行证才能完成任务。`,
-      mentionXiaohuang ? `小黄：“卡片和徽章拼起来，去刷卡机刷一下！”` : `先拿卡片和徽章，拼成通行证，再去刷卡机。`,
-      `刷卡机不是门——刷对了就算成功！`
-    ];
-    const hasDot = String(m.answer).includes('.');
-    objects = [
-      {id:'door', name:'刷卡机', box:[310,160,70,120], views:[
-        {text:'一台刷卡机，嘀嘀作响。', use:[{item:comboItem, take:[comboItem], win:true, text:`嘀——通过！「${title}」刷卡成功！`}], wrong:'要先做好通行证再刷。'}
-      ]},
-      {id:'desk', name:P.desk, box:[30,150,120,50], views:[
-        {if:['!desk_open'], text:`${P.desk}锁着：`, note:m.note,
-          lock:{kind:'num', len:String(m.answer).length, dot:hasDot, answer:String(m.answer), prompt:'输入密码',
-            ok:{set:['desk_open'], text:'开了，里面有一张卡片。'}, bad:'再算一算。'}},
-        {if:['desk_open','!took_scrap'], text:'里面有一张卡片。', take:{give:[scrapItem], set:['took_scrap'], text:'你拿到了卡片。'}},
-        {text:'空了。'}
-      ]},
-      {id:'shelf', name:P.shelf, box:[290,40,90,120], views:[
-        {if:['!took_tool'], text:`${P.shelf}上有一枚徽章。`, take:{give:[toolItem], set:['took_tool'], text:'你拿到了徽章。'}},
-        {text:'没有了。'}
-      ]},
-      {id:'board', name:P.board, box:[130,20,150,90], views:[{text:'卡片 + 徽章 = 通行证，然后去刷卡机。'}]},
-      {id:'box', name:P.box, box:[200,160,70,50], views:[{text:'空的。'}]},
-      ...decorObjs()
-    ];
-    combos=[{a:scrapItem,b:toolItem,give:[comboItem],set:['made_combo'],text:'卡片和徽章拼成了通行证！'}];
-    hints=[
-      hi('desk_open','desk',[`先开${P.desk}。`,'算题，注意多步运算。', m.hintStep || '先分段算，再合并。']),
-      hi('took_scrap','desk',['拿卡片。','点开拿起。','拿起来。']),
-      hi('took_tool','shelf',['还要徽章。',`看${P.shelf}。`,'拿起徽章。']),
-      hi('made_combo',null,['卡片和徽章可组合。','物品栏点两个拼。','拼成通行证。']),
-      hi('escaped','door',['去刷卡机。','选中通行证点刷卡机。','刷卡过关。'])
-    ];
-    explain=[m.explain,'拿到卡片和徽章。','组合成通行证，刷卡机刷过关。'];
-    solution=[['code','desk',String(m.answer)],['take','desk'],['take','shelf'],['combine',scrapItem,toolItem],['use','door',comboItem]];
-    items={
-      [scrapItem]:{name:'卡片',icon:'💳',desc:'一张小小的卡片。'},
-      [toolItem]:{name:'徽章',icon:'🏅',desc:'一枚可爱的徽章。'},
-      [comboItem]:{name:'通行证',icon:'🎫',glow:1,desc:'卡片和徽章拼成的通行证。'}
-    };
-  } else if(mode===6){
-    // 语文转盘：古诗 / 成语 / 词语 轮换
-    const langKind = Math.floor(idx/8) % 3; // 0 poem, 1 idiom, 2 word
-    let note, ans, opts, explainLines, hintTiers, label, boardText;
-    if(langKind===0){
-      const p = nextPoem();
-      note = `《${p.title}》　${p.author}\n${p.blank}\n（想一想课文里完整的一句）`;
-      ans = p.missing; opts = dialOptsFor(p.missing);
-      explainLines = [`《${p.title}》：${p.full}`, `缺的字是「${p.missing}」。`, '转对转盘，挑战成功。'];
-      hintTiers = ['看看墙上的古诗，少了哪个字？', `这是《${p.title}》，${p.author}。`, '读空格前后的字，回忆课文原句，不要直接翻答案。'];
-      label = '古诗'; boardText = `墙上写着《${p.title}》（${p.author}），少了一个字：`;
-      sub = '语文 · 古诗';
-      story = [
-        `古诗转盘挑战「${title}」！`,
-        mentionXiaohuang ? `小黄想起课文里读过《${p.title}》。` : `墙上的诗少了一个字。`,
-        `转到正确的字，就算挑战成功——不用找门！`
-      ];
-    } else if(langKind===1){
-      const idm = nextIdiom();
-      note = `【成语填空】${idm.blank}\n（想一想这个成语缺哪个字）`;
-      ans = idm.missing; opts = dialOptsFromFull(idm.full, idm.missing);
-      explainLines = [`成语「${idm.full}」`, `缺的字是「${idm.missing}」。${idm.hint}`, '转对转盘，挑战成功。'];
-      hintTiers = ['这是词语表里的四字成语，看空格。', '结合前后字想想常见搭配。', idm.hint];
-      label = '成语'; boardText = '黑板上写着一个成语，少了一个字：';
-      sub = '语文 · 成语';
-      story = [
-        `成语转盘挑战「${title}」！`,
-        mentionXiaohuang ? `小黄说：“词语表里刚学过这个成语！”` : `匣子上的成语少了一个字。`,
-        `转到正确的字，就算挑战成功——不用找门！`
-      ];
-    } else {
-      const w = nextWord();
-      note = `【词语填空】${w.blank}\n（写出正确的字，组成词语）`;
-      ans = w.missing; opts = dialOptsFromFull(w.full, w.missing);
-      explainLines = [`词语「${w.full}」`, `缺的字是「${w.missing}」。${w.hint}`, '转对转盘，挑战成功。'];
-      hintTiers = ['这是词语表里的双字词。', '看看空着的是第几个字。', w.hint];
-      label = '词语'; boardText = '黑板上写着一个词语，少了一个字：';
-      sub = '语文 · 词语';
-      story = [
-        `词语转盘挑战「${title}」！`,
-        mentionXiaohuang ? `小黄指着黑板：“把缺的字转出来！”` : `黑板上的词语少了一个字。`,
-        `转到正确的字，就算挑战成功——不用找门！`
-      ];
-    }
-    objects = [
-      {id:'box', name: label+'匣转盘', box:[200,160,70,50], views:[
-        {if:['!box_open'], text:'匣子上有一个汉字转盘。', note,
-          lock:{kind:'dial', opts:[opts], answer:ans, prompt:'转到正确的字',
-            ok:{set:['box_open'], win:true, text:`转对了！「${title}」${label}挑战成功！`}, bad:'不对哦，再想想。'}},
-        {text:'转盘已经转对啦。'}
-      ]},
-      {id:'board', name:P.board, box:[130,20,150,90], views:[
-        {text:boardText, note}
-      ]},
-      {id:'desk', name:P.desk, box:[30,150,120,50], views:[{text:`${P.desk}上有语文课本，翻开正好是词语表。`}]},
-      {id:'door', name:P.door, box:[310,160,70,120], views:[{text:`${P.door}开着，这关靠转盘通关。`}]},
-      {id:'shelf', name:P.shelf, box:[290,40,90,120], views:[{text:`${P.shelf}上有《成语词典》。`}]},
-      ...decorObjs()
-    ];
-    combos=[];
-    hints=[hi('escaped','board', hintTiers)];
-    explain=explainLines;
-    solution=[['code','box',ans]];
-    items={};
-  } else {
-    // mode 7: English spelling → win on correct
-    const e = nextEn();
-    const tagLabel = e.tag==='listen' ? '听力' : (e.tag==='write' ? '小作文' : (e.tag==='dialog' ? '对话' : '拼写'));
-    sub = `英语 · ${tagLabel}`;
-    story = [
-      e.tag==='listen' ? `英语听力站「${title}」！（读一读广播文字再答题）` :
-        e.tag==='write' ? `英语小作文站「${title}」！（把安全 tip / 通知补完整）` :
-        `英语${tagLabel}站「${title}」！`,
-      mentionXiaohuang ? `小黄看到英文卡片：“用大写字母拼出来！”` : `${P.desk}上的英文卡片写着一道题。`,
-      `拼对就算挑战成功，不用找钥匙开门。`
-    ];
-    objects = [
-      {id:'desk', name:P.desk, box:[30,150,120,50], views:[
-        {if:['!desk_open'], text:`${P.desk}小盒上有字母锁，旁边是英文卡片：`, note:`【英语题】${e.q}\n（线索：${e.hint}）`,
-          lock:{kind:'alpha', len:e.a.length, answer:e.a, prompt:'输入英文大写',
-            ok:{set:['desk_open'], win:true, text:`Correct! 「${title}」英语挑战成功！`}, bad:'不对哦，再想想英文怎么说。'}},
-        {text:'小盒已经打开啦。'}
-      ]},
-      {id:'board', name:P.board, box:[130,20,150,90], views:[{text:'Spell it in CAPITAL letters! 拼对即通关。'}]},
-      {id:'door', name:P.door, box:[310,160,70,120], views:[{text:`${P.door}开着，这关靠拼写通关。`}]},
-      {id:'shelf', name:P.shelf, box:[290,40,90,120], views:[{text:`${P.shelf}上有英语单词卡片。`}]},
-      {id:'box', name:P.box, box:[200,160,70,50], views:[{text:'玩具箱里有一只小熊。'}]},
-      ...decorObjs()
-    ];
-    combos=[];
-    hints=[hi('escaped','desk',['看看英文卡片上的问题，用大写字母拼。', e.hint, '结合词性、首字母和中文意思方向来猜，不要直接写答案。'])];
-    explain=[`英文题：${e.q}`, `正确答案是 ${e.a}。（通关后讲解）`, '拼对通关。'];
-    solution=[['code','desk',e.a]];
-    items={};
   }
 
-  objects.forEach(o=>{
-    o.views.forEach(v=>{
-      if(v.lock && v.lock.kind==='num'){
-        v.lock.len = Math.max(v.lock.len||1, String(v.lock.answer).length);
+  const storyHead = [
+    `${chapMeta.name}「${title}」`,
+    chapMeta.vibe,
+  ];
+
+  if (mode === 0) {
+    // 双锁出门：数学开抽屉拿钥匙 + 门上语文/英语锁 → 再用钥匙
+    const m = takeMath();
+    const useEn = idx % 2 === 0;
+    let L2note, L2ans, L2explain, L2hint, L2kind, L2opts, L2len;
+    if (useEn) {
+      const e = nextEn();
+      L2note = `【英语题】${e.q}\n（线索：${e.hint}）`;
+      L2ans = e.a; L2kind = 'alpha'; L2len = e.a.length;
+      L2explain = `门上英文：${e.q} → ${e.a}`;
+      L2hint = ['门上还有字母锁，要先读英文线索。', e.hint, '结合词性、首字母和中文意思方向来猜。'];
+      sub = '密室 · 数学+英语';
+    } else {
+      const useIdiom = idx % 4 < 2;
+      if (useIdiom) {
+        const idm = nextIdiom();
+        const opts = dialOptsFromFull(idm.full, idm.missing);
+        L2note = `【成语填空】${idm.blank}\n（想一想这个成语缺哪个字）`;
+        L2ans = idm.missing; L2kind = 'dial'; L2opts = opts;
+        L2explain = `成语「${idm.full}」缺「${idm.missing}」。${idm.hint}`;
+        L2hint = ['门上汉字转盘对应成语缺字。', '看空格前后的字。', idm.hint];
+      } else {
+        const w = nextWord();
+        const opts = dialOptsFromFull(w.full, w.missing);
+        L2note = `【词语填空】${w.blank}\n（写出正确的字，组成词语）`;
+        L2ans = w.missing; L2kind = 'dial'; L2opts = opts;
+        L2explain = `词语「${w.full}」缺「${w.missing}」。${w.hint}`;
+        L2hint = ['门上转盘是课表词语缺字。', '看看空着的是第几个字。', w.hint];
+      }
+      sub = '密室 · 数学+语文';
+    }
+    story = storyHead.concat([
+      `目标：${chapMeta.goal}。这间「${scene.name}」的${P.door}有两道机关——先开${P.desk}拿钥匙，再解开门上的字谜锁。`,
+      `四处看看：黑板、架子上也许藏着干扰信息，别被骗了！`
+    ]);
+    const doorLock = L2kind === 'alpha'
+      ? alphaLock(L2ans, { set: ['door_code'], text: '门上的字锁开了！还差一把钥匙。' })
+      : dialLock(L2ans, L2opts, { set: ['door_code'], text: '门上的字锁开了！还差一把钥匙。' });
+    objects = [
+      { id: 'door', name: P.door, box: [310, 160, 70, 120], views: [
+        { if: ['!door_code'], text: `${P.door}上有一把字谜锁，旁边贴着纸条：`, note: L2note, lock: doorLock, wrong: '先把门上的字锁打开。' },
+        { text: '字锁已经开了，钥匙孔亮着光。', use: [{ item: keyItem, win: true, text: `钥匙一转——「${title}」逃脱成功！` }], wrong: '要用钥匙才能打开。' }
+      ]},
+      { id: 'desk', name: P.desk, box: [30, 150, 120, 50], views: [
+        { if: ['!desk_open'], text: `${P.desk}抽屉挂着密码锁，纸条被压在玻璃板下：`, note: m.note,
+          lock: numLock(m.answer, { set: ['desk_open'], text: '咔哒！抽屉开了，里面有一把钥匙。' }) },
+        { if: ['desk_open', '!took_key'], text: '抽屉里有一把钥匙。', take: { give: [keyItem], set: ['took_key'], text: '你拿到了钥匙。' } },
+        { text: '抽屉空了。' }
+      ]},
+      { id: 'board', name: P.board, box: [130, 20, 150, 90], views: [
+        { text: `${P.board}上用粉笔写着：“想出门？先算对抽屉题，再读门上的字！”旁边还画了一串无关的数字 3-1-4，别当成密码。` }
+      ]},
+      { id: 'shelf', name: P.shelf, box: [290, 40, 90, 120], views: [
+        { text: '架子上有一本翻旧的练习册，夹着一张废稿：把 2+2 写成了 5——显然是干扰。' }
+      ]},
+      { id: 'box', name: P.box, box: [200, 160, 70, 50], views: [
+        { text: `${P.box}是空的，盖子内侧写着：“钥匙不在我这儿。”` }
+      ]},
+      ...decoys()
+    ];
+    combos = [];
+    hints = [
+      hi('desk_open', 'desk', [`先看${P.desk}玻璃板下的算式。`, '算出答案就是抽屉密码。', m.hintStep || '一步一步算。']),
+      hi('took_key', 'desk', ['抽屉开了。', `点${P.desk}拿起钥匙。`, '把钥匙拿起来。']),
+      hi('door_code', 'door', L2hint),
+      hi('escaped', 'door', ['字锁开了，还要用钥匙。', `选中钥匙，再点${P.door}。`, '先点钥匙，再点门。'])
+    ];
+    explain = [m.explain, L2explain, `用钥匙打开${P.door}，逃脱成功。`];
+    solution = [['code', 'desk', String(m.answer)], ['take', 'desk'], ['code', 'door', L2ans], ['use', 'door', keyItem]];
+    items = { [keyItem]: { name: '小钥匙', icon: '🗝️', desc: '一把亮闪闪的小钥匙。' } };
+  } else if (mode === 1) {
+    // 双锁取物：数学开桌 → 卡片；语文/英语开盒 → 徽章；组合通行证刷卡
+    const m = takeMath();
+    const useEn = idx % 3 !== 1;
+    let L2note, L2ans, L2explain, L2hint, L2kind, L2opts;
+    if (useEn) {
+      const e = nextEn();
+      L2note = `【英语题】${e.q}\n（线索：${e.hint}）`;
+      L2ans = e.a; L2kind = 'alpha';
+      L2explain = `${e.q} → ${e.a}`;
+      L2hint = ['去开盒子上的字母锁。', e.hint, '大写字母拼写。'];
+      sub = '密室 · 通行证';
+    } else {
+      const idm = nextIdiom();
+      const opts = dialOptsFromFull(idm.full, idm.missing);
+      L2note = `【成语填空】${idm.blank}\n（想一想这个成语缺哪个字）`;
+      L2ans = idm.missing; L2kind = 'dial'; L2opts = opts;
+      L2explain = `成语「${idm.full}」缺「${idm.missing}」。${idm.hint}`;
+      L2hint = ['盒子上是成语转盘。', '看空格前后。', idm.hint];
+      sub = '密室 · 通行证';
+    }
+    story = storyHead.concat([
+      `「${title}」的出口是一台刷卡机。要先拿到卡片和徽章，拼成通行证。`,
+      `${P.desk}锁着卡片，${P.box}锁着徽章——两道锁都要开！`
+    ]);
+    const boxLock = L2kind === 'alpha'
+      ? alphaLock(L2ans, { set: ['box_open'], text: '盒子开了，里面有一枚徽章！' })
+      : dialLock(L2ans, L2opts, { set: ['box_open'], text: '盒子开了，里面有一枚徽章！' });
+    objects = [
+      { id: 'door', name: '刷卡机', box: [310, 160, 70, 120], views: [
+        { text: '刷卡机嘀嘀响：“请出示通行证。”', use: [{ item: comboItem, take: [comboItem], win: true, text: `嘀——通过！「${title}」逃脱成功！` }], wrong: '要先做好通行证再刷。' }
+      ]},
+      { id: 'desk', name: P.desk, box: [30, 150, 120, 50], views: [
+        { if: ['!desk_open'], text: `${P.desk}锁着，纸条上有题：`, note: m.note,
+          lock: numLock(m.answer, { set: ['desk_open'], text: '开了！里面有一张卡片。' }) },
+        { if: ['desk_open', '!took_scrap'], text: '里面有一张卡片。', take: { give: [scrapItem], set: ['took_scrap'], text: '你拿到了卡片。' } },
+        { text: '空了。' }
+      ]},
+      { id: 'box', name: P.box, box: [200, 160, 70, 50], views: [
+        { if: ['!box_open'], text: `${P.box}上还有第二把锁：`, note: L2note, lock: boxLock },
+        { if: ['box_open', '!took_tool'], text: '里面有一枚徽章。', take: { give: [toolItem], set: ['took_tool'], text: '你拿到了徽章。' } },
+        { text: '空了。' }
+      ]},
+      { id: 'board', name: P.board, box: [130, 20, 150, 90], views: [
+        { text: `${P.board}写着步骤：①开抽屉拿卡片 ②开盒子拿徽章 ③物品栏组合 ④去刷卡机。旁边涂鸦“密码=1234”是假的！` }
+      ]},
+      { id: 'shelf', name: P.shelf, box: [290, 40, 90, 120], views: [
+        { text: '架子上有一张作废的旧卡，磁条已经刮花了，刷不上。' }
+      ]},
+      ...decoys()
+    ];
+    combos = [{ a: scrapItem, b: toolItem, give: [comboItem], set: ['made_combo'], text: '卡片和徽章拼成了通行证！' }];
+    hints = [
+      hi('desk_open', 'desk', [`先开${P.desk}。`, '算纸条上的题。', m.hintStep || '列式计算。']),
+      hi('took_scrap', 'desk', ['拿起卡片。', `点${P.desk}。`, '拿起来。']),
+      hi('box_open', 'box', L2hint),
+      hi('took_tool', 'box', ['拿起徽章。', `点${P.box}。`, '拿起来。']),
+      hi('made_combo', null, ['卡片和徽章可以组合。', '物品栏先点一个再点另一个。', '拼成通行证。']),
+      hi('escaped', 'door', ['去刷卡机。', '选中通行证再点刷卡机。', '刷卡过关。'])
+    ];
+    explain = [m.explain, L2explain, '组合成通行证，刷卡逃脱。'];
+    solution = [['code', 'desk', String(m.answer)], ['take', 'desk'], ['code', 'box', L2ans], ['take', 'box'], ['combine', scrapItem, toolItem], ['use', 'door', comboItem]];
+    items = {
+      [scrapItem]: { name: '卡片', icon: '💳', desc: '一张小小的卡片。' },
+      [toolItem]: { name: '徽章', icon: '🏅', desc: '一枚可爱的徽章。' },
+      [comboItem]: { name: '通行证', icon: '🎫', glow: 1, desc: '卡片和徽章拼成的通行证。' }
+    };
+  } else if (mode === 2) {
+    // 助人密室：数学开礼物 + 英语/语文开柜拿“说明书”才算？→ 实际：双锁，第二锁直接给礼物路径
+    // 桌：数学→礼物；盒：语文/英语→必须先开（set ready）；NPC 只在 ready 后收礼物
+    const m = takeMath();
+    const npcName = scene.name === '厨房' ? '机器人小厨' : (idx % 2 === 0 ? '小花猫' : '小管家');
+    const want = scene.name === '厨房' ? '点心' : '礼物';
+    const useEn = idx % 2 === 0;
+    let L2note, L2ans, L2explain, L2hint, L2kind, L2opts;
+    if (useEn) {
+      const e = nextEn();
+      L2note = `【英语题】${e.q}\n（线索：${e.hint}）`;
+      L2ans = e.a; L2kind = 'alpha';
+      L2explain = `${e.q} → ${e.a}`;
+      L2hint = [`先解开${P.box}上的英文锁，拿到通行证印章。`, e.hint, '拼对大写单词。'];
+      sub = '密室 · 助人';
+    } else {
+      const p = nextPoem();
+      const opts = dialOptsFor(p.missing);
+      L2note = `《${p.title}》　${p.author}\n${p.blank}\n（想一想课文里完整的一句）`;
+      L2ans = p.missing; L2kind = 'dial'; L2opts = opts;
+      L2explain = `《${p.title}》：${p.full}，缺「${p.missing}」。`;
+      L2hint = [`${P.box}上是古诗转盘。`, `这是《${p.title}》。`, '读空格前后，回忆课文。'];
+      sub = '密室 · 助人';
+    }
+    story = storyHead.concat([
+      `你遇见了${npcName}，对方说：“想让我开门，先送${want}——但${want}被锁住了，还要一枚放行章。”`,
+      `两道锁：${P.desk}里是${want}，${P.box}里是放行章。都拿到才能交任务！`
+    ]);
+    const stampItem = toolItem;
+    const boxLock = L2kind === 'alpha'
+      ? alphaLock(L2ans, { set: ['box_open'], text: `盒子开了，里面有一枚放行章！` })
+      : dialLock(L2ans, L2opts, { set: ['box_open'], text: `盒子开了，里面有一枚放行章！` });
+    objects = [
+      { id: 'door', name: npcName, box: [310, 150, 70, 120], views: [
+        { if: ['!has_stamp'], text: `${npcName}抱着手臂：“先拿到放行章，我才收${want}！”` },
+        { text: `${npcName}点点头：“放行章齐了，把${want}给我吧。”`, use: [{ item: giftItem, take: [giftItem], win: true, text: `${npcName}收下了！「${title}」任务完成，门开了！` }], wrong: `${npcName}摇头：“我要的是${want}。”` }
+      ]},
+      { id: 'desk', name: P.desk, box: [30, 150, 120, 50], views: [
+        { if: ['!desk_open'], text: `${P.desk}抽屉锁着：`, note: m.note,
+          lock: numLock(m.answer, { set: ['desk_open'], text: `抽屉开了，里面有一份${want}！` }) },
+        { if: ['desk_open', '!took_gift'], text: `里面有一份${want}。`, take: { give: [giftItem], set: ['took_gift'], text: `你拿到了${want}。` } },
+        { text: '空了。' }
+      ]},
+      { id: 'box', name: P.box, box: [200, 160, 70, 50], views: [
+        { if: ['!box_open'], text: `${P.box}上贴着“放行章”，要开锁：`, note: L2note, lock: boxLock },
+        { if: ['box_open', '!has_stamp'], text: '里面有一枚放行章。', take: { give: [stampItem], set: ['has_stamp'], text: '你拿到了放行章。（可以去找对方啦）' } },
+        { text: '空了。' }
+      ]},
+      { id: 'board', name: P.board, box: [130, 20, 150, 90], views: [
+        { text: `${P.board}：任务清单——□ ${want}　□ 放行章　□ 交给${npcName}。有人把清单改成“直接喊芝麻开门”，别信。` }
+      ]},
+      { id: 'shelf', name: P.shelf, box: [290, 40, 90, 120], views: [
+        { text: `架子上有一张${npcName}的照片，背面写着：“没有章，我什么都不收。”` }
+      ]},
+      ...decoys()
+    ];
+    combos = [];
+    hints = [
+      hi('desk_open', 'desk', [`先开${P.desk}拿${want}。`, '算一算纸条上的题。', m.hintStep || '仔细列式。']),
+      hi('took_gift', 'desk', [`拿起${want}。`, `点${P.desk}。`, '拿起来。']),
+      hi('box_open', 'box', L2hint),
+      hi('has_stamp', 'box', ['拿起放行章。', `点${P.box}。`, '拿起来。']),
+      hi('escaped', 'door', [`把${want}交给${npcName}。`, `选中${want}，再点${npcName}。`, '先点物品再点对方。'])
+    ];
+    explain = [m.explain, L2explain, `拿到放行章和${want}，交给${npcName}。`];
+    solution = [['code', 'desk', String(m.answer)], ['take', 'desk'], ['code', 'box', L2ans], ['take', 'box'], ['use', 'door', giftItem]];
+    items = {
+      [giftItem]: { name: want, icon: scene.name === '厨房' ? '🧁' : '🎁', desc: `给${npcName}的${want}。` },
+      [stampItem]: { name: '放行章', icon: '🔏', desc: '一枚放行章，对方看见才肯收礼物。' }
+    };
+  } else if (mode === 3) {
+    // 组装密室：数学→材料A，英语/成语→材料B，组合→放到台子
+    const m = takeMath();
+    const useEn = idx % 3 === 0;
+    let L2note, L2ans, L2explain, L2hint, L2kind, L2opts;
+    if (useEn) {
+      const e = nextEn();
+      L2note = `【英语题】${e.q}\n（线索：${e.hint}）`;
+      L2ans = e.a; L2kind = 'alpha';
+      L2explain = `${e.q} → ${e.a}`;
+      L2hint = ['材料 B 在带字母锁的盒子里。', e.hint, '大写拼写。'];
+    } else if (idx % 3 === 1) {
+      const idm = nextIdiom();
+      const opts = dialOptsFromFull(idm.full, idm.missing);
+      L2note = `【成语填空】${idm.blank}\n（想一想这个成语缺哪个字）`;
+      L2ans = idm.missing; L2kind = 'dial'; L2opts = opts;
+      L2explain = `成语「${idm.full}」缺「${idm.missing}」。${idm.hint}`;
+      L2hint = ['盒子上是成语缺字。', '看前后搭配。', idm.hint];
+    } else {
+      const w = nextWord();
+      const opts = dialOptsFromFull(w.full, w.missing);
+      L2note = `【词语填空】${w.blank}\n（写出正确的字，组成词语）`;
+      L2ans = w.missing; L2kind = 'dial'; L2opts = opts;
+      L2explain = `词语「${w.full}」缺「${w.missing}」。${w.hint}`;
+      L2hint = ['盒子上是词语缺字。', '想课表里的词。', w.hint];
+    }
+    const targetName = scene.name === '厨房' ? '烤箱' : (scene.name === '实验室' ? '实验台' : '组装台');
+    sub = '密室 · 动手组装';
+    story = storyHead.concat([
+      `「${title}」要组装一件关键道具才能出门。`,
+      `材料 A 锁在${P.desk}，材料 B 锁在${P.box}。拼好后放到${targetName}上！`
+    ]);
+    const boxLock = L2kind === 'alpha'
+      ? alphaLock(L2ans, { set: ['box_open'], text: '开了！里面有材料 B。' })
+      : dialLock(L2ans, L2opts, { set: ['box_open'], text: '开了！里面有材料 B。' });
+    objects = [
+      { id: 'door', name: targetName, box: [310, 160, 70, 120], views: [
+        { text: `${targetName}闪着灯：“放入成品。”`, use: [{ item: comboItem, take: [comboItem], win: true, text: `成品就位——「${title}」装置启动，门开了！` }], wrong: '要把两样材料拼好再放上来。' }
+      ]},
+      { id: 'desk', name: P.desk, box: [30, 150, 120, 50], views: [
+        { if: ['!desk_open'], text: `${P.desk}锁着材料 A：`, note: m.note,
+          lock: numLock(m.answer, { set: ['desk_open'], text: '开了！里面有材料 A。' }) },
+        { if: ['desk_open', '!took_a'], text: '里面有材料 A。', take: { give: [partA], set: ['took_a'], text: '你拿到了材料 A。' } },
+        { text: '空了。' }
+      ]},
+      { id: 'box', name: P.box, box: [200, 160, 70, 50], views: [
+        { if: ['!box_open'], text: `${P.box}锁着材料 B：`, note: L2note, lock: boxLock },
+        { if: ['box_open', '!took_b'], text: '里面有材料 B。', take: { give: [partB], set: ['took_b'], text: '你拿到了材料 B。' } },
+        { text: '空了。' }
+      ]},
+      { id: 'board', name: P.board, box: [130, 20, 150, 90], views: [
+        { text: `${P.board}图纸：材料 A + 材料 B = 成品 → 放入${targetName}。角落有人乱写“只需材料 A”，那是陷阱。` }
+      ]},
+      { id: 'shelf', name: P.shelf, box: [290, 40, 90, 120], views: [
+        { text: '架子上有一颗生锈的螺丝，拧不进去，不是材料。' }
+      ]},
+      ...decoys()
+    ];
+    combos = [{ a: partA, b: partB, give: [comboItem], set: ['made_combo'], text: '两样材料拼在一起，成品做好了！' }];
+    hints = [
+      hi('desk_open', 'desk', [`先开${P.desk}。`, '算数学题。', m.hintStep || '仔细算。']),
+      hi('took_a', 'desk', ['拿材料 A。', '点开拿起。', '拿起来。']),
+      hi('box_open', 'box', L2hint),
+      hi('took_b', 'box', ['拿材料 B。', `点${P.box}。`, '拿起来。']),
+      hi('made_combo', null, ['两样材料可组合。', '物品栏点两个拼。', '拼成成品。']),
+      hi('escaped', 'door', [`放到${targetName}。`, '选中成品再点目标。', '放上去就过关。'])
+    ];
+    explain = [m.explain, L2explain, `组合成成品，放到${targetName}。`];
+    solution = [['code', 'desk', String(m.answer)], ['take', 'desk'], ['code', 'box', L2ans], ['take', 'box'], ['combine', partA, partB], ['use', 'door', comboItem]];
+    items = {
+      [partA]: { name: '材料A', icon: '🧩', desc: '一块材料。' },
+      [partB]: { name: '材料B', icon: '🔧', desc: '另一块材料。' },
+      [comboItem]: { name: '成品', icon: '⭐', glow: 1, desc: '拼好的成品。' }
+    };
+  } else if (mode === 4) {
+    // 线索分离感：黑板写数学题文案（与锁相同 note），盒上英语/诗锁得钥匙，门要钥匙；桌也有数学锁开“手电筒”照见钥匙盒说明
+    // 流程：desk math → torch-like scrap；box lang → key；use? 实际 take key from box after lang；door use key
+    // 为更厚：desk math → 得到「提示卡」只是 flavor item 可丢？引擎不能丢。改为：
+    // desk math → 打开后才能看清 board 的附加？不需要。
+    // 标准双锁出门：desk math → key；box 必须先开（lang）set box_open，door 的 use 在 box_open 视图
+    const m = takeMath();
+    const langRoll = idx % 3;
+    let L2note, L2ans, L2explain, L2hint, L2kind, L2opts;
+    if (langRoll === 0) {
+      const e = nextEn();
+      L2note = `【英语题】${e.q}\n（线索：${e.hint}）`;
+      L2ans = e.a; L2kind = 'alpha';
+      L2explain = `${e.q} → ${e.a}`;
+      L2hint = ['钥匙盒上有英文锁。', e.hint, '大写拼写。'];
+      sub = '密室 · 双锁逃脱';
+    } else if (langRoll === 1) {
+      const p = nextPoem();
+      const opts = dialOptsFor(p.missing);
+      L2note = `《${p.title}》　${p.author}\n${p.blank}\n（想一想课文里完整的一句）`;
+      L2ans = p.missing; L2kind = 'dial'; L2opts = opts;
+      L2explain = `《${p.title}》：${p.full}，缺「${p.missing}」。`;
+      L2hint = ['钥匙盒是古诗转盘。', `《${p.title}》。`, '回忆原句。'];
+      sub = '密室 · 双锁逃脱';
+    } else {
+      const idm = nextIdiom();
+      const opts = dialOptsFromFull(idm.full, idm.missing);
+      L2note = `【成语填空】${idm.blank}\n（想一想这个成语缺哪个字）`;
+      L2ans = idm.missing; L2kind = 'dial'; L2opts = opts;
+      L2explain = `成语「${idm.full}」缺「${idm.missing}」。${idm.hint}`;
+      L2hint = ['钥匙盒是成语转盘。', '看空格。', idm.hint];
+      sub = '密室 · 双锁逃脱';
+    }
+    story = storyHead.concat([
+      `「${title}」的${P.door}需要钥匙，可钥匙锁在${P.box}里；开盒之前，还得先解开${P.desk}的机关拿到开盒许可章。`,
+      `黑板上抄着和抽屉一样的算式——先四处观察，再动手！`
+    ]);
+    const boxLock = L2kind === 'alpha'
+      ? alphaLock(L2ans, { set: ['box_open'], text: '钥匙盒开了！' })
+      : dialLock(L2ans, L2opts, { set: ['box_open'], text: '钥匙盒开了！' });
+    objects = [
+      { id: 'door', name: P.door, box: [310, 160, 70, 120], views: [
+        { if: ['!took_key'], text: `${P.door}锁着，钥匙孔空空的。去找钥匙吧。` },
+        { text: '你有钥匙了。', use: [{ item: keyItem, win: true, text: `门开了！「${title}」逃脱成功！` }], wrong: '要用钥匙。' }
+      ]},
+      { id: 'desk', name: P.desk, box: [30, 150, 120, 50], views: [
+        { if: ['!desk_open'], text: `${P.desk}上有密码锁。算对才能拿到“开盒许可”小章：`, note: m.note,
+          lock: numLock(m.answer, { set: ['desk_open'], text: '抽屉开了，里面有一枚开盒许可小章（拿上它，再去开钥匙盒）。', give: [scrapItem] }) },
+        { text: '抽屉空了。许可章你已经拿着。' }
+      ]},
+      { id: 'box', name: '钥匙盒', box: [200, 160, 70, 50], views: [
+        { if: ['!desk_open'], text: '钥匙盒旁边贴着纸条：“请先到桌子取得开盒许可。”盒子暂时打不开。' },
+        { if: ['desk_open', '!box_open'], text: '许可章生效了，钥匙盒可以开锁：', note: L2note, lock: boxLock },
+        { if: ['box_open', '!took_key'], text: '盒子里有一把钥匙。', take: { give: [keyItem], set: ['took_key'], text: '你拿到了钥匙。' } },
+        { text: '钥匙盒空了。' }
+      ]},
+      { id: 'board', name: P.board, box: [130, 20, 150, 90], views: [
+        { text: `${P.board}上用粉笔抄着同一道题（和抽屉纸条一样），方便你对照。角落写着假密码 0000。`, note: m.note }
+      ]},
+      { id: 'shelf', name: P.shelf, box: [290, 40, 90, 120], views: [
+        { text: '架子夹层里有一把生锈的假钥匙，插不进门。' }
+      ]},
+      ...decoys()
+    ];
+    combos = [];
+    hints = [
+      hi('desk_open', 'desk', [`先开${P.desk}拿许可章。`, '看纸条或黑板上的算式。', m.hintStep || '一步步算。']),
+      hi('box_open', 'box', L2hint),
+      hi('took_key', 'box', ['拿起钥匙。', '点钥匙盒。', '拿起来。']),
+      hi('escaped', 'door', ['去开门。', `选中钥匙点${P.door}。`, '先点钥匙再点门。'])
+    ];
+    explain = [m.explain, L2explain, `用钥匙打开${P.door}。`];
+    // desk lock ok also gives scrapItem — solution doesn't need take if give on lock ok
+    solution = [['code', 'desk', String(m.answer)], ['code', 'box', L2ans], ['take', 'box'], ['use', 'door', keyItem]];
+    items = {
+      [scrapItem]: { name: '开盒许可', icon: '📑', desc: '一枚开盒许可小章。' },
+      [keyItem]: { name: '小钥匙', icon: '🗝️', desc: '一把亮闪闪的小钥匙。' }
+    };
+  } else {
+    // mode 5: 三线索密室——数学锁抽屉、语文锁书架暗格、英语锁门（三锁！）
+    const m = takeMath();
+    const langKind = idx % 2; // idiom or word/poem
+    let L2note, L2ans, L2explain, L2hint, L2kind, L2opts;
+    if (langKind === 0) {
+      const idm = nextIdiom();
+      const opts = dialOptsFromFull(idm.full, idm.missing);
+      L2note = `【成语填空】${idm.blank}\n（想一想这个成语缺哪个字）`;
+      L2ans = idm.missing; L2kind = 'dial'; L2opts = opts;
+      L2explain = `成语「${idm.full}」缺「${idm.missing}」。${idm.hint}`;
+      L2hint = ['书架暗格是成语转盘。', '看空格前后。', idm.hint];
+    } else {
+      const p = nextPoem();
+      const opts = dialOptsFor(p.missing);
+      L2note = `《${p.title}》　${p.author}\n${p.blank}\n（想一想课文里完整的一句）`;
+      L2ans = p.missing; L2kind = 'dial'; L2opts = opts;
+      L2explain = `《${p.title}》：${p.full}，缺「${p.missing}」。`;
+      L2hint = ['书架暗格是古诗转盘。', `《${p.title}》。`, '回忆原句。'];
+    }
+    const e = nextEn();
+    const L3note = `【英语题】${e.q}\n（线索：${e.hint}）`;
+    const L3ans = e.a;
+    sub = '密室 · 三锁挑战';
+    story = storyHead.concat([
+      `最难的一间「${title}」！${P.door}有字母锁，钥匙却藏在书架暗格；暗格又要先开${P.desk}。`,
+      `数学、语文、英语三道锁环环相扣——观察每个角落再动手。`
+    ]);
+    const shelfLock = dialLock(L2ans, L2opts, { set: ['shelf_open'], text: '暗格开了，里面有一把钥匙！' });
+    objects = [
+      { id: 'door', name: P.door, box: [310, 160, 70, 120], views: [
+        { if: ['!door_code'], text: `${P.door}上有字母密码锁：`, note: L3note,
+          lock: alphaLock(L3ans, { set: ['door_code'], text: '字母锁开了！还需要钥匙。' }), wrong: '先解开门上的字母锁。' },
+        { text: '字母锁已开，钥匙孔亮着。', use: [{ item: keyItem, win: true, text: `三锁全开！「${title}」逃脱成功！` }], wrong: '还差钥匙。' }
+      ]},
+      { id: 'desk', name: P.desk, box: [30, 150, 120, 50], views: [
+        { if: ['!desk_open'], text: `${P.desk}锁着，纸条写着：`, note: m.note,
+          lock: numLock(m.answer, { set: ['desk_open'], text: '抽屉开了，里面有一张“书架暗格启动卡”。', give: [scrapItem] }) },
+        { text: '启动卡已取走。去开书架吧。' }
+      ]},
+      { id: 'shelf', name: P.shelf, box: [290, 40, 90, 120], views: [
+        { if: ['!desk_open'], text: `${P.shelf}有一个暗格，但机关没启动。先去开${P.desk}。` },
+        { if: ['desk_open', '!shelf_open'], text: '暗格亮起转盘：', note: L2note, lock: shelfLock },
+        { if: ['shelf_open', '!took_key'], text: '暗格里有钥匙。', take: { give: [keyItem], set: ['took_key'], text: '你拿到了钥匙。' } },
+        { text: '暗格空了。' }
+      ]},
+      { id: 'board', name: P.board, box: [130, 20, 150, 90], views: [
+        { text: `${P.board}流程图：抽屉(数学) → 书架(语文) → 门(英语+钥匙)。有人把箭头画反了，别跟错。` }
+      ]},
+      { id: 'box', name: P.box, box: [200, 160, 70, 50], views: [
+        { text: `${P.box}里只有一张空白便签和一颗糖，不是线索。` }
+      ]},
+      ...decoys()
+    ];
+    combos = [];
+    hints = [
+      hi('desk_open', 'desk', [`先开${P.desk}。`, '算数学题。', m.hintStep || '仔细算。']),
+      hi('shelf_open', 'shelf', L2hint),
+      hi('took_key', 'shelf', ['拿起钥匙。', `点${P.shelf}。`, '拿起来。']),
+      hi('door_code', 'door', ['去开大门字母锁。', e.hint, '大写拼写。']),
+      hi('escaped', 'door', ['字母锁开了，用钥匙。', `选中钥匙点${P.door}。`, '先点钥匙再点门。'])
+    ];
+    explain = [m.explain, L2explain, `英文门禁：${e.q} → ${e.a}`, '三锁齐开，用钥匙出门。'];
+    solution = [['code', 'desk', String(m.answer)], ['code', 'shelf', L2ans], ['take', 'shelf'], ['code', 'door', L3ans], ['use', 'door', keyItem]];
+    items = {
+      [scrapItem]: { name: '启动卡', icon: '💳', desc: '启动书架暗格的卡片。' },
+      [keyItem]: { name: '小钥匙', icon: '🗝️', desc: '一把亮闪闪的小钥匙。' }
+    };
+  }
+
+  // 统一修正 num len
+  objects.forEach(o => {
+    o.views.forEach(v => {
+      if (v.lock && v.lock.kind === 'num') {
+        v.lock.len = Math.max(v.lock.len || 1, String(v.lock.answer).length);
       }
     });
   });
 
+  // 章节感：副标题带章名
+  sub = chapMeta.name.replace(/·.*/, '').trim() + ' · ' + sub.replace(/^密室 · /, '');
+
   return {
     id, title, emoji: scene.emoji, sub, story, objects, combos, hints, explain, solution,
-    scene, mode, mathKind, art: artFn(scene, mode), items
+    scene, mode, mathKind, art: artFn(scene, mode), items, chap
   };
 }
 
 const rooms = [];
-let mathI=0, poemI=0, enI=0, ridI=0, idiomI=0, wordI=0;
-function nextMath(){const m=MATH[mathI%MATH.length];mathI++;return m;}
-function nextPoem(){const p=POEMS[poemI%POEMS.length];poemI++;return p;}
-function nextEn(){const e=EN_QA[enI%EN_QA.length];enI++;return e;}
-function nextRid(){const r=RIDDLES[ridI%RIDDLES.length];ridI++;return r;}
-function nextIdiom(){const i=IDIOMS[idiomI%IDIOMS.length];idiomI++;return i;}
-function nextWord(){const w=WORDS[wordI%WORDS.length];wordI++;return w;}
+let mathI = 0, poemI = 0, enI = 0, ridI = 0, idiomI = 0, wordI = 0;
+function nextMath(){ const m = MATH[mathI % MATH.length]; mathI++; return m; }
+function nextPoem(){ const p = POEMS[poemI % POEMS.length]; poemI++; return p; }
+function nextEn(){ const e = EN_QA[enI % EN_QA.length]; enI++; return e; }
+function nextRid(){ const r = RIDDLES[ridI % RIDDLES.length]; ridI++; return r; }
+function nextIdiom(){ const i = IDIOMS[idiomI % IDIOMS.length]; idiomI++; return i; }
+function nextWord(){ const w = WORDS[wordI % WORDS.length]; wordI++; return w; }
 
-// 小黄已刷透前 20 关（手工 r1–r5 + 生成 r6–r20），本版只上线其后 30 关（原 r21–r50）
-// 仍按 0..44 顺序 makeRoom，保证题库指针与旧版 r21–r50 一致，再 slice 掉前 15 个生成关
-const SKIP_GEN = 15; // makeRoom idx 0..14 → 旧 r6..r20
-const KEEP = 30;     // 旧 r21..r50
-for(let i=0;i<SKIP_GEN+KEEP;i++) rooms.push(makeRoom(i));
-rooms.splice(0, SKIP_GEN);
+// 全新 30 关厚密室（3 章 × 10 间），不再沿用旧 r21–r50 单题模板
+const KEEP = 30;
+for (let i = 0; i < KEEP; i++) rooms.push(makeRoom(i));
 
 // Emit rooms-extra.js
 let out = [];
@@ -1176,77 +1287,77 @@ out.push('function g(id,inner){return \'<g class="obj" data-obj="\'+id+\'">\'+in
 out.push('var ITEMS=G.PZ_ITEMS;');
 
 const allItems = {};
-rooms.forEach(r=>{Object.assign(allItems, r.items);});
-for(const [k,v] of Object.entries(allItems)){
-  out.push(`ITEMS['${k}']={name:'${escJs(v.name)}',icon:'${v.icon}'${v.glow?',glow:1':''},desc:'${escJs(v.desc)}'};`);
+rooms.forEach(r => { Object.assign(allItems, r.items); });
+for (const [k, v] of Object.entries(allItems)) {
+  out.push(`ITEMS['${k}']={name:'${escJs(v.name)}',icon:'${v.icon}'${v.glow ? ',glow:1' : ''},desc:'${escJs(v.desc)}'};`);
 }
 
-function emitRoom(r){
+function emitRoom(r) {
   const lines = [];
   lines.push(`var ${r.id}={id:'${r.id}',title:'${escJs(r.title)}',emoji:'${r.emoji}',sub:'${escJs(r.sub)}',`);
-  lines.push(` story:[${r.story.map(s=>`'${escJs(s)}'`).join(',')}],`);
+  lines.push(` story:[${r.story.map(s => `'${escJs(s)}'`).join(',')}],`);
   lines.push(' objects:[');
-  r.objects.forEach((o,oi)=>{
+  r.objects.forEach((o, oi) => {
     lines.push(`  {id:'${o.id}',name:'${escJs(o.name)}',box:[${o.box.join(',')}],views:[`);
-    o.views.forEach((v,vi)=>{
+    o.views.forEach((v, vi) => {
       let s = '    {';
-      if(v.if) s += `if:[${v.if.map(x=>`'${x}'`).join(',')}],`;
+      if (v.if) s += `if:[${v.if.map(x => `'${x}'`).join(',')}],`;
       s += `text:'${escJs(v.text)}',`;
-      if(v.note) s += `note:'${escJs(v.note)}',`;
-      if(v.lock){
-        const L=v.lock;
+      if (v.note) s += `note:'${escJs(v.note)}',`;
+      if (v.lock) {
+        const L = v.lock;
         s += `lock:{kind:'${L.kind}',`;
-        if(L.len!=null) s += `len:${L.len},`;
-        if(L.dot) s += `dot:true,`;
-        if(L.opts){
-          if(L.kind==='dial') s += `opts:[${L.opts.map(row=>`[${row.map(c=>`'${escJs(c)}'`).join(',')}]`).join(',')}],`;
-          else if(L.kind==='choice') s += `opts:[${L.opts.map(o=>`{v:'${o.v}',c:'${o.c}'}`).join(',')}],`;
+        if (L.len != null) s += `len:${L.len},`;
+        if (L.dot) s += `dot:true,`;
+        if (L.opts) {
+          if (L.kind === 'dial') s += `opts:[${L.opts.map(row => `[${row.map(c => `'${escJs(c)}'`).join(',')}]`).join(',')}],`;
+          else if (L.kind === 'choice') s += `opts:[${L.opts.map(o => `{v:'${o.v}',c:'${o.c}'}`).join(',')}],`;
         }
         s += `answer:'${escJs(L.answer)}',prompt:'${escJs(L.prompt)}',`;
-        s += `ok:{${L.ok.set?`set:[${L.ok.set.map(x=>`'${x}'`).join(',')}],`:''}${L.ok.give?`give:[${L.ok.give.map(x=>`'${x}'`).join(',')}],`:''}${L.ok.win?'win:true,':''}text:'${escJs(L.ok.text)}'},`;
+        s += `ok:{${L.ok.set ? `set:[${L.ok.set.map(x => `'${x}'`).join(',')}],` : ''}${L.ok.give ? `give:[${L.ok.give.map(x => `'${x}'`).join(',')}],` : ''}${L.ok.win ? 'win:true,' : ''}text:'${escJs(L.ok.text)}'},`;
         s += `bad:'${escJs(L.bad)}'},`;
       }
-      if(v.take){
-        s += `take:{give:[${v.take.give.map(x=>`'${x}'`).join(',')}],set:[${v.take.set.map(x=>`'${x}'`).join(',')}],text:'${escJs(v.take.text)}'},`;
+      if (v.take) {
+        s += `take:{give:[${v.take.give.map(x => `'${x}'`).join(',')}],set:[${v.take.set.map(x => `'${x}'`).join(',')}],text:'${escJs(v.take.text)}'},`;
       }
-      if(v.use){
-        s += `use:[${v.use.map(u=>{
-          let uu=`{item:'${u.item}',`;
-          if(u.take) uu+=`take:[${u.take.map(x=>`'${x}'`).join(',')}],`;
-          if(u.give) uu+=`give:[${u.give.map(x=>`'${x}'`).join(',')}],`;
-          if(u.set) uu+=`set:[${u.set.map(x=>`'${x}'`).join(',')}],`;
-          if(u.win) uu+='win:true,';
-          uu+=`text:'${escJs(u.text)}'}`;
+      if (v.use) {
+        s += `use:[${v.use.map(u => {
+          let uu = `{item:'${u.item}',`;
+          if (u.take) uu += `take:[${u.take.map(x => `'${x}'`).join(',')}],`;
+          if (u.give) uu += `give:[${u.give.map(x => `'${x}'`).join(',')}],`;
+          if (u.set) uu += `set:[${u.set.map(x => `'${x}'`).join(',')}],`;
+          if (u.win) uu += 'win:true,';
+          uu += `text:'${escJs(u.text)}'}`;
           return uu;
         }).join(',')}],`;
       }
-      if(v.wrong) s += `wrong:'${escJs(v.wrong)}',`;
+      if (v.wrong) s += `wrong:'${escJs(v.wrong)}',`;
       s = s.replace(/,$/, '') + '}';
-      lines.push(s + (vi<o.views.length-1?',':''));
+      lines.push(s + (vi < o.views.length - 1 ? ',' : ''));
     });
-    lines.push('  ]}' + (oi<r.objects.length-1?',':''));
+    lines.push('  ]}' + (oi < r.objects.length - 1 ? ',' : ''));
   });
   lines.push(' ],');
-  if(r.combos.length){
-    lines.push(` combos:[${r.combos.map(c=>`{a:'${c.a}',b:'${c.b}',give:[${c.give.map(x=>`'${x}'`).join(',')}],set:[${c.set.map(x=>`'${x}'`).join(',')}],text:'${escJs(c.text)}'}`).join(',')}],`);
+  if (r.combos.length) {
+    lines.push(` combos:[${r.combos.map(c => `{a:'${c.a}',b:'${c.b}',give:[${c.give.map(x => `'${x}'`).join(',')}],set:[${c.set.map(x => `'${x}'`).join(',')}],text:'${escJs(c.text)}'}`).join(',')}],`);
   } else {
     lines.push(' combos:[],');
   }
   lines.push(' hints:[');
-  r.hints.forEach((h,hi2)=>{
-    lines.push(`  {until:'${h.until}',${h.obj?`obj:'${h.obj}',`:''}tiers:[${h.tiers.map(t=>`'${escJs(t)}'`).join(',')}]}${hi2<r.hints.length-1?',':''}`);
+  r.hints.forEach((h, hi2) => {
+    lines.push(`  {until:'${h.until}',${h.obj ? `obj:'${h.obj}',` : ''}tiers:[${h.tiers.map(t => `'${escJs(t)}'`).join(',')}]}${hi2 < r.hints.length - 1 ? ',' : ''}`);
   });
   lines.push(' ],');
-  lines.push(` explain:[${r.explain.map(e=>`'${escJs(e)}'`).join(',')}],`);
-  lines.push(` solution:[${r.solution.map(a=>`[${a.map(x=>`'${escJs(x)}'`).join(',')}]`).join(',')}],`);
+  lines.push(` explain:[${r.explain.map(e => `'${escJs(e)}'`).join(',')}],`);
+  lines.push(` solution:[${r.solution.map(a => `[${a.map(x => `'${escJs(x)}'`).join(',')}]`).join(',')}],`);
   lines.push(` art:${r.art}`);
   lines.push('};');
   return lines.join('\n');
 }
 
-rooms.forEach(r=>out.push(emitRoom(r)));
+rooms.forEach(r => out.push(emitRoom(r)));
 
-out.push('var EXTRA=[' + rooms.map(r=>r.id).join(',') + '];');
+out.push('var EXTRA=[' + rooms.map(r => r.id).join(',') + '];');
 out.push('G.PZ_ROOMS=G.PZ_ROOMS.concat(EXTRA);');
 out.push('})(typeof window!==\'undefined\'?window:globalThis);');
 out.push('/*ROOMS-EXTRA-END*/');
@@ -1255,19 +1366,20 @@ const dest = path.join(__dirname, '../src/rooms-extra.js');
 fs.writeFileSync(dest, out.join('\n'));
 console.log('Wrote', dest, 'rooms', rooms.length, 'bytes', fs.statSync(dest).size);
 
-const mix={语文:0,数学:0,英语:0};
-rooms.forEach(r=>{
-  if(/语文|古诗/.test(r.sub)) mix['语文']++;
-  if(/数学/.test(r.sub)) mix['数学']++;
-  if(/英语/.test(r.sub)) mix['英语']++;
+const mix = { 语文: 0, 数学: 0, 英语: 0 };
+rooms.forEach(r => {
+  if (/语文|古诗|成语|词语/.test(r.sub + r.story.join(''))) mix['语文']++;
+  if (/数学/.test(r.sub + JSON.stringify(r.explain))) mix['数学']++;
+  if (/英语/.test(r.sub)) mix['英语']++;
 });
-const modeCount={};
-rooms.forEach(r=>{modeCount[r.mode]=(modeCount[r.mode]||0)+1;});
+const modeCount = {};
+rooms.forEach(r => { modeCount[r.mode] = (modeCount[r.mode] || 0) + 1; });
 console.log('subject tags', mix);
-console.log('mode counts (0 escape..7 english)', modeCount);
-const kc={}; rooms.forEach(r=>{if(r.mathKind)kc[r.mathKind]=(kc[r.mathKind]||0)+1;});
-console.log('math kinds used', kc);
-const sc={}; rooms.forEach(r=>{const k=(r.scene.art||r.scene.name)+(r.scene.variant!=null?('@'+r.scene.variant):''); sc[k]=(sc[k]||0)+1;});
-console.log('scenes', sc);
-console.log('first', rooms[0]&&rooms[0].id, rooms[0]&&rooms[0].title, 'last', rooms[rooms.length-1]&&rooms[rooms.length-1].id);
+console.log('mode counts (0..5 thick)', modeCount);
+const lockStats = rooms.map(r => r.objects.reduce((a, o) => a + o.views.filter(v => v.lock).length, 0));
+console.log('locks per room min/max/avg', Math.min(...lockStats), Math.max(...lockStats), (lockStats.reduce((a, b) => a + b, 0) / lockStats.length).toFixed(1));
+const stepStats = rooms.map(r => r.solution.length);
+console.log('solution steps min/max/avg', Math.min(...stepStats), Math.max(...stepStats), (stepStats.reduce((a, b) => a + b, 0) / stepStats.length).toFixed(1));
+console.log('chapters', [0, 1, 2].map(c => rooms.filter(r => r.chap === c).map(r => r.title).slice(0, 3).join(',') + '...'));
+console.log('first', rooms[0] && rooms[0].id, rooms[0] && rooms[0].title, 'last', rooms[rooms.length - 1] && rooms[rooms.length - 1].id);
 console.log('total rooms', rooms.length);

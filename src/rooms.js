@@ -282,6 +282,6 @@ var r5={id:'r5',title:'秘密花园',emoji:'🌷',sub:'植树问题 · 英语 ·
   s+=T(372,262,20,'🦋')+T(28,268,18,'🐞');
   return s;}
 };
-G.PZ_ITEMS=ITEMS;G.PZ_ROOMS=[]; /* 前 5 关手工密室已刷透，本版列表只拼 rooms-extra 的 30 关 */
+G.PZ_ITEMS=ITEMS;G.PZ_ROOMS=[]; /* 前 5 关手工密室保留作参考但不入列表；本版拼 rooms-extra 的 30 间厚密室 */
 })(typeof window!=='undefined'?window:globalThis);
 /*ROOMS-END*/

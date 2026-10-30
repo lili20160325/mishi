@@ -376,21 +376,8 @@ function checksFor(r){
     return {obj:c.obj, flags:pos, calc:c.calc};
   });
 }
-const CHECK_FIXED={
- r1:[{obj:'desk',calc(n){const m=n.match(/长 ([\d.]+) 米，宽 ([\d.]+) 米/);const a=mul(dec(m[1]),dec(m[2]));return String(a.n/a.d);}},
-     {obj:'shelf',flags:['shelf_lit'],calc(n){if(!/担心/.test(n)||!/Unit 1/.test(n))throw 'note';return 'WORRY';}}],
- r2:[{obj:'cabinet',calc(){const n=noteOf(ROOMS[1],'board');const line='明月松间照，清泉石上流';const m=n.match(/明月 ___ 间照，清泉 ___ 上流/);if(!m)throw 'note';return line[2]+line[8];}},
-     {obj:'door',flags:['riddle_seen'],calc(n){if(!/一口咬掉牛尾巴/.test(n))throw 'note';return '告';}}],
- r3:[{obj:'fridge',calc(n){const order=['eggs','milk','sugar'];const lines=n.split('\n');return order.map(w=>{const l=lines.find(x=>x.includes(w)&&/·/.test(x));return NUMW[l.match(/·\s*(\w+)/)[1]];}).join('');}},
-     {obj:'cupboard',calc(n){const a=n.match(/面粉　(\d+) 袋　每袋 ([\d.]+) 元/),b=n.match(/黄油　1 块　([\d.]+) 元/);const t=add(mul(dec(a[1]),dec(a[2])),dec(b[1]));const v=Number(t.n)/Number(t.d);return String(Math.round(v*100)/100);}},
-     {obj:'oven',calc(n){const m=n.match(/(\d+)x − (\d+) = (\d+)/);const x=(+m[3]+ +m[2])/ +m[1];return String(x);}}],
- r4:[{obj:'safe',calc(){const n=noteOf(ROOMS[3],'desk');const blanks=n.match(/[\u4e00-\u9fa5]*\s?___\s?[\u4e00-\u9fa5]*/g);if(blanks.length!==4)throw 'blanks '+blanks.length;
-       return blanks.map(b=>{const pat=b.replace(/\s/g,'');const cand=IDIOMS.filter(id=>id.length===4&&[...pat.replace('___','?')].every((c,i)=>c==='?'?CN.includes(id[i]):id[i]===c));if(cand.length!==1)throw 'idiom '+b+' '+cand;const ch=cand[0][pat.indexOf('___')];return CN.indexOf(ch);}).join('');}},
-     {obj:'boxes',calc(){const n=noteOf(ROOMS[3],'telescope',['lens_in']);return n.match(/in the (\w+) box/)[1];}},
-     {obj:'door',calc(n){const m=n.match(/上底 (\d+) 分米，下底 (\d+) 分米，高 (\d+) 分米/);return String((+m[1]+ +m[2])*+m[3]/2);}}],
- r5:[{obj:'bed',flags:['dug'],calc(){const n=noteOf(ROOMS[4],'sign');const m=n.match(/长 (\d+) 米。\n从头到尾，每隔 (\d+) 米种一棵树（两头都要种）/);return String(+m[1]/ +m[2]+1);}},
-     {obj:'gate',calc(n){const poem='春色满园关不住，一枝红杏出墙来';if(!/春色满园关不 ___，\n一枝红 ___ 出墙来/.test(n))throw 'note';return poem[6]+poem[11];}}]
-};
+const CHECK_FIXED={};
+/* 手工 r1–r5 已不在 PZ_ROOMS；生成关用 autoCalc，勿再用旧 CHECK_FIXED */
 let totalStates=0;
 for(const r of ROOMS){
   // ① 通关脚本
