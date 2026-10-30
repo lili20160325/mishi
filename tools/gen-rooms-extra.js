@@ -101,53 +101,86 @@ function areaTri(b,h){return String(b*h/2);}
 function round2(n){return String(Math.round(n*100)/100);}
 
 const MATH = [];
+// 小数 × 整数（五年级）
+[[2.5,4,'瓶果汁'],[3.6,5,'本练习本'],[0.8,7,'支铅笔'],[1.25,8,'块橡皮'],[4.5,6,'袋牛奶']].forEach(([p,n,thing])=>{
+  const ans=mulDec(p,n);
+  const measure=thing[0]; // 瓶/本/支/块/袋
+  const name=thing.slice(1);
+  MATH.push({kind:'dec_mul_int', note:`【算一算】每${measure}${name} ${p} 元，买 ${n} ${measure}。一共多少元？`, answer:ans, explain:`${p} × ${n} = ${ans}`, hintStep:`小数乘整数：按整数相乘，再数小数点后有几位。`});
+});
+// 小数 × 小数
+[[1.5,2.4,'米彩带'],[2.5,1.2,'千克水果'],[0.6,3.5,'升饮料'],[1.25,1.6,'米布料'],[3.2,1.5,'千克大米']].forEach(([p,n,thing])=>{
+  const ans=mulDec(p,n);
+  const measure=thing[0]==='米'?'米':(thing[0]==='千'?'千克':'升');
+  const name=thing.replace(/^(米|千克|升)/,'');
+  MATH.push({kind:'dec_mul_dec', note:`【算一算】${name}每${measure} ${p} 元，买 ${n} ${measure}。一共多少元？`, answer:ans, explain:`${p} × ${n} = ${ans}`, hintStep:`小数乘小数：先当整数乘，再看两个因数一共有几位小数。`});
+});
+// 小数 ÷ 整数
+[[6.4,4,'升油','个瓶子'],[9.6,3,'米彩带','段'],[7.5,5,'千克糖果','袋'],[8.4,6,'升果汁','杯'],[12.6,9,'元钱','人平分']].forEach(([a,b,unit,how])=>{
+  const ans=(a/b).toFixed(10).replace(/\.?0+$/,'');
+  let note, hint;
+  if(how==='个瓶子'){ note=`【算一算】${a} ${unit}平均倒进 ${b} 个瓶子，每个瓶子多少升？`; hint=`总数÷瓶数，就是每个瓶子分到的量。`; }
+  else if(how==='段'){ note=`【算一算】${a} ${unit}平均剪成 ${b} 段，每段多少米？`; hint=`总长÷段数。`; }
+  else if(how==='袋'){ note=`【算一算】${a} ${unit}平均装进 ${b} 袋，每袋多少千克？`; hint=`总重÷袋数。`; }
+  else if(how==='杯'){ note=`【算一算】${a} ${unit}平均倒进 ${b} 杯，每杯多少升？`; hint=`总量÷杯数。`; }
+  else { note=`【算一算】${a} ${unit}由 ${b} 人平分，每人多少元？`; hint=`总钱÷人数。`; }
+  MATH.push({kind:'dec_div_int', note, answer:ans, explain:`${a} ÷ ${b} = ${ans}`, hintStep:hint});
+});
+// 小数 ÷ 小数
+[[4.8,1.2,'米绳子'],[6.3,0.9,'千克面粉'],[2.4,0.8,'升牛奶'],[7.2,1.2,'米布'],[5.6,0.7,'千克糖'],[9.6,1.6,'升水']].forEach(([a,b,thing])=>{
+  const ans=(a/b).toFixed(10).replace(/\.?0+$/,'');
+  const measure=thing[0]==='米'?'米':(thing[0]==='千'?'千克':'升');
+  const name=thing.replace(/^(米|千克|升)/,'');
+  MATH.push({kind:'dec_div_dec', note:`【算一算】一共有 ${a} ${measure}${name}，每份 ${b} ${measure}。可以分成多少份？`, answer:ans, explain:`${a} ÷ ${b} = ${ans}`, hintStep:`小数除以小数：先把除数变成整数（两边同乘 10 或 100），再除。`});
+});
+
 // 多步购物（元）
-[[4.5,3,2.8,2],[6.5,2,3.2,3],[5.4,4,1.5,6],[3.75,2,2.5,4],[8.2,3,1.6,5],[9.9,2,4.5,2],[2.25,8,3.5,2],[7.6,3,0.8,10]].forEach(([p1,n1,p2,n2])=>{
+[[4.5,3,2.8,2],[6.5,2,3.2,3],[5.4,4,1.5,6],[3.75,2,2.5,4],[8.2,3,1.6,5],[9.9,2,4.5,2]].forEach(([p1,n1,p2,n2])=>{
   const ans=round2(p1*n1+p2*n2);
   MATH.push({kind:'shop', note:`【算一算】笔记本每本 ${p1} 元，买 ${n1} 本；橡皮每块 ${p2} 元，买 ${n2} 块。一共多少元？`, answer:ans, explain:`${p1}×${n1}+${p2}×${n2}=${ans}`, hintStep:`先算笔记本总价，再加橡皮总价。`});
 });
 // 花坛外圈小路面积
-[[12,8,1],[10,6,1],[15,9,2],[8,5,1],[14,10,1],[9,7,1],[16,8,2],[11,5,1]].forEach(([L,W,p])=>{
+[[12,8,1],[10,6,1],[15,9,2],[8,5,1],[14,10,1],[9,7,1]].forEach(([L,W,p])=>{
   const ans=String((L+2*p)*(W+2*p)-L*W);
   MATH.push({kind:'frame', note:`【算一算】长方形花坛长 ${L} 米、宽 ${W} 米。四周铺宽 ${p} 米的小路，小路面积是多少平方米？`, answer:ans, explain:`外围 (${L}+${2*p})×(${W}+${2*p}) 减去花坛 ${L}×${W} = ${ans}`, hintStep:`先算“花坛+小路”的大长方形，再减去花坛本身。`});
 });
 // 米→平方分米（单位换算+面积）
-[[1.2,0.8],[2.5,1.2],[1.5,1.5],[3,0.6],[1.8,1],[2,1.4],[0.9,0.8],[2.4,1.5]].forEach(([l,w])=>{
+[[1.2,0.8],[2.5,1.2],[1.5,1.5],[3,0.6],[1.8,1],[2,1.4]].forEach(([l,w])=>{
   const ans=String(Math.round(l*10*w*10));
   MATH.push({kind:'rect_dm', note:`【算一算】长方形桌面长 ${l} 米、宽 ${w} 米。面积是多少平方分米？（1 米 = 10 分米）`, answer:ans, explain:`先换成 ${l*10} 分米 × ${w*10} 分米 = ${ans} 平方分米`, hintStep:`先把米换成分米，再相乘。`});
 });
 // 两步方程
-[[3,24,2,18],[4,10,2,30],[5,15,3,25],[2,40,1,16],[3,12,1,28],[4,8,3,20],[5,20,2,40],[3,9,2,21]].forEach(([a,b,c,d])=>{
+[[3,24,2,18],[4,10,2,30],[5,15,3,25],[2,40,1,16],[3,12,1,28],[4,8,3,20]].forEach(([a,b,c,d])=>{
   // ax - b = cx + d  → (a-c)x = b+d
   const x=(b+d)/(a-c);
   MATH.push({kind:'eq2', note:`【算一算】解方程：${a}x − ${b} = ${c}x + ${d}\n求 x。`, answer:String(x), explain:`移项合并：(${a}-${c})x = ${b}+${d} → x = ${x}`, hintStep:`把含 x 的项移到一边，常数移到另一边。`});
 });
 // 连续加减（应用）
-[[18.6,5.8,3.5],[25.4,8.7,4.2],[30,12.5,6.8],[16.8,4.5,2.7],[22.2,7.6,5.4],[40.5,15.5,8],[12.75,3.25,2.5],[28.8,9.9,4.4]].forEach(([a,b,c])=>{
+[[18.6,5.8,3.5],[25.4,8.7,4.2],[30,12.5,6.8],[16.8,4.5,2.7],[22.2,7.6,5.4],[40.5,15.5,8]].forEach(([a,b,c])=>{
   const ans=round2(a-b+c);
   MATH.push({kind:'remain', note:`【算一算】一桶油重 ${a} 千克，用去 ${b} 千克后又倒入 ${c} 千克。现在桶里有多少千克？`, answer:ans, explain:`${a} − ${b} + ${c} = ${ans}`, hintStep:`先减去用去的，再加上倒入的。`});
 });
 // 梯形面积（稍难数字）
-[[6.5,9.5,4],[5,11,6],[7,13,5],[4.5,8.5,6],[8,14,3.5],[3,9,8],[6,12,4.5],[5.5,10.5,4]].forEach(([a,b,h])=>{
+[[6.5,9.5,4],[5,11,6],[7,13,5],[4.5,8.5,6],[8,14,3.5],[3,9,8]].forEach(([a,b,h])=>{
   const ans=round2((a+b)*h/2);
   MATH.push({kind:'trap', note:`【算一算】梯形：上底 ${a} 分米，下底 ${b} 分米，高 ${h} 分米。面积是多少平方分米？`, answer:ans, explain:`（${a}+${b}）×${h}÷2 = ${ans}`, hintStep:`梯形面积 =（上底+下底）×高÷2。`});
 });
 // 三角形 + 再求两倍（多步）
-[[8,6],[10,7],[12,5],[9,8],[14,6],[15,4],[7,10],[11,6]].forEach(([b,h])=>{
+[[8,6],[10,7],[12,5],[9,8],[14,6],[15,4]].forEach(([b,h])=>{
   const one=b*h/2; const ans=String(one*2);
   MATH.push({kind:'tri2', note:`【算一算】一块三角形彩纸底 ${b} 厘米、高 ${h} 厘米。用同样的两块拼成一个图形，总面积是多少平方厘米？`, answer:ans, explain:`一块 = ${b}×${h}÷2 = ${one}，两块 = ${ans}`, hintStep:`先求一块三角形面积，再乘 2。`});
 });
 // 植树（两端都种）+ 变式
-[[48,6],[36,4],[60,5],[42,7],[55,5],[72,8],[40,5],[63,9]].forEach(([L,G])=>{
+[[48,6],[36,4],[60,5],[42,7],[55,5],[72,8]].forEach(([L,G])=>{
   MATH.push({kind:'tree', note:`【算一算】小路长 ${L} 米。从头到尾，每隔 ${G} 米种一棵树（两头都要种）。一共要种多少棵树？`, answer:String(L/G+1), explain:`段数=${L}÷${G}=${L/G}，棵数=段数+1=${L/G+1}`, hintStep:`段数 = 全长÷间隔，两头都种则棵数比段数多 1。`});
 });
 // 速度路程时间（五年级常见）
-[[60,2.5],[48,1.5],[72,2],[90,1.5],[54,3],[80,2.5],[36,2],[100,1.5]].forEach(([v,t])=>{
+[[60,2.5],[48,1.5],[72,2],[90,1.5],[54,3],[80,2.5]].forEach(([v,t])=>{
   const ans=round2(v*t);
   MATH.push({kind:'speed', note:`【算一算】一辆车平均每小时行 ${v} 千米，行了 ${t} 小时。一共行了多少千米？`, answer:ans, explain:`路程 = 速度 × 时间 = ${v} × ${t} = ${ans}`, hintStep:`路程 = 速度 × 时间。`});
 });
 // 分数/小数混合：打几折
-[[80,0.8],[120,0.7],[60,0.9],[200,0.6],[90,0.5],[150,0.8],[45,0.7],[100,0.9]].forEach(([price,rate])=>{
+[[80,0.8],[120,0.7],[60,0.9],[200,0.6],[90,0.5],[150,0.8]].forEach(([price,rate])=>{
   const ans=round2(price*rate);
   const zhe=Math.round(rate*10);
   MATH.push({kind:'discount', note:`【算一算】一件原价 ${price} 元的外套打 ${zhe} 折。应付多少元？`, answer:ans, explain:`${price} × ${rate} = ${ans}`, hintStep:`打 ${zhe} 折就是用原价乘 0.${zhe}。`});
@@ -351,7 +384,7 @@ function bare(kind, expr, ans, explain){addMath(kind, `【算一算】小数四�
     if(!buckets.has(it.kind)){buckets.set(it.kind,[]); order.push(it.kind);}
     buckets.get(it.kind).push(it);
   }
-  const prefer=['shop','rep_len','dec_add','frame','rep_block','dec_sub','rect_dm','rep_den','dec_mul','eq2','rep_which','dec_div','remain','rep_num','dec_mix','trap','rep_from','tri2','rep_as_dec','tree','speed','discount'];
+  const prefer=['shop','rep_len','dec_add','frame','dec_mul_int','rep_block','dec_sub','rect_dm','dec_mul_dec','rep_den','dec_mul','eq2','dec_div_int','rep_which','dec_div','remain','dec_div_dec','rep_num','dec_mix','trap','rep_from','tri2','rep_as_dec','tree','speed','discount'];
   const keys=prefer.filter(k=>buckets.has(k));
   for(const k of order) if(!keys.includes(k)) keys.push(k);
   const max=Math.max(...keys.map(k=>buckets.get(k).length));

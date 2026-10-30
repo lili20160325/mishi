@@ -280,7 +280,7 @@ var r10={id:'r10',title:'蝴蝶公园',emoji:'🎠',sub:'数学 · 英语',
  story:['双锁挑战站「蝴蝶公园」！','先过石凳，再过花箱。','两关都对，不用找门——直接挑战成功！'],
  objects:[
   {id:'desk',name:'石凳',box:[30,150,120,50],views:[
-    {if:['!desk_open'],text:'第一关（数学）：',note:'【算一算】循环小数：计算 1÷3，把循环节按顺序连起来是多少？',lock:{kind:'num',len:1,answer:'3',prompt:'输入密码',ok:{set:['desk_open'],text:'第一关过了！去看第二关吧。'},bad:'再算算。'}},
+    {if:['!desk_open'],text:'第一关（数学）：',note:'【算一算】每瓶果汁 2.5 元，买 4 瓶。一共多少元？',lock:{kind:'num',len:2,answer:'10',prompt:'输入密码',ok:{set:['desk_open'],text:'第一关过了！去看第二关吧。'},bad:'再算算。'}},
     {text:'第一关已经打开了。'}
   ]},
   {id:'box',name:'花箱',box:[200,160,70,50],views:[
@@ -302,11 +302,11 @@ var r10={id:'r10',title:'蝴蝶公园',emoji:'🎠',sub:'数学 · 英语',
  ],
  combos:[],
  hints:[
-  {until:'desk_open',obj:'desk',tiers:['先过第一关数学题。','仔细看【算一算】，可能不止一步。','先除到开始循环。循环节是重复的那一段，按顺序连成一个数，比如重复 1 和 8 就填 18。不循环的数字不要写。']},
+  {until:'desk_open',obj:'desk',tiers:['先过第一关数学题。','仔细看【算一算】，可能不止一步。','小数乘整数：按整数相乘，再数小数点后有几位。']},
   {until:'escaped',obj:'box',tiers:['去开第二关。','Unit 1，复数名词，6 个字母，首字母 C；指“成组的语块”。','根据词性、首字母和课本单元想想，不要偷看答案哦。']}
  ],
- explain:['1÷3=0.3333…。循环节连起来是 3。','How do you learn new words? I like to learn words in _____. → CHUNKS','两关都对，挑战成功。'],
- solution:[['code','desk','3'],['code','box','CHUNKS']],
+ explain:['2.5 × 4 = 10','How do you learn new words? I like to learn words in _____. → CHUNKS','两关都对，挑战成功。'],
+ solution:[['code','desk','10'],['code','box','CHUNKS']],
  art:function(f){var s='';s+=R(0,0,400,300,'#dff7e8')+R(0,160,400,140,'#8fd99a');
   s+=C(60,40,18,'#fff6a8')+C(320,30,12,'#fff',' opacity=".8"')+C(350,50,16,'#fff',' opacity=".7"');
   s+=P('M0 180Q100 140 200 180T400 170','#7ecf6a',' opacity=".35"');
@@ -326,7 +326,7 @@ var r11={id:'r11',title:'静静图书馆',emoji:'📖',sub:'数学 · 通行证'
     {text:'一台刷卡机，嘀嘀作响。',use:[{item:'combo_r11',take:['combo_r11'],win:true,text:'嘀——通过！「静静图书馆」刷卡成功！'}],wrong:'要先做好通行证再刷。'}
   ]},
   {id:'desk',name:'阅览桌',box:[30,150,120,50],views:[
-    {if:['!desk_open'],text:'阅览桌锁着：',note:'【算一算】小数四则：8.4 − 2.75 = ?',lock:{kind:'num',len:4,dot:true,answer:'5.65',prompt:'输入密码',ok:{set:['desk_open'],text:'开了，里面有一张卡片。'},bad:'再算一算。'}},
+    {if:['!desk_open'],text:'阅览桌锁着：',note:'【算一算】循环小数：计算 1÷3，把循环节按顺序连起来是多少？',lock:{kind:'num',len:1,answer:'3',prompt:'输入密码',ok:{set:['desk_open'],text:'开了，里面有一张卡片。'},bad:'再算一算。'}},
     {if:['desk_open','!took_scrap'],text:'里面有一张卡片。',take:{give:['scrap_r11'],set:['took_scrap'],text:'你拿到了卡片。'}},
     {text:'空了。'}
   ]},
@@ -346,14 +346,14 @@ var r11={id:'r11',title:'静静图书馆',emoji:'📖',sub:'数学 · 通行证'
  ],
  combos:[{a:'scrap_r11',b:'tool_r11',give:['combo_r11'],set:['made_combo'],text:'卡片和徽章拼成了通行证！'}],
  hints:[
-  {until:'desk_open',obj:'desk',tiers:['先开阅览桌。','算题，注意多步运算。','小数点对齐再相减。位数少的一边补 0，不够减就向前一位借。']},
+  {until:'desk_open',obj:'desk',tiers:['先开阅览桌。','算题，注意多步运算。','先除到开始循环。循环节是重复的那一段，按顺序连成一个数，比如重复 1 和 8 就填 18。不循环的数字不要写。']},
   {until:'took_scrap',obj:'desk',tiers:['拿卡片。','点开拿起。','拿起来。']},
   {until:'took_tool',obj:'shelf',tiers:['还要徽章。','看书架。','拿起徽章。']},
   {until:'made_combo',tiers:['卡片和徽章可组合。','物品栏点两个拼。','拼成通行证。']},
   {until:'escaped',obj:'door',tiers:['去刷卡机。','选中通行证点刷卡机。','刷卡过关。']}
  ],
- explain:['8.4 − 2.75 = 5.65。小数点对齐，位数少的补 0。','拿到卡片和徽章。','组合成通行证，刷卡机刷过关。'],
- solution:[['code','desk','5.65'],['take','desk'],['take','shelf'],['combine','scrap_r11','tool_r11'],['use','door','combo_r11']],
+ explain:['1÷3=0.3333…。循环节连起来是 3。','拿到卡片和徽章。','组合成通行证，刷卡机刷过关。'],
+ solution:[['code','desk','3'],['take','desk'],['take','shelf'],['combine','scrap_r11','tool_r11'],['use','door','combo_r11']],
  art:function(f){var s='';s+=R(0,0,400,300,'#fff0e0')+R(0,214,400,86,'#d4b896');
   s+=g('window',R(18,18,96,74,'#fdebd0',8,SK)+C(90,40,10,'#fff2a8'));
   s+=g('board',R(128,12,160,98,'#fef9e7',6,' stroke="#b7950b" stroke-width="5"')+T(208,45,14,'📖')+T(208,72,11,'本周推荐',' fill="#7d6608"')+T(208,92,9,'静静阅读',' fill="#b7950b"'));
@@ -451,7 +451,7 @@ var r14={id:'r14',title:'糖果超市',emoji:'🛒',sub:'数学 · 挑战',
     {text:'出口锁着，需要钥匙。',use:[{item:'key_r14',win:true,text:'钥匙一转，出口开了！「糖果超市」挑战成功！'}],wrong:'要用钥匙才能开门。'}
   ]},
   {id:'desk',name:'柜台',box:[30,150,120,50],views:[
-    {if:['!desk_open'],text:'柜台上有密码锁，旁边贴着纸条：',note:'【算一算】长方形桌面长 1.2 米、宽 0.8 米。面积是多少平方分米？（1 米 = 10 分米）',lock:{kind:'num',len:2,answer:'96',prompt:'输入密码',ok:{set:['desk_open'],text:'打开了！里面有一把钥匙。'},bad:'密码不对哦，再算一算。'}},
+    {if:['!desk_open'],text:'柜台上有密码锁，旁边贴着纸条：',note:'【算一算】小数四则：8.4 − 2.75 = ?',lock:{kind:'num',len:4,dot:true,answer:'5.65',prompt:'输入密码',ok:{set:['desk_open'],text:'打开了！里面有一把钥匙。'},bad:'密码不对哦，再算一算。'}},
     {if:['desk_open','!took_key'],text:'里面有一把钥匙。',take:{give:['key_r14'],set:['took_key'],text:'你拿到了钥匙。'}},
     {text:'已经空了。'}
   ]},
@@ -470,12 +470,12 @@ var r14={id:'r14',title:'糖果超市',emoji:'🛒',sub:'数学 · 挑战',
  ],
  combos:[],
  hints:[
-  {until:'desk_open',obj:'desk',tiers:['先看看柜台上的纸条。','纸条上有一道数学题，算出答案就是密码。','先把米换成分米，再相乘。']},
+  {until:'desk_open',obj:'desk',tiers:['先看看柜台上的纸条。','纸条上有一道数学题，算出答案就是密码。','小数点对齐再相减。位数少的一边补 0，不够减就向前一位借。']},
   {until:'took_key',obj:'desk',tiers:['抽屉开了。','点柜台，拿起钥匙。','把钥匙拿起来。']},
   {until:'escaped',obj:'door',tiers:['你有钥匙了！','选中钥匙，再点出口。','先点钥匙，再点目标。']}
  ],
- explain:['先换成 12 分米 × 8 分米 = 96 平方分米','打开抽屉拿到钥匙。','用钥匙打开出口，挑战成功。'],
- solution:[['code','desk','96'],['take','desk'],['use','door','key_r14']],
+ explain:['8.4 − 2.75 = 5.65。小数点对齐，位数少的补 0。','打开抽屉拿到钥匙。','用钥匙打开出口，挑战成功。'],
+ solution:[['code','desk','5.65'],['take','desk'],['use','door','key_r14']],
  art:function(f){var s='';s+=R(0,0,400,300,'#fff5f0')+R(0,214,400,86,'#f0d4c8');
   for(var i=0;i<5;i++)s+=R(20+i*74,230,60,50,'#f8e0d0',4,' opacity=".5"');
   s+=g('window',R(16,16,100,78,'#cce8ff',8,SK)+T(66,55,14,'OPEN',' fill="#e74c3c" font-weight="700"'));
@@ -491,7 +491,7 @@ var r15={id:'r15',title:'小火车站',emoji:'🚂',sub:'数学 · 闯关',
  story:['欢迎来到「小火车站」挑战站！','检票台上有一道题，做对就通关。','不一定要出门——答对就是胜利！'],
  objects:[
   {id:'desk',name:'检票台',box:[30,150,120,50],views:[
-    {if:['!desk_open'],text:'检票台上的挑战题：',note:'【算一算】循环小数：0.3333…（循环节是 3）化成最简分数，分母是多少？',lock:{kind:'num',len:1,answer:'3',prompt:'输入答案',ok:{set:['desk_open'],win:true,text:'答对啦！「小火车站」挑战成功！'},bad:'再算一算。'}},
+    {if:['!desk_open'],text:'检票台上的挑战题：',note:'【算一算】长方形桌面长 1.2 米、宽 0.8 米。面积是多少平方分米？（1 米 = 10 分米）',lock:{kind:'num',len:2,answer:'96',prompt:'输入答案',ok:{set:['desk_open'],win:true,text:'答对啦！「小火车站」挑战成功！'},bad:'再算一算。'}},
     {text:'题目已经解开啦。'}
   ]},
   {id:'door',name:'站台门',box:[310,160,70,120],views:[
@@ -512,10 +512,10 @@ var r15={id:'r15',title:'小火车站',emoji:'🚂',sub:'数学 · 闯关',
  ],
  combos:[],
  hints:[
-  {until:'escaped',obj:'desk',tiers:['点开检票台上的题。','仔细看【算一算】，多步时先算哪一步？','纯循环小数：循环几位，分母就是几个 9。一位用 9，两位用 99，写好再约分，约完的分母才是答案。']}
+  {until:'escaped',obj:'desk',tiers:['点开检票台上的题。','仔细看【算一算】，多步时先算哪一步？','先把米换成分米，再相乘。']}
  ],
- explain:['0.3333… 的循环节是 3，写成 3/9，约分得 1/3，分母是 3。','在桌子/长椅等物件上输入答案。','答对题目，直接挑战成功。'],
- solution:[['code','desk','3']],
+ explain:['先换成 12 分米 × 8 分米 = 96 平方分米','在桌子/长椅等物件上输入答案。','答对题目，直接挑战成功。'],
+ solution:[['code','desk','96']],
  art:function(f){var s='';s+=R(0,0,400,300,'#eef2ff')+R(0,214,400,86,'#c8d0e8');
   s+=R(0,250,400,8,'#555')+R(0,268,400,4,'#555');
   for(var i=0;i<12;i++)s+=R(10+i*33,250,16,8,'#fff',' opacity=".7"');
@@ -535,7 +535,7 @@ var r16={id:'r16',title:'彩虹美术室',emoji:'🎨',sub:'数学 · 助人',
     {text:'小花猫眨眨眼：“我想要礼物！”',use:[{item:'gift_r16',take:['gift_r16'],win:true,text:'小花猫开心地收下了！「彩虹美术室」任务完成！'}],wrong:'小花猫摇摇头：“我要的是礼物哦。”'}
   ]},
   {id:'desk',name:'画桌',box:[30,150,120,50],views:[
-    {if:['!desk_open'],text:'画桌抽屉锁着，纸条上有题：',note:'【算一算】小数四则：2.4 × 0.15 = ?',lock:{kind:'num',len:4,dot:true,answer:'0.36',prompt:'输入密码',ok:{set:['desk_open'],text:'抽屉开了，里面有一份礼物！'},bad:'再算算。'}},
+    {if:['!desk_open'],text:'画桌抽屉锁着，纸条上有题：',note:'【算一算】彩带每米 1.5 元，买 2.4 米。一共多少元？',lock:{kind:'num',len:3,dot:true,answer:'3.6',prompt:'输入密码',ok:{set:['desk_open'],text:'抽屉开了，里面有一份礼物！'},bad:'再算算。'}},
     {if:['desk_open','!took_gift'],text:'里面有一份礼物。',take:{give:['gift_r16'],set:['took_gift'],text:'你拿到了礼物。'}},
     {text:'抽屉空了。'}
   ]},
@@ -554,12 +554,12 @@ var r16={id:'r16',title:'彩虹美术室',emoji:'🎨',sub:'数学 · 助人',
  ],
  combos:[],
  hints:[
-  {until:'desk_open',obj:'desk',tiers:['先解开画桌的密码。','看纸条上的题，可能要算两步。','先按整数相乘，再点小数点：两个因数一共有几位小数，积就有几位小数。']},
+  {until:'desk_open',obj:'desk',tiers:['先解开画桌的密码。','看纸条上的题，可能要算两步。','小数乘小数：先当整数乘，再看两个因数一共有几位小数。']},
   {until:'took_gift',obj:'desk',tiers:['把礼物拿起来。','点画桌拿起。','拿起来。']},
   {until:'escaped',obj:'door',tiers:['把礼物交给小花猫。','选中礼物，再点小花猫。','先点物品，再点对方。']}
  ],
- explain:['2.4 × 0.15 = 0.36。先按整数乘，再点上小数点。','拿到礼物。','交给小花猫，任务完成。'],
- solution:[['code','desk','0.36'],['take','desk'],['use','door','gift_r16']],
+ explain:['1.5 × 2.4 = 3.6','拿到礼物。','交给小花猫，任务完成。'],
+ solution:[['code','desk','3.6'],['take','desk'],['use','door','gift_r16']],
  art:function(f){var s='';s+=R(0,0,400,300,'#ffe8f0')+R(0,214,400,86,'#e0c3d0');
   s+=g('window',R(18,18,96,74,'#fdebd0',8,SK)+C(90,40,10,'#fff2a8'));
   s+=g('board',R(128,12,160,98,'#fff5dc',6,' stroke="#c98b52" stroke-width="6"')+T(208,45,16,'🖼️')+T(208,75,11,'素描练习',' fill="#5b4636"')+P('M160 90c20-20 40 10 60-15','none',' stroke="#e74c3c" stroke-width="3"'));
@@ -577,7 +577,7 @@ var r17={id:'r17',title:'叮咚音乐室',emoji:'🎵',sub:'数学 · 益智',
     {text:'组装台等着成品。',use:[{item:'combo_r17',take:['combo_r17'],win:true,text:'放上去——成功！「叮咚音乐室」做好啦！'}],wrong:'要把两样材料拼好再放上来。'}
   ]},
   {id:'desk',name:'琴凳旁小桌',box:[30,150,120,50],views:[
-    {if:['!desk_open'],text:'琴凳旁小桌锁着：',note:'【算一算】解方程：3x − 24 = 2x + 18\n求 x。',lock:{kind:'num',len:2,answer:'42',prompt:'输入密码',ok:{set:['desk_open'],text:'开了！里面有材料 A。'},bad:'再算一算。'}},
+    {if:['!desk_open'],text:'琴凳旁小桌锁着：',note:'【算一算】循环小数：0.3333…（循环节是 3）化成最简分数，分母是多少？',lock:{kind:'num',len:1,answer:'3',prompt:'输入密码',ok:{set:['desk_open'],text:'开了！里面有材料 A。'},bad:'再算一算。'}},
     {if:['desk_open','!took_a'],text:'里面有材料 A。',take:{give:['partA_r17'],set:['took_a'],text:'你拿到了材料 A。'}},
     {text:'空了。'}
   ]},
@@ -597,14 +597,14 @@ var r17={id:'r17',title:'叮咚音乐室',emoji:'🎵',sub:'数学 · 益智',
  ],
  combos:[{a:'partA_r17',b:'partB_r17',give:['combo_r17'],set:['made_combo'],text:'两样材料拼在一起，成品做好了！'}],
  hints:[
-  {until:'desk_open',obj:'desk',tiers:['先开琴凳旁小桌。','算纸条上的题。','把含 x 的项移到一边，常数移到另一边。']},
+  {until:'desk_open',obj:'desk',tiers:['先开琴凳旁小桌。','算纸条上的题。','纯循环小数：循环几位，分母就是几个 9。一位用 9，两位用 99，写好再约分，约完的分母才是答案。']},
   {until:'took_a',obj:'desk',tiers:['拿起材料 A。','点开拿起。','拿起来。']},
   {until:'took_b',obj:'shelf',tiers:['看看乐谱架。','拿起材料 B。','点架子拿。']},
   {until:'made_combo',tiers:['两样材料可以组合。','物品栏先点一个再点另一个。','拼成成品。']},
   {until:'escaped',obj:'door',tiers:['把成品放到组装台。','选中成品再点目标。','放上去就过关。']}
  ],
- explain:['移项合并：(3-2)x = 24+18 → x = 42','拿到材料 A 和 B。','组合成成品，放到组装台。'],
- solution:[['code','desk','42'],['take','desk'],['take','shelf'],['combine','partA_r17','partB_r17'],['use','door','combo_r17']],
+ explain:['0.3333… 的循环节是 3，写成 3/9，约分得 1/3，分母是 3。','拿到材料 A 和 B。','组合成成品，放到组装台。'],
+ solution:[['code','desk','3'],['take','desk'],['take','shelf'],['combine','partA_r17','partB_r17'],['use','door','combo_r17']],
  art:function(f){var s='';s+=R(0,0,400,300,'#f0e8ff')+R(0,214,400,86,'#d0c0e8');
   s+=g('window',R(18,18,96,74,'#e8daef',8,SK)+C(90,40,10,'#fff2a8'));
   s+=g('board',R(128,12,160,98,'#2c3e50',6,' stroke="#9b59b6" stroke-width="5"')+T(208,40,12,'♪ ♫ ♪',' fill="#f1c40f"')+T(208,70,11,'今日曲目',' fill="#ecf0f1"')+T(208,92,9,'Do Re Mi',' fill="#aed6f1"'));
@@ -619,7 +619,7 @@ var r18={id:'r18',title:'秘密小花园',emoji:'🌷',sub:'数学 · 英语',
  story:['双锁挑战站「秘密小花园」！','先过石凳，再过花箱。','两关都对，不用找门——直接挑战成功！'],
  objects:[
   {id:'desk',name:'石凳',box:[30,150,120,50],views:[
-    {if:['!desk_open'],text:'第一关（数学）：',note:'【算一算】循环小数：下面哪个算式的商是循环小数？① 1÷2 ② 3÷4 ③ 1÷3 ④ 2÷5。填序号。',lock:{kind:'num',len:1,answer:'3',prompt:'输入密码',ok:{set:['desk_open'],text:'第一关过了！去看第二关吧。'},bad:'再算算。'}},
+    {if:['!desk_open'],text:'第一关（数学）：',note:'【算一算】小数四则：2.4 × 0.15 = ?',lock:{kind:'num',len:4,dot:true,answer:'0.36',prompt:'输入密码',ok:{set:['desk_open'],text:'第一关过了！去看第二关吧。'},bad:'再算算。'}},
     {text:'第一关已经打开了。'}
   ]},
   {id:'box',name:'花箱',box:[200,160,70,50],views:[
@@ -641,11 +641,11 @@ var r18={id:'r18',title:'秘密小花园',emoji:'🌷',sub:'数学 · 英语',
  ],
  combos:[],
  hints:[
-  {until:'desk_open',obj:'desk',tiers:['先过第一关数学题。','仔细看【算一算】，可能不止一步。','约分后分母只剩 2 和 5，商是有限小数；分母里还有 3、7、11 这类因数，商通常会循环。四个里只有一个。']},
+  {until:'desk_open',obj:'desk',tiers:['先过第一关数学题。','仔细看【算一算】，可能不止一步。','先按整数相乘，再点小数点：两个因数一共有几位小数，积就有几位小数。']},
   {until:'escaped',obj:'box',tiers:['去开第二关。','Unit 1，动词/名词，5 个字母，首字母 W；心里不安、怕出事。','根据词性、首字母和课本单元想想，不要偷看答案哦。']}
  ],
- explain:['① 1÷2=0.5 有限小数，② 3÷4=0.75 有限小数，③ 1÷3=0.3333… 循环小数，④ 2÷5=0.4 有限小数。所以填 3。','_____ = 担心 → WORRY','两关都对，挑战成功。'],
- solution:[['code','desk','3'],['code','box','WORRY']],
+ explain:['2.4 × 0.15 = 0.36。先按整数乘，再点上小数点。','_____ = 担心 → WORRY','两关都对，挑战成功。'],
+ solution:[['code','desk','0.36'],['code','box','WORRY']],
  art:function(f){var s='';s+=R(0,0,400,300,'#e8ffe8')+R(0,160,400,140,'#90d080');
   s+=C(60,40,18,'#fff6a8')+C(320,30,12,'#fff',' opacity=".8"')+C(350,50,16,'#fff',' opacity=".7"');
   s+=P('M0 180Q100 140 200 180T400 170','#7ecf6a',' opacity=".35"');
@@ -665,7 +665,7 @@ var r19={id:'r19',title:'活力体育馆',emoji:'🏀',sub:'数学 · 通行证'
     {text:'一台刷卡机，嘀嘀作响。',use:[{item:'combo_r19',take:['combo_r19'],win:true,text:'嘀——通过！「活力体育馆」刷卡成功！'}],wrong:'要先做好通行证再刷。'}
   ]},
   {id:'desk',name:'长椅',box:[30,150,120,50],views:[
-    {if:['!desk_open'],text:'长椅锁着：',note:'【算一算】小数四则：6.3 ÷ 0.3 = ?',lock:{kind:'num',len:2,answer:'21',prompt:'输入密码',ok:{set:['desk_open'],text:'开了，里面有一张卡片。'},bad:'再算一算。'}},
+    {if:['!desk_open'],text:'长椅锁着：',note:'【算一算】解方程：3x − 24 = 2x + 18\n求 x。',lock:{kind:'num',len:2,answer:'42',prompt:'输入密码',ok:{set:['desk_open'],text:'开了，里面有一张卡片。'},bad:'再算一算。'}},
     {if:['desk_open','!took_scrap'],text:'里面有一张卡片。',take:{give:['scrap_r19'],set:['took_scrap'],text:'你拿到了卡片。'}},
     {text:'空了。'}
   ]},
@@ -685,14 +685,14 @@ var r19={id:'r19',title:'活力体育馆',emoji:'🏀',sub:'数学 · 通行证'
  ],
  combos:[{a:'scrap_r19',b:'tool_r19',give:['combo_r19'],set:['made_combo'],text:'卡片和徽章拼成了通行证！'}],
  hints:[
-  {until:'desk_open',obj:'desk',tiers:['先开长椅。','算题，注意多步运算。','除数是小数时，先把除数变成整数，被除数的小数点也向右移同样的位数，再除。']},
+  {until:'desk_open',obj:'desk',tiers:['先开长椅。','算题，注意多步运算。','把含 x 的项移到一边，常数移到另一边。']},
   {until:'took_scrap',obj:'desk',tiers:['拿卡片。','点开拿起。','拿起来。']},
   {until:'took_tool',obj:'shelf',tiers:['还要徽章。','看球架。','拿起徽章。']},
   {until:'made_combo',tiers:['卡片和徽章可组合。','物品栏点两个拼。','拼成通行证。']},
   {until:'escaped',obj:'door',tiers:['去刷卡机。','选中通行证点刷卡机。','刷卡过关。']}
  ],
- explain:['6.3 ÷ 0.3 = 21。','拿到卡片和徽章。','组合成通行证，刷卡机刷过关。'],
- solution:[['code','desk','21'],['take','desk'],['take','shelf'],['combine','scrap_r19','tool_r19'],['use','door','combo_r19']],
+ explain:['移项合并：(3-2)x = 24+18 → x = 42','拿到卡片和徽章。','组合成通行证，刷卡机刷过关。'],
+ solution:[['code','desk','42'],['take','desk'],['take','shelf'],['combine','scrap_r19','tool_r19'],['use','door','combo_r19']],
  art:function(f){var s='';s+=R(0,0,400,300,'#fff8e0')+R(0,200,400,100,'#e8c878');
   s+=P('M20 250H380','none',' stroke="#fff" stroke-width="3" opacity=".5"')+C(200,250,36,'none',' stroke="#fff" stroke-width="3" opacity=".45"');
   s+=g('window',R(16,16,110,70,'#87ceeb',8,SK)+C(100,36,12,'#fff2a8')+T(70,70,10,'看台',' fill="#5b4636"'));
@@ -790,7 +790,7 @@ var r22={id:'r22',title:'星星教室',emoji:'🏫',sub:'数学 · 挑战',
     {text:'教室门锁着，需要钥匙。',use:[{item:'key_r22',win:true,text:'钥匙一转，教室门开了！「星星教室」挑战成功！'}],wrong:'要用钥匙才能开门。'}
   ]},
   {id:'desk',name:'讲台',box:[30,150,120,50],views:[
-    {if:['!desk_open'],text:'讲台上有密码锁，旁边贴着纸条：',note:'【算一算】一桶油重 18.6 千克，用去 5.8 千克后又倒入 3.5 千克。现在桶里有多少千克？',lock:{kind:'num',len:4,dot:true,answer:'16.3',prompt:'输入密码',ok:{set:['desk_open'],text:'打开了！里面有一把钥匙。'},bad:'密码不对哦，再算一算。'}},
+    {if:['!desk_open'],text:'讲台上有密码锁，旁边贴着纸条：',note:'【算一算】6.4 升油平均倒进 4 个瓶子，每个瓶子多少升？',lock:{kind:'num',len:3,dot:true,answer:'1.6',prompt:'输入密码',ok:{set:['desk_open'],text:'打开了！里面有一把钥匙。'},bad:'密码不对哦，再算一算。'}},
     {if:['desk_open','!took_key'],text:'里面有一把钥匙。',take:{give:['key_r22'],set:['took_key'],text:'你拿到了钥匙。'}},
     {text:'已经空了。'}
   ]},
@@ -809,12 +809,12 @@ var r22={id:'r22',title:'星星教室',emoji:'🏫',sub:'数学 · 挑战',
  ],
  combos:[],
  hints:[
-  {until:'desk_open',obj:'desk',tiers:['先看看讲台上的纸条。','纸条上有一道数学题，算出答案就是密码。','先减去用去的，再加上倒入的。']},
+  {until:'desk_open',obj:'desk',tiers:['先看看讲台上的纸条。','纸条上有一道数学题，算出答案就是密码。','总数÷瓶数，就是每个瓶子分到的量。']},
   {until:'took_key',obj:'desk',tiers:['抽屉开了。','点讲台，拿起钥匙。','把钥匙拿起来。']},
   {until:'escaped',obj:'door',tiers:['你有钥匙了！','选中钥匙，再点教室门。','先点钥匙，再点目标。']}
  ],
- explain:['18.6 − 5.8 + 3.5 = 16.3','打开抽屉拿到钥匙。','用钥匙打开教室门，挑战成功。'],
- solution:[['code','desk','16.3'],['take','desk'],['use','door','key_r22']],
+ explain:['6.4 ÷ 4 = 1.6','打开抽屉拿到钥匙。','用钥匙打开教室门，挑战成功。'],
+ solution:[['code','desk','1.6'],['take','desk'],['use','door','key_r22']],
  art:function(f){var s='';s+=R(0,0,400,300,'#e3f4ff')+R(0,214,400,86,'#cfe0c3');
   s+=g('window',R(18,18,96,74,'#bfe8ff',8,SK)+C(90,40,10,'#fff2a8')+R(28,60,30,24,'#7ccf6c',3));
   s+=g('board',R(128,12,170,100,'#1e8449',6,' stroke="#a86b38" stroke-width="6"')+T(213,45,12,'黑板',' fill="#fff"')+T(213,70,10,'认真审题',' fill="#d5f5e3"')+T(213,92,9,'1+1=?',' fill="#a9dfbf"'));
@@ -829,7 +829,7 @@ var r23={id:'r23',title:'甜甜厨房',emoji:'🍳',sub:'数学 · 闯关',
  story:['欢迎来到「甜甜厨房」挑战站！','桌子上有一道题，做对就通关。','不一定要出门——答对就是胜利！'],
  objects:[
   {id:'desk',name:'桌子',box:[30,150,120,50],views:[
-    {if:['!desk_open'],text:'桌子上的挑战题：',note:'【算一算】循环小数：0.1818…（循环节是 18）化成最简分数，分子是多少？',lock:{kind:'num',len:1,answer:'2',prompt:'输入答案',ok:{set:['desk_open'],win:true,text:'答对啦！「甜甜厨房」挑战成功！'},bad:'再算一算。'}},
+    {if:['!desk_open'],text:'桌子上的挑战题：',note:'【算一算】循环小数：下面哪个算式的商是循环小数？① 1÷2 ② 3÷4 ③ 1÷3 ④ 2÷5。填序号。',lock:{kind:'num',len:1,answer:'3',prompt:'输入答案',ok:{set:['desk_open'],win:true,text:'答对啦！「甜甜厨房」挑战成功！'},bad:'再算一算。'}},
     {text:'题目已经解开啦。'}
   ]},
   {id:'door',name:'厨房门',box:[310,160,70,120],views:[
@@ -850,10 +850,10 @@ var r23={id:'r23',title:'甜甜厨房',emoji:'🍳',sub:'数学 · 闯关',
  ],
  combos:[],
  hints:[
-  {until:'escaped',obj:'desk',tiers:['点开桌子上的题。','仔细看【算一算】，多步时先算哪一步？','先写成“循环节 / 几个 9”，再约分。约完以后的分子才是要填的数。']}
+  {until:'escaped',obj:'desk',tiers:['点开桌子上的题。','仔细看【算一算】，多步时先算哪一步？','约分后分母只剩 2 和 5，商是有限小数；分母里还有 3、7、11 这类因数，商通常会循环。四个里只有一个。']}
  ],
- explain:['0.1818… 写成 18/99，约分得 2/11，分子是 2。','在桌子/长椅等物件上输入答案。','答对题目，直接挑战成功。'],
- solution:[['code','desk','2']],
+ explain:['① 1÷2=0.5 有限小数，② 3÷4=0.75 有限小数，③ 1÷3=0.3333… 循环小数，④ 2÷5=0.4 有限小数。所以填 3。','在桌子/长椅等物件上输入答案。','答对题目，直接挑战成功。'],
+ solution:[['code','desk','3']],
  art:function(f){var s='';s+=R(0,0,400,300,'#fff4e0')+R(0,214,400,86,'#cfe8f0');
   for(var i=0;i<8;i++)for(var j=0;j<2;j++)s+=R(i*50+(j%2)*25,214+j*43,25,43,'#b6dbe6',0,' opacity=".45"');
   s+=g('window',R(18,18,100,78,'#bfe8ff',8,SK)+C(96,40,11,'#fff2a8')+R(28,70,36,20,'#ffd6a5',3));
@@ -872,7 +872,7 @@ var r24={id:'r24',title:'风筝操场',emoji:'⚽',sub:'数学 · 助人',
     {text:'小花猫眨眨眼：“我想要礼物！”',use:[{item:'gift_r24',take:['gift_r24'],win:true,text:'小花猫开心地收下了！「风筝操场」任务完成！'}],wrong:'小花猫摇摇头：“我要的是礼物哦。”'}
   ]},
   {id:'desk',name:'长椅',box:[30,150,120,50],views:[
-    {if:['!desk_open'],text:'长椅抽屉锁着，纸条上有题：',note:'【算一算】小数四则：12.6 + 0.45 − 3.05 = ?',lock:{kind:'num',len:2,answer:'10',prompt:'输入密码',ok:{set:['desk_open'],text:'抽屉开了，里面有一份礼物！'},bad:'再算算。'}},
+    {if:['!desk_open'],text:'长椅抽屉锁着，纸条上有题：',note:'【算一算】小数四则：6.3 ÷ 0.3 = ?',lock:{kind:'num',len:2,answer:'21',prompt:'输入密码',ok:{set:['desk_open'],text:'抽屉开了，里面有一份礼物！'},bad:'再算算。'}},
     {if:['desk_open','!took_gift'],text:'里面有一份礼物。',take:{give:['gift_r24'],set:['took_gift'],text:'你拿到了礼物。'}},
     {text:'抽屉空了。'}
   ]},
@@ -891,12 +891,12 @@ var r24={id:'r24',title:'风筝操场',emoji:'⚽',sub:'数学 · 助人',
  ],
  combos:[],
  hints:[
-  {until:'desk_open',obj:'desk',tiers:['先解开长椅的密码。','看纸条上的题，可能要算两步。','看清每一步在求什么，一步一步算。有加减又有乘，先乘再加减。']},
+  {until:'desk_open',obj:'desk',tiers:['先解开长椅的密码。','看纸条上的题，可能要算两步。','除数是小数时，先把除数变成整数，被除数的小数点也向右移同样的位数，再除。']},
   {until:'took_gift',obj:'desk',tiers:['把礼物拿起来。','点长椅拿起。','拿起来。']},
   {until:'escaped',obj:'door',tiers:['把礼物交给小花猫。','选中礼物，再点小花猫。','先点物品，再点对方。']}
  ],
- explain:['12.6 + 0.45 − 3.05 = 10。先加再减。','拿到礼物。','交给小花猫，任务完成。'],
- solution:[['code','desk','10'],['take','desk'],['use','door','gift_r24']],
+ explain:['6.3 ÷ 0.3 = 21。','拿到礼物。','交给小花猫，任务完成。'],
+ solution:[['code','desk','21'],['take','desk'],['use','door','gift_r24']],
  art:function(f){var s='';s+=R(0,0,400,300,'#c9f0ff')+R(0,200,400,100,'#9ee07a');
   s+=P('M20 250H380','none',' stroke="#fff" stroke-width="3" opacity=".5"')+C(200,250,36,'none',' stroke="#fff" stroke-width="3" opacity=".45"');
   s+=g('window',R(16,16,110,70,'#87ceeb',8,SK)+C(100,36,12,'#fff2a8')+T(70,70,10,'看台',' fill="#5b4636"'));
@@ -915,7 +915,7 @@ var r25={id:'r25',title:'蜗牛公园',emoji:'🎠',sub:'数学 · 益智',
     {text:'组装台等着成品。',use:[{item:'combo_r25',take:['combo_r25'],win:true,text:'放上去——成功！「蜗牛公园」做好啦！'}],wrong:'要把两样材料拼好再放上来。'}
   ]},
   {id:'desk',name:'石凳',box:[30,150,120,50],views:[
-    {if:['!desk_open'],text:'石凳锁着：',note:'【算一算】梯形：上底 6.5 分米，下底 9.5 分米，高 4 分米。面积是多少平方分米？',lock:{kind:'num',len:2,answer:'32',prompt:'输入密码',ok:{set:['desk_open'],text:'开了！里面有材料 A。'},bad:'再算一算。'}},
+    {if:['!desk_open'],text:'石凳锁着：',note:'【算一算】一桶油重 18.6 千克，用去 5.8 千克后又倒入 3.5 千克。现在桶里有多少千克？',lock:{kind:'num',len:4,dot:true,answer:'16.3',prompt:'输入密码',ok:{set:['desk_open'],text:'开了！里面有材料 A。'},bad:'再算一算。'}},
     {if:['desk_open','!took_a'],text:'里面有材料 A。',take:{give:['partA_r25'],set:['took_a'],text:'你拿到了材料 A。'}},
     {text:'空了。'}
   ]},
@@ -935,14 +935,14 @@ var r25={id:'r25',title:'蜗牛公园',emoji:'🎠',sub:'数学 · 益智',
  ],
  combos:[{a:'partA_r25',b:'partB_r25',give:['combo_r25'],set:['made_combo'],text:'两样材料拼在一起，成品做好了！'}],
  hints:[
-  {until:'desk_open',obj:'desk',tiers:['先开石凳。','算纸条上的题。','梯形面积 =（上底+下底）×高÷2。']},
+  {until:'desk_open',obj:'desk',tiers:['先开石凳。','算纸条上的题。','先减去用去的，再加上倒入的。']},
   {until:'took_a',obj:'desk',tiers:['拿起材料 A。','点开拿起。','拿起来。']},
   {until:'took_b',obj:'shelf',tiers:['看看花架。','拿起材料 B。','点架子拿。']},
   {until:'made_combo',tiers:['两样材料可以组合。','物品栏先点一个再点另一个。','拼成成品。']},
   {until:'escaped',obj:'door',tiers:['把成品放到组装台。','选中成品再点目标。','放上去就过关。']}
  ],
- explain:['（6.5+9.5）×4÷2 = 32','拿到材料 A 和 B。','组合成成品，放到组装台。'],
- solution:[['code','desk','32'],['take','desk'],['take','shelf'],['combine','partA_r25','partB_r25'],['use','door','combo_r25']],
+ explain:['18.6 − 5.8 + 3.5 = 16.3','拿到材料 A 和 B。','组合成成品，放到组装台。'],
+ solution:[['code','desk','16.3'],['take','desk'],['take','shelf'],['combine','partA_r25','partB_r25'],['use','door','combo_r25']],
  art:function(f){var s='';s+=R(0,0,400,300,'#dff7e8')+R(0,160,400,140,'#8fd99a');
   s+=C(60,40,18,'#fff6a8')+C(320,30,12,'#fff',' opacity=".8"')+C(350,50,16,'#fff',' opacity=".7"');
   s+=P('M0 180Q100 140 200 180T400 170','#7ecf6a',' opacity=".35"');
@@ -959,7 +959,7 @@ var r26={id:'r26',title:'书香角',emoji:'📖',sub:'数学 · 英语',
  story:['双锁挑战站「书香角」！','先过阅览桌，再过还书箱。','两关都对，不用找门——直接挑战成功！'],
  objects:[
   {id:'desk',name:'阅览桌',box:[30,150,120,50],views:[
-    {if:['!desk_open'],text:'第一关（数学）：',note:'【算一算】循环小数：计算 1÷6，从小数点后第几位开始循环？',lock:{kind:'num',len:1,answer:'2',prompt:'输入密码',ok:{set:['desk_open'],text:'第一关过了！去看第二关吧。'},bad:'再算算。'}},
+    {if:['!desk_open'],text:'第一关（数学）：',note:'【算一算】一共有 4.8 米绳子，每份 1.2 米。可以分成多少份？',lock:{kind:'num',len:1,answer:'4',prompt:'输入密码',ok:{set:['desk_open'],text:'第一关过了！去看第二关吧。'},bad:'再算算。'}},
     {text:'第一关已经打开了。'}
   ]},
   {id:'box',name:'还书箱',box:[200,160,70,50],views:[
@@ -981,11 +981,11 @@ var r26={id:'r26',title:'书香角',emoji:'📖',sub:'数学 · 英语',
  ],
  combos:[],
  hints:[
-  {until:'desk_open',obj:'desk',tiers:['先过第一关数学题。','仔细看【算一算】，可能不止一步。','看小数点后面，从第几位起才开始一直重复。如果第一位就不停地重复，答案就是 1。']},
+  {until:'desk_open',obj:'desk',tiers:['先过第一关数学题。','仔细看【算一算】，可能不止一步。','小数除以小数：先把除数变成整数（两边同乘 10 或 100），再除。']},
   {until:'escaped',obj:'box',tiers:['去开第二关。','Unit 1，动词，4 个字母，首字母 F；从上往下掉。','根据词性、首字母和课本单元想想，不要偷看答案哦。']}
  ],
- explain:['1÷6=0.1666…，从小数点后第 2 位开始循环。','Be careful! Don\'t let the book _____. (落下) → FALL','两关都对，挑战成功。'],
- solution:[['code','desk','2'],['code','box','FALL']],
+ explain:['4.8 ÷ 1.2 = 4','Be careful! Don\'t let the book _____. (落下) → FALL','两关都对，挑战成功。'],
+ solution:[['code','desk','4'],['code','box','FALL']],
  art:function(f){var s='';s+=R(0,0,400,300,'#fff0e0')+R(0,214,400,86,'#d4b896');
   s+=g('window',R(18,18,96,74,'#fdebd0',8,SK)+C(90,40,10,'#fff2a8'));
   s+=g('board',R(128,12,160,98,'#fef9e7',6,' stroke="#b7950b" stroke-width="5"')+T(208,45,14,'📖')+T(208,72,11,'本周推荐',' fill="#7d6608"')+T(208,92,9,'静静阅读',' fill="#b7950b"'));
@@ -1003,7 +1003,7 @@ var r27={id:'r27',title:'流星台',emoji:'🔭',sub:'数学 · 通行证',
     {text:'一台刷卡机，嘀嘀作响。',use:[{item:'combo_r27',take:['combo_r27'],win:true,text:'嘀——通过！「流星台」刷卡成功！'}],wrong:'要先做好通行证再刷。'}
   ]},
   {id:'desk',name:'观测台',box:[30,150,120,50],views:[
-    {if:['!desk_open'],text:'观测台锁着：',note:'【算一算】一块三角形彩纸底 8 厘米、高 6 厘米。用同样的两块拼成一个图形，总面积是多少平方厘米？',lock:{kind:'num',len:2,answer:'48',prompt:'输入密码',ok:{set:['desk_open'],text:'开了，里面有一张卡片。'},bad:'再算一算。'}},
+    {if:['!desk_open'],text:'观测台锁着：',note:'【算一算】循环小数：0.1818…（循环节是 18）化成最简分数，分子是多少？',lock:{kind:'num',len:1,answer:'2',prompt:'输入密码',ok:{set:['desk_open'],text:'开了，里面有一张卡片。'},bad:'再算一算。'}},
     {if:['desk_open','!took_scrap'],text:'里面有一张卡片。',take:{give:['scrap_r27'],set:['took_scrap'],text:'你拿到了卡片。'}},
     {text:'空了。'}
   ]},
@@ -1023,14 +1023,14 @@ var r27={id:'r27',title:'流星台',emoji:'🔭',sub:'数学 · 通行证',
  ],
  combos:[{a:'scrap_r27',b:'tool_r27',give:['combo_r27'],set:['made_combo'],text:'卡片和徽章拼成了通行证！'}],
  hints:[
-  {until:'desk_open',obj:'desk',tiers:['先开观测台。','算题，注意多步运算。','先求一块三角形面积，再乘 2。']},
+  {until:'desk_open',obj:'desk',tiers:['先开观测台。','算题，注意多步运算。','先写成“循环节 / 几个 9”，再约分。约完以后的分子才是要填的数。']},
   {until:'took_scrap',obj:'desk',tiers:['拿卡片。','点开拿起。','拿起来。']},
   {until:'took_tool',obj:'shelf',tiers:['还要徽章。','看星图架。','拿起徽章。']},
   {until:'made_combo',tiers:['卡片和徽章可组合。','物品栏点两个拼。','拼成通行证。']},
   {until:'escaped',obj:'door',tiers:['去刷卡机。','选中通行证点刷卡机。','刷卡过关。']}
  ],
- explain:['一块 = 8×6÷2 = 24，两块 = 48','拿到卡片和徽章。','组合成通行证，刷卡机刷过关。'],
- solution:[['code','desk','48'],['take','desk'],['take','shelf'],['combine','scrap_r27','tool_r27'],['use','door','combo_r27']],
+ explain:['0.1818… 写成 18/99，约分得 2/11，分子是 2。','拿到卡片和徽章。','组合成通行证，刷卡机刷过关。'],
+ solution:[['code','desk','2'],['take','desk'],['take','shelf'],['combine','scrap_r27','tool_r27'],['use','door','combo_r27']],
  art:function(f){var s='';s+=R(0,0,400,300,'#2b2a5c')+R(0,214,400,86,'#3f3a7a');
   for(var i=0;i<22;i++){var x=(i*73)%400,y=(i*41)%190;s+=C(x,y,i%3?1.2:2,'#fff',' opacity=".55"');}
   s+=g('window',C(70,70,42,'#14143a',' stroke="#a8a2ff" stroke-width="5"')+C(82,58,10,'#fff6c2')+C(86,54,8,'#14143a'));
@@ -1129,7 +1129,7 @@ var r30={id:'r30',title:'温馨客厅',emoji:'🛋️',sub:'数学 · 挑战',
     {text:'房门锁着，需要钥匙。',use:[{item:'key_r30',win:true,text:'钥匙一转，房门开了！「温馨客厅」挑战成功！'}],wrong:'要用钥匙才能开门。'}
   ]},
   {id:'desk',name:'茶几',box:[30,150,120,50],views:[
-    {if:['!desk_open'],text:'茶几上有密码锁，旁边贴着纸条：',note:'【算一算】循环小数：最简分数 2/11 写成小数，把循环节按顺序连起来是多少？',lock:{kind:'num',len:2,answer:'18',prompt:'输入密码',ok:{set:['desk_open'],text:'打开了！里面有一把钥匙。'},bad:'密码不对哦，再算一算。'}},
+    {if:['!desk_open'],text:'茶几上有密码锁，旁边贴着纸条：',note:'【算一算】小数四则：12.6 + 0.45 − 3.05 = ?',lock:{kind:'num',len:2,answer:'10',prompt:'输入密码',ok:{set:['desk_open'],text:'打开了！里面有一把钥匙。'},bad:'密码不对哦，再算一算。'}},
     {if:['desk_open','!took_key'],text:'里面有一把钥匙。',take:{give:['key_r30'],set:['took_key'],text:'你拿到了钥匙。'}},
     {text:'已经空了。'}
   ]},
@@ -1148,12 +1148,12 @@ var r30={id:'r30',title:'温馨客厅',emoji:'🛋️',sub:'数学 · 挑战',
  ],
  combos:[],
  hints:[
-  {until:'desk_open',obj:'desk',tiers:['先看看茶几上的纸条。','纸条上有一道数学题，算出答案就是密码。','把分数除开，一直除到余数重复。只把重复的数字按顺序连起来。']},
+  {until:'desk_open',obj:'desk',tiers:['先看看茶几上的纸条。','纸条上有一道数学题，算出答案就是密码。','看清每一步在求什么，一步一步算。有加减又有乘，先乘再加减。']},
   {until:'took_key',obj:'desk',tiers:['抽屉开了。','点茶几，拿起钥匙。','把钥匙拿起来。']},
   {until:'escaped',obj:'door',tiers:['你有钥匙了！','选中钥匙，再点房门。','先点钥匙，再点目标。']}
  ],
- explain:['2/11=0.1818…，循环节连起来是 18。','打开抽屉拿到钥匙。','用钥匙打开房门，挑战成功。'],
- solution:[['code','desk','18'],['take','desk'],['use','door','key_r30']],
+ explain:['12.6 + 0.45 − 3.05 = 10。先加再减。','打开抽屉拿到钥匙。','用钥匙打开房门，挑战成功。'],
+ solution:[['code','desk','10'],['take','desk'],['use','door','key_r30']],
  art:function(f){var s='';
   s+='<defs><linearGradient id="lvW" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff1df"/><stop offset="1" stop-color="#ffe0c2"/></linearGradient></defs><defs><radialGradient id="lvL" cx="50%" cy="45%" r="55%"><stop offset="0" stop-color="#ffe7a3"/><stop offset="1" stop-color="#ffe7a3" stop-opacity="0"/></radialGradient></defs>';
   s+=R(0,0,400,300,'url(#lvW)');
@@ -1175,7 +1175,7 @@ var r31={id:'r31',title:'月亮卧室',emoji:'🛏️',sub:'数学 · 闯关',
  story:['欢迎来到「月亮卧室」挑战站！','床头柜上有一道题，做对就通关。','不一定要出门——答对就是胜利！'],
  objects:[
   {id:'desk',name:'床头柜',box:[30,150,120,50],views:[
-    {if:['!desk_open'],text:'床头柜上的挑战题：',note:'【算一算】小路长 48 米。从头到尾，每隔 6 米种一棵树（两头都要种）。一共要种多少棵树？',lock:{kind:'num',len:1,answer:'9',prompt:'输入答案',ok:{set:['desk_open'],win:true,text:'答对啦！「月亮卧室」挑战成功！'},bad:'再算一算。'}},
+    {if:['!desk_open'],text:'床头柜上的挑战题：',note:'【算一算】梯形：上底 6.5 分米，下底 9.5 分米，高 4 分米。面积是多少平方分米？',lock:{kind:'num',len:2,answer:'32',prompt:'输入答案',ok:{set:['desk_open'],win:true,text:'答对啦！「月亮卧室」挑战成功！'},bad:'再算一算。'}},
     {text:'题目已经解开啦。'}
   ]},
   {id:'door',name:'卧室门',box:[310,160,70,120],views:[
@@ -1196,10 +1196,10 @@ var r31={id:'r31',title:'月亮卧室',emoji:'🛏️',sub:'数学 · 闯关',
  ],
  combos:[],
  hints:[
-  {until:'escaped',obj:'desk',tiers:['点开床头柜上的题。','仔细看【算一算】，多步时先算哪一步？','段数 = 全长÷间隔，两头都种则棵数比段数多 1。']}
+  {until:'escaped',obj:'desk',tiers:['点开床头柜上的题。','仔细看【算一算】，多步时先算哪一步？','梯形面积 =（上底+下底）×高÷2。']}
  ],
- explain:['段数=48÷6=8，棵数=段数+1=9','在桌子/长椅等物件上输入答案。','答对题目，直接挑战成功。'],
- solution:[['code','desk','9']],
+ explain:['（6.5+9.5）×4÷2 = 32','在桌子/长椅等物件上输入答案。','答对题目，直接挑战成功。'],
+ solution:[['code','desk','32']],
  art:function(f){var s='';
   s+='<defs><linearGradient id="bdW" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1c2448"/><stop offset="1" stop-color="#3a2a58"/></linearGradient></defs><defs><radialGradient id="bdM" cx="50%" cy="45%" r="55%"><stop offset="0" stop-color="#fff6c8"/><stop offset="1" stop-color="#fff6c8" stop-opacity="0"/></radialGradient></defs>';
   s+=R(0,0,400,300,'url(#bdW)');
@@ -1222,7 +1222,7 @@ var r32={id:'r32',title:'林荫公园',emoji:'🌳',sub:'数学 · 助人',
     {text:'小花猫眨眨眼：“我想要礼物！”',use:[{item:'gift_r32',take:['gift_r32'],win:true,text:'小花猫开心地收下了！「林荫公园」任务完成！'}],wrong:'小花猫摇摇头：“我要的是礼物哦。”'}
   ]},
   {id:'desk',name:'长椅',box:[30,150,120,50],views:[
-    {if:['!desk_open'],text:'长椅抽屉锁着，纸条上有题：',note:'【算一算】一辆车平均每小时行 60 千米，行了 2.5 小时。一共行了多少千米？',lock:{kind:'num',len:3,answer:'150',prompt:'输入密码',ok:{set:['desk_open'],text:'抽屉开了，里面有一份礼物！'},bad:'再算算。'}},
+    {if:['!desk_open'],text:'长椅抽屉锁着，纸条上有题：',note:'【算一算】循环小数：计算 1÷6，从小数点后第几位开始循环？',lock:{kind:'num',len:1,answer:'2',prompt:'输入密码',ok:{set:['desk_open'],text:'抽屉开了，里面有一份礼物！'},bad:'再算算。'}},
     {if:['desk_open','!took_gift'],text:'里面有一份礼物。',take:{give:['gift_r32'],set:['took_gift'],text:'你拿到了礼物。'}},
     {text:'抽屉空了。'}
   ]},
@@ -1241,12 +1241,12 @@ var r32={id:'r32',title:'林荫公园',emoji:'🌳',sub:'数学 · 助人',
  ],
  combos:[],
  hints:[
-  {until:'desk_open',obj:'desk',tiers:['先解开长椅的密码。','看纸条上的题，可能要算两步。','路程 = 速度 × 时间。']},
+  {until:'desk_open',obj:'desk',tiers:['先解开长椅的密码。','看纸条上的题，可能要算两步。','看小数点后面，从第几位起才开始一直重复。如果第一位就不停地重复，答案就是 1。']},
   {until:'took_gift',obj:'desk',tiers:['把礼物拿起来。','点长椅拿起。','拿起来。']},
   {until:'escaped',obj:'door',tiers:['把礼物交给小花猫。','选中礼物，再点小花猫。','先点物品，再点对方。']}
  ],
- explain:['路程 = 速度 × 时间 = 60 × 2.5 = 150','拿到礼物。','交给小花猫，任务完成。'],
- solution:[['code','desk','150'],['take','desk'],['use','door','gift_r32']],
+ explain:['1÷6=0.1666…，从小数点后第 2 位开始循环。','拿到礼物。','交给小花猫，任务完成。'],
+ solution:[['code','desk','2'],['take','desk'],['use','door','gift_r32']],
  art:function(f){var s='';
   s+='<defs><linearGradient id="pkS" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7ecbff"/><stop offset="1" stop-color="#e7f8c8"/></linearGradient></defs>';
   s+=R(0,0,400,300,'url(#pkS)');
@@ -1272,7 +1272,7 @@ var r33={id:'r33',title:'彩虹花园',emoji:'🌷',sub:'数学 · 益智',
     {text:'组装台等着成品。',use:[{item:'combo_r33',take:['combo_r33'],win:true,text:'放上去——成功！「彩虹花园」做好啦！'}],wrong:'要把两样材料拼好再放上来。'}
   ]},
   {id:'desk',name:'花坛沿',box:[30,150,120,50],views:[
-    {if:['!desk_open'],text:'花坛沿锁着：',note:'【算一算】一件原价 80 元的外套打 8 折。应付多少元？',lock:{kind:'num',len:2,answer:'64',prompt:'输入密码',ok:{set:['desk_open'],text:'开了！里面有材料 A。'},bad:'再算一算。'}},
+    {if:['!desk_open'],text:'花坛沿锁着：',note:'【算一算】一块三角形彩纸底 8 厘米、高 6 厘米。用同样的两块拼成一个图形，总面积是多少平方厘米？',lock:{kind:'num',len:2,answer:'48',prompt:'输入密码',ok:{set:['desk_open'],text:'开了！里面有材料 A。'},bad:'再算一算。'}},
     {if:['desk_open','!took_a'],text:'里面有材料 A。',take:{give:['partA_r33'],set:['took_a'],text:'你拿到了材料 A。'}},
     {text:'空了。'}
   ]},
@@ -1292,14 +1292,14 @@ var r33={id:'r33',title:'彩虹花园',emoji:'🌷',sub:'数学 · 益智',
  ],
  combos:[{a:'partA_r33',b:'partB_r33',give:['combo_r33'],set:['made_combo'],text:'两样材料拼在一起，成品做好了！'}],
  hints:[
-  {until:'desk_open',obj:'desk',tiers:['先开花坛沿。','算纸条上的题。','打 8 折就是用原价乘 0.8。']},
+  {until:'desk_open',obj:'desk',tiers:['先开花坛沿。','算纸条上的题。','先求一块三角形面积，再乘 2。']},
   {until:'took_a',obj:'desk',tiers:['拿起材料 A。','点开拿起。','拿起来。']},
   {until:'took_b',obj:'shelf',tiers:['看看花架。','拿起材料 B。','点架子拿。']},
   {until:'made_combo',tiers:['两样材料可以组合。','物品栏先点一个再点另一个。','拼成成品。']},
   {until:'escaped',obj:'door',tiers:['把成品放到组装台。','选中成品再点目标。','放上去就过关。']}
  ],
- explain:['80 × 0.8 = 64','拿到材料 A 和 B。','组合成成品，放到组装台。'],
- solution:[['code','desk','64'],['take','desk'],['take','shelf'],['combine','partA_r33','partB_r33'],['use','door','combo_r33']],
+ explain:['一块 = 8×6÷2 = 24，两块 = 48','拿到材料 A 和 B。','组合成成品，放到组装台。'],
+ solution:[['code','desk','48'],['take','desk'],['take','shelf'],['combine','partA_r33','partB_r33'],['use','door','combo_r33']],
  art:function(f){var s='';
   s+='<defs><linearGradient id="flS" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffd0e4"/><stop offset="1" stop-color="#fff6ea"/></linearGradient></defs><defs><radialGradient id="flG" cx="50%" cy="45%" r="55%"><stop offset="0" stop-color="#fff"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient></defs>';
   s+=R(0,0,400,300,'url(#flS)');
@@ -1327,7 +1327,7 @@ var r34={id:'r34',title:'石头过河',emoji:'🛶',sub:'数学 · 英语',
  story:['双锁挑战站「石头过河」！','小黄说：“两道题都做对，就过关！”','两关都对，不用找门——直接挑战成功！'],
  objects:[
   {id:'desk',name:'岸边石桌',box:[30,150,120,50],views:[
-    {if:['!desk_open'],text:'第一关（数学）：',note:'【算一算】笔记本每本 6.5 元，买 2 本；橡皮每块 3.2 元，买 3 块。一共多少元？',lock:{kind:'num',len:4,dot:true,answer:'22.6',prompt:'输入密码',ok:{set:['desk_open'],text:'第一关过了！去看第二关吧。'},bad:'再算算。'}},
+    {if:['!desk_open'],text:'第一关（数学）：',note:'【算一算】循环小数：最简分数 2/11 写成小数，把循环节按顺序连起来是多少？',lock:{kind:'num',len:2,answer:'18',prompt:'输入密码',ok:{set:['desk_open'],text:'第一关过了！去看第二关吧。'},bad:'再算算。'}},
     {text:'第一关已经打开了。'}
   ]},
   {id:'box',name:'木箱',box:[200,160,70,50],views:[
@@ -1349,11 +1349,11 @@ var r34={id:'r34',title:'石头过河',emoji:'🛶',sub:'数学 · 英语',
  ],
  combos:[],
  hints:[
-  {until:'desk_open',obj:'desk',tiers:['先过第一关数学题。','仔细看【算一算】，可能不止一步。','先算笔记本总价，再加橡皮总价。']},
+  {until:'desk_open',obj:'desk',tiers:['先过第一关数学题。','仔细看【算一算】，可能不止一步。','把分数除开，一直除到余数重复。只把重复的数字按顺序连起来。']},
   {until:'escaped',obj:'box',tiers:['去开第二关。','Unit 1，代词，8 个字母，首字母 A；疑问/否定句里表示“任何事物”。','根据词性、首字母和课本单元想想，不要偷看答案哦。']}
  ],
- explain:['6.5×2+3.2×3=22.6','Is there _____ in the box? (任何东西) → ANYTHING','两关都对，挑战成功。'],
- solution:[['code','desk','22.6'],['code','box','ANYTHING']],
+ explain:['2/11=0.1818…，循环节连起来是 18。','Is there _____ in the box? (任何东西) → ANYTHING','两关都对，挑战成功。'],
+ solution:[['code','desk','18'],['code','box','ANYTHING']],
  art:function(f){var s='';
   s+='<defs><linearGradient id="rvS" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3d8fd4"/><stop offset="1" stop-color="#d7f1ff"/></linearGradient></defs><defs><linearGradient id="rvW" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0e5f98"/><stop offset="1" stop-color="#7ec8ea"/></linearGradient></defs>';
   s+=R(0,0,400,128,'url(#rvS)');
@@ -1383,7 +1383,7 @@ var r35={id:'r35',title:'石拱桥头',emoji:'🌉',sub:'数学 · 通行证',
     {text:'一台刷卡机，嘀嘀作响。',use:[{item:'combo_r35',take:['combo_r35'],win:true,text:'嘀——通过！「石拱桥头」刷卡成功！'}],wrong:'要先做好通行证再刷。'}
   ]},
   {id:'desk',name:'桥头石凳',box:[30,150,120,50],views:[
-    {if:['!desk_open'],text:'桥头石凳锁着：',note:'【算一算】循环小数：计算 2÷11，商的循环节有几位数字？',lock:{kind:'num',len:1,answer:'2',prompt:'输入密码',ok:{set:['desk_open'],text:'开了，里面有一张卡片。'},bad:'再算一算。'}},
+    {if:['!desk_open'],text:'桥头石凳锁着：',note:'【算一算】小路长 48 米。从头到尾，每隔 6 米种一棵树（两头都要种）。一共要种多少棵树？',lock:{kind:'num',len:1,answer:'9',prompt:'输入密码',ok:{set:['desk_open'],text:'开了，里面有一张卡片。'},bad:'再算一算。'}},
     {if:['desk_open','!took_scrap'],text:'里面有一张卡片。',take:{give:['scrap_r35'],set:['took_scrap'],text:'你拿到了卡片。'}},
     {text:'空了。'}
   ]},
@@ -1403,14 +1403,14 @@ var r35={id:'r35',title:'石拱桥头',emoji:'🌉',sub:'数学 · 通行证',
  ],
  combos:[{a:'scrap_r35',b:'tool_r35',give:['combo_r35'],set:['made_combo'],text:'卡片和徽章拼成了通行证！'}],
  hints:[
-  {until:'desk_open',obj:'desk',tiers:['先开桥头石凳。','算题，注意多步运算。','用竖式除一除，余数重复就停。只数一直重复的那几位有几位，前面不循环的数字不要算进去。']},
+  {until:'desk_open',obj:'desk',tiers:['先开桥头石凳。','算题，注意多步运算。','段数 = 全长÷间隔，两头都种则棵数比段数多 1。']},
   {until:'took_scrap',obj:'desk',tiers:['拿卡片。','点开拿起。','拿起来。']},
   {until:'took_tool',obj:'shelf',tiers:['还要徽章。','看灯笼架。','拿起徽章。']},
   {until:'made_combo',tiers:['卡片和徽章可组合。','物品栏点两个拼。','拼成通行证。']},
   {until:'escaped',obj:'door',tiers:['去刷卡机。','选中通行证点刷卡机。','刷卡过关。']}
  ],
- explain:['2÷11=0.1818…，循环节是 18，有 2 位。','拿到卡片和徽章。','组合成通行证，刷卡机刷过关。'],
- solution:[['code','desk','2'],['take','desk'],['take','shelf'],['combine','scrap_r35','tool_r35'],['use','door','combo_r35']],
+ explain:['段数=48÷6=8，棵数=段数+1=9','拿到卡片和徽章。','组合成通行证，刷卡机刷过关。'],
+ solution:[['code','desk','9'],['take','desk'],['take','shelf'],['combine','scrap_r35','tool_r35'],['use','door','combo_r35']],
  art:function(f){var s='';
   s+='<defs><linearGradient id="brS" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9ec7ea"/><stop offset="1" stop-color="#e7eef4"/></linearGradient></defs><defs><linearGradient id="brW" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3d88b8"/><stop offset="1" stop-color="#8ec4de"/></linearGradient></defs>';
   s+=R(0,0,400,300,'url(#brS)');
@@ -1519,7 +1519,7 @@ var r38={id:'r38',title:'森林小路',emoji:'🌲',sub:'数学 · 挑战',
     {text:'小木屋锁着，需要钥匙。',use:[{item:'key_r38',win:true,text:'钥匙一转，小木屋开了！「森林小路」挑战成功！'}],wrong:'要用钥匙才能开门。'}
   ]},
   {id:'desk',name:'树桩',box:[30,150,120,50],views:[
-    {if:['!desk_open'],text:'树桩上有密码锁，旁边贴着纸条：',note:'【算一算】小数四则：0.8 + 1.25 = ?',lock:{kind:'num',len:4,dot:true,answer:'2.05',prompt:'输入密码',ok:{set:['desk_open'],text:'打开了！里面有一把钥匙。'},bad:'密码不对哦，再算一算。'}},
+    {if:['!desk_open'],text:'树桩上有密码锁，旁边贴着纸条：',note:'【算一算】一辆车平均每小时行 60 千米，行了 2.5 小时。一共行了多少千米？',lock:{kind:'num',len:3,answer:'150',prompt:'输入密码',ok:{set:['desk_open'],text:'打开了！里面有一把钥匙。'},bad:'密码不对哦，再算一算。'}},
     {if:['desk_open','!took_key'],text:'里面有一把钥匙。',take:{give:['key_r38'],set:['took_key'],text:'你拿到了钥匙。'}},
     {text:'已经空了。'}
   ]},
@@ -1538,12 +1538,12 @@ var r38={id:'r38',title:'森林小路',emoji:'🌲',sub:'数学 · 挑战',
  ],
  combos:[],
  hints:[
-  {until:'desk_open',obj:'desk',tiers:['先看看树桩上的纸条。','纸条上有一道数学题，算出答案就是密码。','小数点对齐再相加。位数不一样时，空着的位可以看成 0。']},
+  {until:'desk_open',obj:'desk',tiers:['先看看树桩上的纸条。','纸条上有一道数学题，算出答案就是密码。','路程 = 速度 × 时间。']},
   {until:'took_key',obj:'desk',tiers:['抽屉开了。','点树桩，拿起钥匙。','把钥匙拿起来。']},
   {until:'escaped',obj:'door',tiers:['你有钥匙了！','选中钥匙，再点小木屋。','先点钥匙，再点目标。']}
  ],
- explain:['0.8 + 1.25 = 2.05。小数点对齐再相加。','打开抽屉拿到钥匙。','用钥匙打开小木屋，挑战成功。'],
- solution:[['code','desk','2.05'],['take','desk'],['use','door','key_r38']],
+ explain:['路程 = 速度 × 时间 = 60 × 2.5 = 150','打开抽屉拿到钥匙。','用钥匙打开小木屋，挑战成功。'],
+ solution:[['code','desk','150'],['take','desk'],['use','door','key_r38']],
  art:function(f){var s='';
   s+='<defs><linearGradient id="foS" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1e4d32"/><stop offset="1" stop-color="#cfe8c4"/></linearGradient></defs>';
   s+=R(0,0,400,300,'url(#foS)');
@@ -1565,7 +1565,7 @@ var r39={id:'r39',title:'贝壳沙滩',emoji:'🏖️',sub:'数学 · 闯关',
  story:['欢迎来到「贝壳沙滩」挑战站！','沙桌上有一道题，做对就通关。','不一定要出门——答对就是胜利！'],
  objects:[
   {id:'desk',name:'沙桌',box:[30,150,120,50],views:[
-    {if:['!desk_open'],text:'沙桌上的挑战题：',note:'【算一算】长方形花坛长 10 米、宽 6 米。四周铺宽 1 米的小路，小路面积是多少平方米？',lock:{kind:'num',len:2,answer:'36',prompt:'输入答案',ok:{set:['desk_open'],win:true,text:'答对啦！「贝壳沙滩」挑战成功！'},bad:'再算一算。'}},
+    {if:['!desk_open'],text:'沙桌上的挑战题：',note:'【算一算】一件原价 80 元的外套打 8 折。应付多少元？',lock:{kind:'num',len:2,answer:'64',prompt:'输入答案',ok:{set:['desk_open'],win:true,text:'答对啦！「贝壳沙滩」挑战成功！'},bad:'再算一算。'}},
     {text:'题目已经解开啦。'}
   ]},
   {id:'door',name:'沙滩屋',box:[310,160,70,120],views:[
@@ -1586,10 +1586,10 @@ var r39={id:'r39',title:'贝壳沙滩',emoji:'🏖️',sub:'数学 · 闯关',
  ],
  combos:[],
  hints:[
-  {until:'escaped',obj:'desk',tiers:['点开沙桌上的题。','仔细看【算一算】，多步时先算哪一步？','先算“花坛+小路”的大长方形，再减去花坛本身。']}
+  {until:'escaped',obj:'desk',tiers:['点开沙桌上的题。','仔细看【算一算】，多步时先算哪一步？','打 8 折就是用原价乘 0.8。']}
  ],
- explain:['外围 (10+2)×(6+2) 减去花坛 10×6 = 36','在桌子/长椅等物件上输入答案。','答对题目，直接挑战成功。'],
- solution:[['code','desk','36']],
+ explain:['80 × 0.8 = 64','在桌子/长椅等物件上输入答案。','答对题目，直接挑战成功。'],
+ solution:[['code','desk','64']],
  art:function(f){var s='';
   s+='<defs><linearGradient id="bcS" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7ecbff"/><stop offset="1" stop-color="#fff6d8"/></linearGradient></defs><defs><linearGradient id="bcW" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1f8fd0"/><stop offset="1" stop-color="#b7e6ff"/></linearGradient></defs>';
   s+=R(0,0,400,168,'url(#bcS)');
@@ -1614,7 +1614,7 @@ var r40={id:'r40',title:'田野农庄',emoji:'🚜',sub:'数学 · 助人',
     {text:'小花猫眨眨眼：“我想要礼物！”',use:[{item:'gift_r40',take:['gift_r40'],win:true,text:'小花猫开心地收下了！「田野农庄」任务完成！'}],wrong:'小花猫摇摇头：“我要的是礼物哦。”'}
   ]},
   {id:'desk',name:'木桌',box:[30,150,120,50],views:[
-    {if:['!desk_open'],text:'木桌抽屉锁着，纸条上有题：',note:'【算一算】循环小数：计算 2÷11，把循环节按顺序连起来是多少？',lock:{kind:'num',len:2,answer:'18',prompt:'输入密码',ok:{set:['desk_open'],text:'抽屉开了，里面有一份礼物！'},bad:'再算算。'}},
+    {if:['!desk_open'],text:'木桌抽屉锁着，纸条上有题：',note:'【算一算】笔记本每本 6.5 元，买 2 本；橡皮每块 3.2 元，买 3 块。一共多少元？',lock:{kind:'num',len:4,dot:true,answer:'22.6',prompt:'输入密码',ok:{set:['desk_open'],text:'抽屉开了，里面有一份礼物！'},bad:'再算算。'}},
     {if:['desk_open','!took_gift'],text:'里面有一份礼物。',take:{give:['gift_r40'],set:['took_gift'],text:'你拿到了礼物。'}},
     {text:'抽屉空了。'}
   ]},
@@ -1633,12 +1633,12 @@ var r40={id:'r40',title:'田野农庄',emoji:'🚜',sub:'数学 · 助人',
  ],
  combos:[],
  hints:[
-  {until:'desk_open',obj:'desk',tiers:['先解开木桌的密码。','看纸条上的题，可能要算两步。','先除到开始循环。循环节是重复的那一段，按顺序连成一个数，比如重复 1 和 8 就填 18。不循环的数字不要写。']},
+  {until:'desk_open',obj:'desk',tiers:['先解开木桌的密码。','看纸条上的题，可能要算两步。','先算笔记本总价，再加橡皮总价。']},
   {until:'took_gift',obj:'desk',tiers:['把礼物拿起来。','点木桌拿起。','拿起来。']},
   {until:'escaped',obj:'door',tiers:['把礼物交给小花猫。','选中礼物，再点小花猫。','先点物品，再点对方。']}
  ],
- explain:['2÷11=0.1818…。循环节连起来是 18。','拿到礼物。','交给小花猫，任务完成。'],
- solution:[['code','desk','18'],['take','desk'],['use','door','gift_r40']],
+ explain:['6.5×2+3.2×3=22.6','拿到礼物。','交给小花猫，任务完成。'],
+ solution:[['code','desk','22.6'],['take','desk'],['use','door','gift_r40']],
  art:function(f){var s='';
   s+='<defs><linearGradient id="fmS" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8fd4ff"/><stop offset="1" stop-color="#fff4c8"/></linearGradient></defs>';
   s+=R(0,0,400,150,'url(#fmS)');
@@ -1661,7 +1661,7 @@ var r41={id:'r41',title:'荷花池塘',emoji:'🪷',sub:'数学 · 益智',
     {text:'组装台等着成品。',use:[{item:'combo_r41',take:['combo_r41'],win:true,text:'放上去——成功！「荷花池塘」做好啦！'}],wrong:'要把两样材料拼好再放上来。'}
   ]},
   {id:'desk',name:'木码头',box:[30,150,120,50],views:[
-    {if:['!desk_open'],text:'木码头锁着：',note:'【算一算】小数四则：5 − 0.25 = ?',lock:{kind:'num',len:4,dot:true,answer:'4.75',prompt:'输入密码',ok:{set:['desk_open'],text:'开了！里面有材料 A。'},bad:'再算一算。'}},
+    {if:['!desk_open'],text:'木码头锁着：',note:'【算一算】循环小数：计算 2÷11，商的循环节有几位数字？',lock:{kind:'num',len:1,answer:'2',prompt:'输入密码',ok:{set:['desk_open'],text:'开了！里面有材料 A。'},bad:'再算一算。'}},
     {if:['desk_open','!took_a'],text:'里面有材料 A。',take:{give:['partA_r41'],set:['took_a'],text:'你拿到了材料 A。'}},
     {text:'空了。'}
   ]},
@@ -1681,14 +1681,14 @@ var r41={id:'r41',title:'荷花池塘',emoji:'🪷',sub:'数学 · 益智',
  ],
  combos:[{a:'partA_r41',b:'partB_r41',give:['combo_r41'],set:['made_combo'],text:'两样材料拼在一起，成品做好了！'}],
  hints:[
-  {until:'desk_open',obj:'desk',tiers:['先开木码头。','算纸条上的题。','小数点对齐再相减。位数少的一边补 0，不够减就向前一位借。']},
+  {until:'desk_open',obj:'desk',tiers:['先开木码头。','算纸条上的题。','用竖式除一除，余数重复就停。只数一直重复的那几位有几位，前面不循环的数字不要算进去。']},
   {until:'took_a',obj:'desk',tiers:['拿起材料 A。','点开拿起。','拿起来。']},
   {until:'took_b',obj:'shelf',tiers:['看看水榭。','拿起材料 B。','点架子拿。']},
   {until:'made_combo',tiers:['两样材料可以组合。','物品栏先点一个再点另一个。','拼成成品。']},
   {until:'escaped',obj:'door',tiers:['把成品放到组装台。','选中成品再点目标。','放上去就过关。']}
  ],
- explain:['5 − 0.25 = 4.75。小数点对齐，位数少的补 0。','拿到材料 A 和 B。','组合成成品，放到组装台。'],
- solution:[['code','desk','4.75'],['take','desk'],['take','shelf'],['combine','partA_r41','partB_r41'],['use','door','combo_r41']],
+ explain:['2÷11=0.1818…，循环节是 18，有 2 位。','拿到材料 A 和 B。','组合成成品，放到组装台。'],
+ solution:[['code','desk','2'],['take','desk'],['take','shelf'],['combine','partA_r41','partB_r41'],['use','door','combo_r41']],
  art:function(f){var s='';
   s+='<defs><linearGradient id="ltS" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c9f2ff"/><stop offset="1" stop-color="#e7fff6"/></linearGradient></defs><defs><linearGradient id="ltW" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1478a8"/><stop offset="1" stop-color="#7ec8ea"/></linearGradient></defs>';
   s+=R(0,0,400,90,'url(#ltS)');
@@ -1709,7 +1709,7 @@ var r42={id:'r42',title:'星空露营',emoji:'⛺',sub:'数学 · 英语',
  story:['双锁挑战站「星空露营」！','先过木头凳，再过冷藏盒。','两关都对，不用找门——直接挑战成功！'],
  objects:[
   {id:'desk',name:'木头凳',box:[30,150,120,50],views:[
-    {if:['!desk_open'],text:'第一关（数学）：',note:'【算一算】长方形桌面长 2.5 米、宽 1.2 米。面积是多少平方分米？（1 米 = 10 分米）',lock:{kind:'num',len:3,answer:'300',prompt:'输入密码',ok:{set:['desk_open'],text:'第一关过了！去看第二关吧。'},bad:'再算算。'}},
+    {if:['!desk_open'],text:'第一关（数学）：',note:'【算一算】小数四则：0.8 + 1.25 = ?',lock:{kind:'num',len:4,dot:true,answer:'2.05',prompt:'输入密码',ok:{set:['desk_open'],text:'第一关过了！去看第二关吧。'},bad:'再算算。'}},
     {text:'第一关已经打开了。'}
   ]},
   {id:'box',name:'冷藏盒',box:[200,160,70,50],views:[
@@ -1731,11 +1731,11 @@ var r42={id:'r42',title:'星空露营',emoji:'⛺',sub:'数学 · 英语',
  ],
  combos:[],
  hints:[
-  {until:'desk_open',obj:'desk',tiers:['先过第一关数学题。','仔细看【算一算】，可能不止一步。','先把米换成分米，再相乘。']},
+  {until:'desk_open',obj:'desk',tiers:['先过第一关数学题。','仔细看【算一算】，可能不止一步。','小数点对齐再相加。位数不一样时，空着的位可以看成 0。']},
   {until:'escaped',obj:'box',tiers:['去开第二关。','Unit 1，名词，8 个字母，首字母 S；由单词组成、表达完整意思。','根据词性、首字母和课本单元想想，不要偷看答案哦。']}
  ],
- explain:['先换成 25 分米 × 12 分米 = 300 平方分米','Can you write a _____? (句子) → SENTENCE','两关都对，挑战成功。'],
- solution:[['code','desk','300'],['code','box','SENTENCE']],
+ explain:['0.8 + 1.25 = 2.05。小数点对齐再相加。','Can you write a _____? (句子) → SENTENCE','两关都对，挑战成功。'],
+ solution:[['code','desk','2.05'],['code','box','SENTENCE']],
  art:function(f){var s='';
   s+='<defs><linearGradient id="cpS" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#121a33"/><stop offset="1" stop-color="#24344e"/></linearGradient></defs><defs><radialGradient id="cpF" cx="50%" cy="45%" r="55%"><stop offset="0" stop-color="#ffb15a"/><stop offset="1" stop-color="#ff7a2a" stop-opacity="0"/></radialGradient></defs>';
   s+=R(0,0,400,300,'url(#cpS)');
@@ -1758,7 +1758,7 @@ var r43={id:'r43',title:'大树屋',emoji:'🌳',sub:'数学 · 通行证',
     {text:'一台刷卡机，嘀嘀作响。',use:[{item:'combo_r43',take:['combo_r43'],win:true,text:'嘀——通过！「大树屋」刷卡成功！'}],wrong:'要先做好通行证再刷。'}
   ]},
   {id:'desk',name:'树枝台',box:[30,150,120,50],views:[
-    {if:['!desk_open'],text:'树枝台锁着：',note:'【算一算】循环小数：0.1818…（循环节是 18）化成最简分数，分母是多少？',lock:{kind:'num',len:2,answer:'11',prompt:'输入密码',ok:{set:['desk_open'],text:'开了，里面有一张卡片。'},bad:'再算一算。'}},
+    {if:['!desk_open'],text:'树枝台锁着：',note:'【算一算】长方形花坛长 10 米、宽 6 米。四周铺宽 1 米的小路，小路面积是多少平方米？',lock:{kind:'num',len:2,answer:'36',prompt:'输入密码',ok:{set:['desk_open'],text:'开了，里面有一张卡片。'},bad:'再算一算。'}},
     {if:['desk_open','!took_scrap'],text:'里面有一张卡片。',take:{give:['scrap_r43'],set:['took_scrap'],text:'你拿到了卡片。'}},
     {text:'空了。'}
   ]},
@@ -1778,14 +1778,14 @@ var r43={id:'r43',title:'大树屋',emoji:'🌳',sub:'数学 · 通行证',
  ],
  combos:[{a:'scrap_r43',b:'tool_r43',give:['combo_r43'],set:['made_combo'],text:'卡片和徽章拼成了通行证！'}],
  hints:[
-  {until:'desk_open',obj:'desk',tiers:['先开树枝台。','算题，注意多步运算。','纯循环小数：循环几位，分母就是几个 9。一位用 9，两位用 99，写好再约分，约完的分母才是答案。']},
+  {until:'desk_open',obj:'desk',tiers:['先开树枝台。','算题，注意多步运算。','先算“花坛+小路”的大长方形，再减去花坛本身。']},
   {until:'took_scrap',obj:'desk',tiers:['拿卡片。','点开拿起。','拿起来。']},
   {until:'took_tool',obj:'shelf',tiers:['还要徽章。','看松鼠洞。','拿起徽章。']},
   {until:'made_combo',tiers:['卡片和徽章可组合。','物品栏点两个拼。','拼成通行证。']},
   {until:'escaped',obj:'door',tiers:['去刷卡机。','选中通行证点刷卡机。','刷卡过关。']}
  ],
- explain:['0.1818… 的循环节是 18，写成 18/99，约分得 2/11，分母是 11。','拿到卡片和徽章。','组合成通行证，刷卡机刷过关。'],
- solution:[['code','desk','11'],['take','desk'],['take','shelf'],['combine','scrap_r43','tool_r43'],['use','door','combo_r43']],
+ explain:['外围 (10+2)×(6+2) 减去花坛 10×6 = 36','拿到卡片和徽章。','组合成通行证，刷卡机刷过关。'],
+ solution:[['code','desk','36'],['take','desk'],['take','shelf'],['combine','scrap_r43','tool_r43'],['use','door','combo_r43']],
  art:function(f){var s='';
   s+='<defs><linearGradient id="thS" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#79c8f0"/><stop offset="1" stop-color="#d7f6e4"/></linearGradient></defs>';
   s+=R(0,0,400,300,'url(#thS)');
@@ -1896,7 +1896,7 @@ var r46={id:'r46',title:'清晨菜场',emoji:'🥬',sub:'数学 · 挑战',
     {text:'菜场口锁着，需要钥匙。',use:[{item:'key_r46',win:true,text:'钥匙一转，菜场口开了！「清晨菜场」挑战成功！'}],wrong:'要用钥匙才能开门。'}
   ]},
   {id:'desk',name:'秤台',box:[30,150,120,50],views:[
-    {if:['!desk_open'],text:'秤台上有密码锁，旁边贴着纸条：',note:'【算一算】小数四则：0.8 × 1.25 = ?',lock:{kind:'num',len:1,answer:'1',prompt:'输入密码',ok:{set:['desk_open'],text:'打开了！里面有一把钥匙。'},bad:'密码不对哦，再算一算。'}},
+    {if:['!desk_open'],text:'秤台上有密码锁，旁边贴着纸条：',note:'【算一算】每本练习本 3.6 元，买 5 本。一共多少元？',lock:{kind:'num',len:2,answer:'18',prompt:'输入密码',ok:{set:['desk_open'],text:'打开了！里面有一把钥匙。'},bad:'密码不对哦，再算一算。'}},
     {if:['desk_open','!took_key'],text:'里面有一把钥匙。',take:{give:['key_r46'],set:['took_key'],text:'你拿到了钥匙。'}},
     {text:'已经空了。'}
   ]},
@@ -1915,12 +1915,12 @@ var r46={id:'r46',title:'清晨菜场',emoji:'🥬',sub:'数学 · 挑战',
  ],
  combos:[],
  hints:[
-  {until:'desk_open',obj:'desk',tiers:['先看看秤台上的纸条。','纸条上有一道数学题，算出答案就是密码。','先按整数相乘，再点小数点：两个因数一共有几位小数，积就有几位小数。']},
+  {until:'desk_open',obj:'desk',tiers:['先看看秤台上的纸条。','纸条上有一道数学题，算出答案就是密码。','小数乘整数：按整数相乘，再数小数点后有几位。']},
   {until:'took_key',obj:'desk',tiers:['抽屉开了。','点秤台，拿起钥匙。','把钥匙拿起来。']},
   {until:'escaped',obj:'door',tiers:['你有钥匙了！','选中钥匙，再点菜场口。','先点钥匙，再点目标。']}
  ],
- explain:['0.8 × 1.25 = 1。先按整数乘，再点上小数点。','打开抽屉拿到钥匙。','用钥匙打开菜场口，挑战成功。'],
- solution:[['code','desk','1'],['take','desk'],['use','door','key_r46']],
+ explain:['3.6 × 5 = 18','打开抽屉拿到钥匙。','用钥匙打开菜场口，挑战成功。'],
+ solution:[['code','desk','18'],['take','desk'],['use','door','key_r46']],
  art:function(f){var s='';
   s+=R(0,0,400,300,'#fffaf2');
   s+=R(0,210,400,90,'#e7d3b0');
@@ -1939,7 +1939,7 @@ var r47={id:'r47',title:'雪地木屋',emoji:'❄️',sub:'数学 · 闯关',
  story:['欢迎来到「雪地木屋」挑战站！','雪凳上有一道题，做对就通关。','不一定要出门——答对就是胜利！'],
  objects:[
   {id:'desk',name:'雪凳',box:[30,150,120,50],views:[
-    {if:['!desk_open'],text:'雪凳上的挑战题：',note:'【算一算】解方程：4x − 10 = 2x + 30\n求 x。',lock:{kind:'num',len:2,answer:'20',prompt:'输入答案',ok:{set:['desk_open'],win:true,text:'答对啦！「雪地木屋」挑战成功！'},bad:'再算一算。'}},
+    {if:['!desk_open'],text:'雪凳上的挑战题：',note:'【算一算】循环小数：计算 2÷11，把循环节按顺序连起来是多少？',lock:{kind:'num',len:2,answer:'18',prompt:'输入答案',ok:{set:['desk_open'],win:true,text:'答对啦！「雪地木屋」挑战成功！'},bad:'再算一算。'}},
     {text:'题目已经解开啦。'}
   ]},
   {id:'door',name:'木屋',box:[310,160,70,120],views:[
@@ -1960,10 +1960,10 @@ var r47={id:'r47',title:'雪地木屋',emoji:'❄️',sub:'数学 · 闯关',
  ],
  combos:[],
  hints:[
-  {until:'escaped',obj:'desk',tiers:['点开雪凳上的题。','仔细看【算一算】，多步时先算哪一步？','把含 x 的项移到一边，常数移到另一边。']}
+  {until:'escaped',obj:'desk',tiers:['点开雪凳上的题。','仔细看【算一算】，多步时先算哪一步？','先除到开始循环。循环节是重复的那一段，按顺序连成一个数，比如重复 1 和 8 就填 18。不循环的数字不要写。']}
  ],
- explain:['移项合并：(4-2)x = 10+30 → x = 20','在桌子/长椅等物件上输入答案。','答对题目，直接挑战成功。'],
- solution:[['code','desk','20']],
+ explain:['2÷11=0.1818…。循环节连起来是 18。','在桌子/长椅等物件上输入答案。','答对题目，直接挑战成功。'],
+ solution:[['code','desk','18']],
  art:function(f){var s='';
   s+='<defs><linearGradient id="snS" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d6ecff"/><stop offset="1" stop-color="#f7fbff"/></linearGradient></defs>';
   s+=R(0,0,400,300,'url(#snS)');
@@ -1987,7 +1987,7 @@ var r48={id:'r48',title:'傍晚客厅',emoji:'🌇',sub:'数学 · 助人',
     {text:'小花猫眨眨眼：“我想要礼物！”',use:[{item:'gift_r48',take:['gift_r48'],win:true,text:'小花猫开心地收下了！「傍晚客厅」任务完成！'}],wrong:'小花猫摇摇头：“我要的是礼物哦。”'}
   ]},
   {id:'desk',name:'茶几',box:[30,150,120,50],views:[
-    {if:['!desk_open'],text:'茶几抽屉锁着，纸条上有题：',note:'【算一算】循环小数：下面哪个算式的商是循环小数？① 3÷5 ② 7÷2 ③ 2÷11 ④ 8÷5。填序号。',lock:{kind:'num',len:1,answer:'3',prompt:'输入密码',ok:{set:['desk_open'],text:'抽屉开了，里面有一份礼物！'},bad:'再算算。'}},
+    {if:['!desk_open'],text:'茶几抽屉锁着，纸条上有题：',note:'【算一算】小数四则：5 − 0.25 = ?',lock:{kind:'num',len:4,dot:true,answer:'4.75',prompt:'输入密码',ok:{set:['desk_open'],text:'抽屉开了，里面有一份礼物！'},bad:'再算算。'}},
     {if:['desk_open','!took_gift'],text:'里面有一份礼物。',take:{give:['gift_r48'],set:['took_gift'],text:'你拿到了礼物。'}},
     {text:'抽屉空了。'}
   ]},
@@ -2006,12 +2006,12 @@ var r48={id:'r48',title:'傍晚客厅',emoji:'🌇',sub:'数学 · 助人',
  ],
  combos:[],
  hints:[
-  {until:'desk_open',obj:'desk',tiers:['先解开茶几的密码。','看纸条上的题，可能要算两步。','约分后分母只剩 2 和 5，商是有限小数；分母里还有 3、7、11 这类因数，商通常会循环。四个里只有一个。']},
+  {until:'desk_open',obj:'desk',tiers:['先解开茶几的密码。','看纸条上的题，可能要算两步。','小数点对齐再相减。位数少的一边补 0，不够减就向前一位借。']},
   {until:'took_gift',obj:'desk',tiers:['把礼物拿起来。','点茶几拿起。','拿起来。']},
   {until:'escaped',obj:'door',tiers:['把礼物交给小花猫。','选中礼物，再点小花猫。','先点物品，再点对方。']}
  ],
- explain:['① 3÷5=0.6 有限小数，② 7÷2=3.5 有限小数，③ 2÷11=0.1818… 循环小数，④ 8÷5=1.6 有限小数。所以填 3。','拿到礼物。','交给小花猫，任务完成。'],
- solution:[['code','desk','3'],['take','desk'],['use','door','gift_r48']],
+ explain:['5 − 0.25 = 4.75。小数点对齐，位数少的补 0。','拿到礼物。','交给小花猫，任务完成。'],
+ solution:[['code','desk','4.75'],['take','desk'],['use','door','gift_r48']],
  art:function(f){var s='';
   s+='<defs><linearGradient id="lvW" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f0b48a"/><stop offset="1" stop-color="#c98a62"/></linearGradient></defs><defs><radialGradient id="lvL" cx="50%" cy="45%" r="55%"><stop offset="0" stop-color="#ffe7a3"/><stop offset="1" stop-color="#ffe7a3" stop-opacity="0"/></radialGradient></defs>';
   s+=R(0,0,400,300,'url(#lvW)');
@@ -2036,7 +2036,7 @@ var r49={id:'r49',title:'夕阳卧室',emoji:'🌇',sub:'数学 · 益智',
     {text:'组装台等着成品。',use:[{item:'combo_r49',take:['combo_r49'],win:true,text:'放上去——成功！「夕阳卧室」做好啦！'}],wrong:'要把两样材料拼好再放上来。'}
   ]},
   {id:'desk',name:'床头柜',box:[30,150,120,50],views:[
-    {if:['!desk_open'],text:'床头柜锁着：',note:'【算一算】小数四则：7.2 ÷ 0.16 = ?',lock:{kind:'num',len:2,answer:'45',prompt:'输入密码',ok:{set:['desk_open'],text:'开了！里面有材料 A。'},bad:'再算一算。'}},
+    {if:['!desk_open'],text:'床头柜锁着：',note:'【算一算】长方形桌面长 2.5 米、宽 1.2 米。面积是多少平方分米？（1 米 = 10 分米）',lock:{kind:'num',len:3,answer:'300',prompt:'输入密码',ok:{set:['desk_open'],text:'开了！里面有材料 A。'},bad:'再算一算。'}},
     {if:['desk_open','!took_a'],text:'里面有材料 A。',take:{give:['partA_r49'],set:['took_a'],text:'你拿到了材料 A。'}},
     {text:'空了。'}
   ]},
@@ -2056,14 +2056,14 @@ var r49={id:'r49',title:'夕阳卧室',emoji:'🌇',sub:'数学 · 益智',
  ],
  combos:[{a:'partA_r49',b:'partB_r49',give:['combo_r49'],set:['made_combo'],text:'两样材料拼在一起，成品做好了！'}],
  hints:[
-  {until:'desk_open',obj:'desk',tiers:['先开床头柜。','算纸条上的题。','除数是小数时，先把除数变成整数，被除数的小数点也向右移同样的位数，再除。']},
+  {until:'desk_open',obj:'desk',tiers:['先开床头柜。','算纸条上的题。','先把米换成分米，再相乘。']},
   {until:'took_a',obj:'desk',tiers:['拿起材料 A。','点开拿起。','拿起来。']},
   {until:'took_b',obj:'shelf',tiers:['看看衣柜。','拿起材料 B。','点架子拿。']},
   {until:'made_combo',tiers:['两样材料可以组合。','物品栏先点一个再点另一个。','拼成成品。']},
   {until:'escaped',obj:'door',tiers:['把成品放到组装台。','选中成品再点目标。','放上去就过关。']}
  ],
- explain:['7.2 ÷ 0.16 = 45。','拿到材料 A 和 B。','组合成成品，放到组装台。'],
- solution:[['code','desk','45'],['take','desk'],['take','shelf'],['combine','partA_r49','partB_r49'],['use','door','combo_r49']],
+ explain:['先换成 25 分米 × 12 分米 = 300 平方分米','拿到材料 A 和 B。','组合成成品，放到组装台。'],
+ solution:[['code','desk','300'],['take','desk'],['take','shelf'],['combine','partA_r49','partB_r49'],['use','door','combo_r49']],
  art:function(f){var s='';
   s+='<defs><linearGradient id="bdW" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c46a4a"/><stop offset="1" stop-color="#6a3a58"/></linearGradient></defs><defs><radialGradient id="bdM" cx="50%" cy="45%" r="55%"><stop offset="0" stop-color="#fff6c8"/><stop offset="1" stop-color="#fff6c8" stop-opacity="0"/></radialGradient></defs>';
   s+=R(0,0,400,300,'url(#bdW)');
@@ -2083,7 +2083,7 @@ var r50={id:'r50',title:'黄昏公园',emoji:'🌆',sub:'数学 · 英语',
  story:['双锁挑战站「黄昏公园」！','先过长椅，再过野餐篮。','两关都对，不用找门——直接挑战成功！'],
  objects:[
   {id:'desk',name:'长椅',box:[30,150,120,50],views:[
-    {if:['!desk_open'],text:'第一关（数学）：',note:'【算一算】一桶油重 25.4 千克，用去 8.7 千克后又倒入 4.2 千克。现在桶里有多少千克？',lock:{kind:'num',len:4,dot:true,answer:'20.9',prompt:'输入密码',ok:{set:['desk_open'],text:'第一关过了！去看第二关吧。'},bad:'再算算。'}},
+    {if:['!desk_open'],text:'第一关（数学）：',note:'【算一算】水果每千克 2.5 元，买 1.2 千克。一共多少元？',lock:{kind:'num',len:1,answer:'3',prompt:'输入密码',ok:{set:['desk_open'],text:'第一关过了！去看第二关吧。'},bad:'再算算。'}},
     {text:'第一关已经打开了。'}
   ]},
   {id:'box',name:'野餐篮',box:[200,160,70,50],views:[
@@ -2105,11 +2105,11 @@ var r50={id:'r50',title:'黄昏公园',emoji:'🌆',sub:'数学 · 英语',
  ],
  combos:[],
  hints:[
-  {until:'desk_open',obj:'desk',tiers:['先过第一关数学题。','仔细看【算一算】，可能不止一步。','先减去用去的，再加上倒入的。']},
+  {until:'desk_open',obj:'desk',tiers:['先过第一关数学题。','仔细看【算一算】，可能不止一步。','小数乘小数：先当整数乘，再看两个因数一共有几位小数。']},
   {until:'escaped',obj:'box',tiers:['去开第二关。','Unit 1，复数名词，5 个字母，首字母 C；配图记单词用的纸片。','根据词性、首字母和课本单元想想，不要偷看答案哦。']}
  ],
- explain:['25.4 − 8.7 + 4.2 = 20.9','Make word _____ with pictures. (卡片) → CARDS','两关都对，挑战成功。'],
- solution:[['code','desk','20.9'],['code','box','CARDS']],
+ explain:['2.5 × 1.2 = 3','Make word _____ with pictures. (卡片) → CARDS','两关都对，挑战成功。'],
+ solution:[['code','desk','3'],['code','box','CARDS']],
  art:function(f){var s='';
   s+='<defs><linearGradient id="pkS" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f0a060"/><stop offset="1" stop-color="#6a8a4a"/></linearGradient></defs>';
   s+=R(0,0,400,300,'url(#pkS)');
@@ -2135,7 +2135,7 @@ var r51={id:'r51',title:'暮色花园',emoji:'🌇',sub:'数学 · 通行证',
     {text:'一台刷卡机，嘀嘀作响。',use:[{item:'combo_r51',take:['combo_r51'],win:true,text:'嘀——通过！「暮色花园」刷卡成功！'}],wrong:'要先做好通行证再刷。'}
   ]},
   {id:'desk',name:'花坛沿',box:[30,150,120,50],views:[
-    {if:['!desk_open'],text:'花坛沿锁着：',note:'【算一算】循环小数：0.3333…（循环节是 3）化成最简分数，分子是多少？',lock:{kind:'num',len:1,answer:'1',prompt:'输入密码',ok:{set:['desk_open'],text:'开了，里面有一张卡片。'},bad:'再算一算。'}},
+    {if:['!desk_open'],text:'花坛沿锁着：',note:'【算一算】循环小数：0.1818…（循环节是 18）化成最简分数，分母是多少？',lock:{kind:'num',len:2,answer:'11',prompt:'输入密码',ok:{set:['desk_open'],text:'开了，里面有一张卡片。'},bad:'再算一算。'}},
     {if:['desk_open','!took_scrap'],text:'里面有一张卡片。',take:{give:['scrap_r51'],set:['took_scrap'],text:'你拿到了卡片。'}},
     {text:'空了。'}
   ]},
@@ -2155,14 +2155,14 @@ var r51={id:'r51',title:'暮色花园',emoji:'🌇',sub:'数学 · 通行证',
  ],
  combos:[{a:'scrap_r51',b:'tool_r51',give:['combo_r51'],set:['made_combo'],text:'卡片和徽章拼成了通行证！'}],
  hints:[
-  {until:'desk_open',obj:'desk',tiers:['先开花坛沿。','算题，注意多步运算。','先写成“循环节 / 几个 9”，再约分。约完以后的分子才是要填的数。']},
+  {until:'desk_open',obj:'desk',tiers:['先开花坛沿。','算题，注意多步运算。','纯循环小数：循环几位，分母就是几个 9。一位用 9，两位用 99，写好再约分，约完的分母才是答案。']},
   {until:'took_scrap',obj:'desk',tiers:['拿卡片。','点开拿起。','拿起来。']},
   {until:'took_tool',obj:'shelf',tiers:['还要徽章。','看花架。','拿起徽章。']},
   {until:'made_combo',tiers:['卡片和徽章可组合。','物品栏点两个拼。','拼成通行证。']},
   {until:'escaped',obj:'door',tiers:['去刷卡机。','选中通行证点刷卡机。','刷卡过关。']}
  ],
- explain:['0.3333… 写成 3/9，约分得 1/3，分子是 1。','拿到卡片和徽章。','组合成通行证，刷卡机刷过关。'],
- solution:[['code','desk','1'],['take','desk'],['take','shelf'],['combine','scrap_r51','tool_r51'],['use','door','combo_r51']],
+ explain:['0.1818… 的循环节是 18，写成 18/99，约分得 2/11，分母是 11。','拿到卡片和徽章。','组合成通行证，刷卡机刷过关。'],
+ solution:[['code','desk','11'],['take','desk'],['take','shelf'],['combine','scrap_r51','tool_r51'],['use','door','combo_r51']],
  art:function(f){var s='';
   s+='<defs><linearGradient id="flS" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e07aa0"/><stop offset="1" stop-color="#c46a88"/></linearGradient></defs><defs><radialGradient id="flG" cx="50%" cy="45%" r="55%"><stop offset="0" stop-color="#fff"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient></defs>';
   s+=R(0,0,400,300,'url(#flS)');
@@ -2289,7 +2289,7 @@ var r54={id:'r54',title:'放学教室',emoji:'🌇',sub:'数学 · 挑战',
     {text:'教室门锁着，需要钥匙。',use:[{item:'key_r54',win:true,text:'钥匙一转，教室门开了！「放学教室」挑战成功！'}],wrong:'要用钥匙才能开门。'}
   ]},
   {id:'desk',name:'讲台',box:[30,150,120,50],views:[
-    {if:['!desk_open'],text:'讲台上有密码锁，旁边贴着纸条：',note:'【算一算】小数四则：8.5 + 1.25 − 0.8 = ?',lock:{kind:'num',len:4,dot:true,answer:'8.95',prompt:'输入密码',ok:{set:['desk_open'],text:'打开了！里面有一把钥匙。'},bad:'密码不对哦，再算一算。'}},
+    {if:['!desk_open'],text:'讲台上有密码锁，旁边贴着纸条：',note:'【算一算】小数四则：0.8 × 1.25 = ?',lock:{kind:'num',len:1,answer:'1',prompt:'输入密码',ok:{set:['desk_open'],text:'打开了！里面有一把钥匙。'},bad:'密码不对哦，再算一算。'}},
     {if:['desk_open','!took_key'],text:'里面有一把钥匙。',take:{give:['key_r54'],set:['took_key'],text:'你拿到了钥匙。'}},
     {text:'已经空了。'}
   ]},
@@ -2308,12 +2308,12 @@ var r54={id:'r54',title:'放学教室',emoji:'🌇',sub:'数学 · 挑战',
  ],
  combos:[],
  hints:[
-  {until:'desk_open',obj:'desk',tiers:['先看看讲台上的纸条。','纸条上有一道数学题，算出答案就是密码。','看清每一步在求什么，一步一步算。有加减又有乘，先乘再加减。']},
+  {until:'desk_open',obj:'desk',tiers:['先看看讲台上的纸条。','纸条上有一道数学题，算出答案就是密码。','先按整数相乘，再点小数点：两个因数一共有几位小数，积就有几位小数。']},
   {until:'took_key',obj:'desk',tiers:['抽屉开了。','点讲台，拿起钥匙。','把钥匙拿起来。']},
   {until:'escaped',obj:'door',tiers:['你有钥匙了！','选中钥匙，再点教室门。','先点钥匙，再点目标。']}
  ],
- explain:['8.5 + 1.25 − 0.8 = 8.95。先加再减。','打开抽屉拿到钥匙。','用钥匙打开教室门，挑战成功。'],
- solution:[['code','desk','8.95'],['take','desk'],['use','door','key_r54']],
+ explain:['0.8 × 1.25 = 1。先按整数乘，再点上小数点。','打开抽屉拿到钥匙。','用钥匙打开教室门，挑战成功。'],
+ solution:[['code','desk','1'],['take','desk'],['use','door','key_r54']],
  art:function(f){var s='';
   s+=R(0,0,400,300,'#fff1df');
   s+=R(0,236,400,64,'#e2c8a4');
@@ -2331,7 +2331,7 @@ var r55={id:'r55',title:'放学走廊',emoji:'🌇',sub:'数学 · 闯关',
  story:['欢迎来到「放学走廊」挑战站！','小黄指着休息椅：“把这道题做对，就算过关！”','不一定要出门——答对就是胜利！'],
  objects:[
   {id:'desk',name:'休息椅',box:[30,150,120,50],views:[
-    {if:['!desk_open'],text:'休息椅上的挑战题：',note:'【算一算】梯形：上底 5 分米，下底 11 分米，高 6 分米。面积是多少平方分米？',lock:{kind:'num',len:2,answer:'48',prompt:'输入答案',ok:{set:['desk_open'],win:true,text:'答对啦！「放学走廊」挑战成功！'},bad:'再算一算。'}},
+    {if:['!desk_open'],text:'休息椅上的挑战题：',note:'【算一算】解方程：4x − 10 = 2x + 30\n求 x。',lock:{kind:'num',len:2,answer:'20',prompt:'输入答案',ok:{set:['desk_open'],win:true,text:'答对啦！「放学走廊」挑战成功！'},bad:'再算一算。'}},
     {text:'题目已经解开啦。'}
   ]},
   {id:'door',name:'楼梯口',box:[310,160,70,120],views:[
@@ -2352,10 +2352,10 @@ var r55={id:'r55',title:'放学走廊',emoji:'🌇',sub:'数学 · 闯关',
  ],
  combos:[],
  hints:[
-  {until:'escaped',obj:'desk',tiers:['点开休息椅上的题。','仔细看【算一算】，多步时先算哪一步？','梯形面积 =（上底+下底）×高÷2。']}
+  {until:'escaped',obj:'desk',tiers:['点开休息椅上的题。','仔细看【算一算】，多步时先算哪一步？','把含 x 的项移到一边，常数移到另一边。']}
  ],
- explain:['（5+11）×6÷2 = 48','在桌子/长椅等物件上输入答案。','答对题目，直接挑战成功。'],
- solution:[['code','desk','48']],
+ explain:['移项合并：(4-2)x = 10+30 → x = 20','在桌子/长椅等物件上输入答案。','答对题目，直接挑战成功。'],
+ solution:[['code','desk','20']],
  art:function(f){var s='';
   s+='<defs><linearGradient id="hwW" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e7d8c8"/><stop offset="1" stop-color="#f0c8a8"/></linearGradient></defs>';
   s+=R(0,0,400,300,'url(#hwW)');
@@ -2377,7 +2377,7 @@ var r56={id:'r56',title:'黄昏林间',emoji:'🌇',sub:'数学 · 助人',
     {text:'小花猫眨眨眼：“我想要礼物！”',use:[{item:'gift_r56',take:['gift_r56'],win:true,text:'小花猫开心地收下了！「黄昏林间」任务完成！'}],wrong:'小花猫摇摇头：“我要的是礼物哦。”'}
   ]},
   {id:'desk',name:'树桩',box:[30,150,120,50],views:[
-    {if:['!desk_open'],text:'树桩抽屉锁着，纸条上有题：',note:'【算一算】循环小数：计算 5÷6，从小数点后第几位开始循环？',lock:{kind:'num',len:1,answer:'2',prompt:'输入密码',ok:{set:['desk_open'],text:'抽屉开了，里面有一份礼物！'},bad:'再算算。'}},
+    {if:['!desk_open'],text:'树桩抽屉锁着，纸条上有题：',note:'【算一算】9.6 米彩带平均剪成 3 段，每段多少米？',lock:{kind:'num',len:3,dot:true,answer:'3.2',prompt:'输入密码',ok:{set:['desk_open'],text:'抽屉开了，里面有一份礼物！'},bad:'再算算。'}},
     {if:['desk_open','!took_gift'],text:'里面有一份礼物。',take:{give:['gift_r56'],set:['took_gift'],text:'你拿到了礼物。'}},
     {text:'抽屉空了。'}
   ]},
@@ -2396,12 +2396,12 @@ var r56={id:'r56',title:'黄昏林间',emoji:'🌇',sub:'数学 · 助人',
  ],
  combos:[],
  hints:[
-  {until:'desk_open',obj:'desk',tiers:['先解开树桩的密码。','看纸条上的题，可能要算两步。','看小数点后面，从第几位起才开始一直重复。如果第一位就不停地重复，答案就是 1。']},
+  {until:'desk_open',obj:'desk',tiers:['先解开树桩的密码。','看纸条上的题，可能要算两步。','总长÷段数。']},
   {until:'took_gift',obj:'desk',tiers:['把礼物拿起来。','点树桩拿起。','拿起来。']},
   {until:'escaped',obj:'door',tiers:['把礼物交给小花猫。','选中礼物，再点小花猫。','先点物品，再点对方。']}
  ],
- explain:['5÷6=0.8333…，从小数点后第 2 位开始循环。','拿到礼物。','交给小花猫，任务完成。'],
- solution:[['code','desk','2'],['take','desk'],['use','door','gift_r56']],
+ explain:['9.6 ÷ 3 = 3.2','拿到礼物。','交给小花猫，任务完成。'],
+ solution:[['code','desk','3.2'],['take','desk'],['use','door','gift_r56']],
  art:function(f){var s='';
   s+='<defs><linearGradient id="foS" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6a3a28"/><stop offset="1" stop-color="#c47a3a"/></linearGradient></defs>';
   s+=R(0,0,400,300,'url(#foS)');
@@ -2426,7 +2426,7 @@ var r57={id:'r57',title:'晚霞沙滩',emoji:'🌅',sub:'数学 · 益智',
     {text:'组装台等着成品。',use:[{item:'combo_r57',take:['combo_r57'],win:true,text:'放上去——成功！「晚霞沙滩」做好啦！'}],wrong:'要把两样材料拼好再放上来。'}
   ]},
   {id:'desk',name:'沙桌',box:[30,150,120,50],views:[
-    {if:['!desk_open'],text:'沙桌锁着：',note:'【算一算】一块三角形彩纸底 10 厘米、高 7 厘米。用同样的两块拼成一个图形，总面积是多少平方厘米？',lock:{kind:'num',len:2,answer:'70',prompt:'输入密码',ok:{set:['desk_open'],text:'开了！里面有材料 A。'},bad:'再算一算。'}},
+    {if:['!desk_open'],text:'沙桌锁着：',note:'【算一算】循环小数：下面哪个算式的商是循环小数？① 3÷5 ② 7÷2 ③ 2÷11 ④ 8÷5。填序号。',lock:{kind:'num',len:1,answer:'3',prompt:'输入密码',ok:{set:['desk_open'],text:'开了！里面有材料 A。'},bad:'再算一算。'}},
     {if:['desk_open','!took_a'],text:'里面有材料 A。',take:{give:['partA_r57'],set:['took_a'],text:'你拿到了材料 A。'}},
     {text:'空了。'}
   ]},
@@ -2446,14 +2446,14 @@ var r57={id:'r57',title:'晚霞沙滩',emoji:'🌅',sub:'数学 · 益智',
  ],
  combos:[{a:'partA_r57',b:'partB_r57',give:['combo_r57'],set:['made_combo'],text:'两样材料拼在一起，成品做好了！'}],
  hints:[
-  {until:'desk_open',obj:'desk',tiers:['先开沙桌。','算纸条上的题。','先求一块三角形面积，再乘 2。']},
+  {until:'desk_open',obj:'desk',tiers:['先开沙桌。','算纸条上的题。','约分后分母只剩 2 和 5，商是有限小数；分母里还有 3、7、11 这类因数，商通常会循环。四个里只有一个。']},
   {until:'took_a',obj:'desk',tiers:['拿起材料 A。','点开拿起。','拿起来。']},
   {until:'took_b',obj:'shelf',tiers:['看看救生圈架。','拿起材料 B。','点架子拿。']},
   {until:'made_combo',tiers:['两样材料可以组合。','物品栏先点一个再点另一个。','拼成成品。']},
   {until:'escaped',obj:'door',tiers:['把成品放到组装台。','选中成品再点目标。','放上去就过关。']}
  ],
- explain:['一块 = 10×7÷2 = 35，两块 = 70','拿到材料 A 和 B。','组合成成品，放到组装台。'],
- solution:[['code','desk','70'],['take','desk'],['take','shelf'],['combine','partA_r57','partB_r57'],['use','door','combo_r57']],
+ explain:['① 3÷5=0.6 有限小数，② 7÷2=3.5 有限小数，③ 2÷11=0.1818… 循环小数，④ 8÷5=1.6 有限小数。所以填 3。','拿到材料 A 和 B。','组合成成品，放到组装台。'],
+ solution:[['code','desk','3'],['take','desk'],['take','shelf'],['combine','partA_r57','partB_r57'],['use','door','combo_r57']],
  art:function(f){var s='';
   s+='<defs><linearGradient id="bcS" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ff8a5b"/><stop offset="1" stop-color="#ffd0a0"/></linearGradient></defs><defs><linearGradient id="bcW" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c45a3a"/><stop offset="1" stop-color="#ffb080"/></linearGradient></defs>';
   s+=R(0,0,400,168,'url(#bcS)');
@@ -2475,7 +2475,7 @@ var r58={id:'r58',title:'傍晚农庄',emoji:'🌇',sub:'数学 · 英语',
  story:['双锁挑战站「傍晚农庄」！','先过木桌，再过菜筐。','两关都对，不用找门——直接挑战成功！'],
  objects:[
   {id:'desk',name:'木桌',box:[30,150,120,50],views:[
-    {if:['!desk_open'],text:'第一关（数学）：',note:'【算一算】循环小数：最简分数 1/3 写成小数，把循环节按顺序连起来是多少？',lock:{kind:'num',len:1,answer:'3',prompt:'输入密码',ok:{set:['desk_open'],text:'第一关过了！去看第二关吧。'},bad:'再算算。'}},
+    {if:['!desk_open'],text:'第一关（数学）：',note:'【算一算】小数四则：7.2 ÷ 0.16 = ?',lock:{kind:'num',len:2,answer:'45',prompt:'输入密码',ok:{set:['desk_open'],text:'第一关过了！去看第二关吧。'},bad:'再算算。'}},
     {text:'第一关已经打开了。'}
   ]},
   {id:'box',name:'菜筐',box:[200,160,70,50],views:[
@@ -2497,11 +2497,11 @@ var r58={id:'r58',title:'傍晚农庄',emoji:'🌇',sub:'数学 · 英语',
  ],
  combos:[],
  hints:[
-  {until:'desk_open',obj:'desk',tiers:['先过第一关数学题。','仔细看【算一算】，可能不止一步。','把分数除开，一直除到余数重复。只把重复的数字按顺序连起来。']},
+  {until:'desk_open',obj:'desk',tiers:['先过第一关数学题。','仔细看【算一算】，可能不止一步。','除数是小数时，先把除数变成整数，被除数的小数点也向右移同样的位数，再除。']},
   {until:'escaped',obj:'box',tiers:['去开第二关。','Unit 2，be _____ to 表打算，5 个字母，首字母 G。','根据词性、首字母和课本单元想想，不要偷看答案哦。']}
  ],
- explain:['1/3=0.3333…，循环节连起来是 3。','I\'m _____ to join the science club. (be going to) → GOING','两关都对，挑战成功。'],
- solution:[['code','desk','3'],['code','box','GOING']],
+ explain:['7.2 ÷ 0.16 = 45。','I\'m _____ to join the science club. (be going to) → GOING','两关都对，挑战成功。'],
+ solution:[['code','desk','45'],['code','box','GOING']],
  art:function(f){var s='';
   s+='<defs><linearGradient id="fmS" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e07a3a"/><stop offset="1" stop-color="#f0c080"/></linearGradient></defs>';
   s+=R(0,0,400,150,'url(#fmS)');
@@ -2524,7 +2524,7 @@ var r59={id:'r59',title:'暮色荷塘',emoji:'🌇',sub:'数学 · 通行证',
     {text:'一台刷卡机，嘀嘀作响。',use:[{item:'combo_r59',take:['combo_r59'],win:true,text:'嘀——通过！「暮色荷塘」刷卡成功！'}],wrong:'要先做好通行证再刷。'}
   ]},
   {id:'desk',name:'木码头',box:[30,150,120,50],views:[
-    {if:['!desk_open'],text:'木码头锁着：',note:'【算一算】小路长 36 米。从头到尾，每隔 4 米种一棵树（两头都要种）。一共要种多少棵树？',lock:{kind:'num',len:2,answer:'10',prompt:'输入密码',ok:{set:['desk_open'],text:'开了，里面有一张卡片。'},bad:'再算一算。'}},
+    {if:['!desk_open'],text:'木码头锁着：',note:'【算一算】一桶油重 25.4 千克，用去 8.7 千克后又倒入 4.2 千克。现在桶里有多少千克？',lock:{kind:'num',len:4,dot:true,answer:'20.9',prompt:'输入密码',ok:{set:['desk_open'],text:'开了，里面有一张卡片。'},bad:'再算一算。'}},
     {if:['desk_open','!took_scrap'],text:'里面有一张卡片。',take:{give:['scrap_r59'],set:['took_scrap'],text:'你拿到了卡片。'}},
     {text:'空了。'}
   ]},
@@ -2544,14 +2544,14 @@ var r59={id:'r59',title:'暮色荷塘',emoji:'🌇',sub:'数学 · 通行证',
  ],
  combos:[{a:'scrap_r59',b:'tool_r59',give:['combo_r59'],set:['made_combo'],text:'卡片和徽章拼成了通行证！'}],
  hints:[
-  {until:'desk_open',obj:'desk',tiers:['先开木码头。','算题，注意多步运算。','段数 = 全长÷间隔，两头都种则棵数比段数多 1。']},
+  {until:'desk_open',obj:'desk',tiers:['先开木码头。','算题，注意多步运算。','先减去用去的，再加上倒入的。']},
   {until:'took_scrap',obj:'desk',tiers:['拿卡片。','点开拿起。','拿起来。']},
   {until:'took_tool',obj:'shelf',tiers:['还要徽章。','看水榭。','拿起徽章。']},
   {until:'made_combo',tiers:['卡片和徽章可组合。','物品栏点两个拼。','拼成通行证。']},
   {until:'escaped',obj:'door',tiers:['去刷卡机。','选中通行证点刷卡机。','刷卡过关。']}
  ],
- explain:['段数=36÷4=9，棵数=段数+1=10','拿到卡片和徽章。','组合成通行证，刷卡机刷过关。'],
- solution:[['code','desk','10'],['take','desk'],['take','shelf'],['combine','scrap_r59','tool_r59'],['use','door','combo_r59']],
+ explain:['25.4 − 8.7 + 4.2 = 20.9','拿到卡片和徽章。','组合成通行证，刷卡机刷过关。'],
+ solution:[['code','desk','20.9'],['take','desk'],['take','shelf'],['combine','scrap_r59','tool_r59'],['use','door','combo_r59']],
  art:function(f){var s='';
   s+='<defs><linearGradient id="ltS" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e09070"/><stop offset="1" stop-color="#6a5078"/></linearGradient></defs><defs><linearGradient id="ltW" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1a4060"/><stop offset="1" stop-color="#c46a55"/></linearGradient></defs>';
   s+=R(0,0,400,90,'url(#ltS)');
@@ -2664,7 +2664,7 @@ var r62={id:'r62',title:'黄昏温室',emoji:'🌇',sub:'数学 · 挑战',
     {text:'温室门锁着，需要钥匙。',use:[{item:'key_r62',win:true,text:'钥匙一转，温室门开了！「黄昏温室」挑战成功！'}],wrong:'要用钥匙才能开门。'}
   ]},
   {id:'desk',name:'育苗台',box:[30,150,120,50],views:[
-    {if:['!desk_open'],text:'育苗台上有密码锁，旁边贴着纸条：',note:'【算一算】一辆车平均每小时行 48 千米，行了 1.5 小时。一共行了多少千米？',lock:{kind:'num',len:2,answer:'72',prompt:'输入密码',ok:{set:['desk_open'],text:'打开了！里面有一把钥匙。'},bad:'密码不对哦，再算一算。'}},
+    {if:['!desk_open'],text:'育苗台上有密码锁，旁边贴着纸条：',note:'【算一算】一共有 6.3 千克面粉，每份 0.9 千克。可以分成多少份？',lock:{kind:'num',len:1,answer:'7',prompt:'输入密码',ok:{set:['desk_open'],text:'打开了！里面有一把钥匙。'},bad:'密码不对哦，再算一算。'}},
     {if:['desk_open','!took_key'],text:'里面有一把钥匙。',take:{give:['key_r62'],set:['took_key'],text:'你拿到了钥匙。'}},
     {text:'已经空了。'}
   ]},
@@ -2683,12 +2683,12 @@ var r62={id:'r62',title:'黄昏温室',emoji:'🌇',sub:'数学 · 挑战',
  ],
  combos:[],
  hints:[
-  {until:'desk_open',obj:'desk',tiers:['先看看育苗台上的纸条。','纸条上有一道数学题，算出答案就是密码。','路程 = 速度 × 时间。']},
+  {until:'desk_open',obj:'desk',tiers:['先看看育苗台上的纸条。','纸条上有一道数学题，算出答案就是密码。','小数除以小数：先把除数变成整数（两边同乘 10 或 100），再除。']},
   {until:'took_key',obj:'desk',tiers:['抽屉开了。','点育苗台，拿起钥匙。','把钥匙拿起来。']},
   {until:'escaped',obj:'door',tiers:['你有钥匙了！','选中钥匙，再点温室门。','先点钥匙，再点目标。']}
  ],
- explain:['路程 = 速度 × 时间 = 48 × 1.5 = 72','打开抽屉拿到钥匙。','用钥匙打开温室门，挑战成功。'],
- solution:[['code','desk','72'],['take','desk'],['use','door','key_r62']],
+ explain:['6.3 ÷ 0.9 = 7','打开抽屉拿到钥匙。','用钥匙打开温室门，挑战成功。'],
+ solution:[['code','desk','7'],['take','desk'],['use','door','key_r62']],
  art:function(f){var s='';
   s+='<defs><linearGradient id="ghS" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f0c090"/><stop offset="1" stop-color="#d7c8a0"/></linearGradient></defs>';
   s+=R(0,0,400,300,'url(#ghS)');
@@ -2707,7 +2707,7 @@ var r63={id:'r63',title:'傍晚小雨',emoji:'🌃',sub:'数学 · 闯关',
  story:['欢迎来到「傍晚小雨」挑战站！','候车椅上有一道题，做对就通关。','不一定要出门——答对就是胜利！'],
  objects:[
   {id:'desk',name:'候车椅',box:[30,150,120,50],views:[
-    {if:['!desk_open'],text:'候车椅上的挑战题：',note:'【算一算】一件原价 120 元的外套打 7 折。应付多少元？',lock:{kind:'num',len:2,answer:'84',prompt:'输入答案',ok:{set:['desk_open'],win:true,text:'答对啦！「傍晚小雨」挑战成功！'},bad:'再算一算。'}},
+    {if:['!desk_open'],text:'候车椅上的挑战题：',note:'【算一算】循环小数：0.3333…（循环节是 3）化成最简分数，分子是多少？',lock:{kind:'num',len:1,answer:'1',prompt:'输入答案',ok:{set:['desk_open'],win:true,text:'答对啦！「傍晚小雨」挑战成功！'},bad:'再算一算。'}},
     {text:'题目已经解开啦。'}
   ]},
   {id:'door',name:'小店',box:[310,160,70,120],views:[
@@ -2728,10 +2728,10 @@ var r63={id:'r63',title:'傍晚小雨',emoji:'🌃',sub:'数学 · 闯关',
  ],
  combos:[],
  hints:[
-  {until:'escaped',obj:'desk',tiers:['点开候车椅上的题。','仔细看【算一算】，多步时先算哪一步？','打 7 折就是用原价乘 0.7。']}
+  {until:'escaped',obj:'desk',tiers:['点开候车椅上的题。','仔细看【算一算】，多步时先算哪一步？','先写成“循环节 / 几个 9”，再约分。约完以后的分子才是要填的数。']}
  ],
- explain:['120 × 0.7 = 84','在桌子/长椅等物件上输入答案。','答对题目，直接挑战成功。'],
- solution:[['code','desk','84']],
+ explain:['0.3333… 写成 3/9，约分得 1/3，分子是 1。','在桌子/长椅等物件上输入答案。','答对题目，直接挑战成功。'],
+ solution:[['code','desk','1']],
  art:function(f){var s='';
   s+='<defs><linearGradient id="rnS" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6a5a68"/><stop offset="1" stop-color="#a08078"/></linearGradient></defs>';
   s+=R(0,0,400,300,'url(#rnS)');
@@ -2754,7 +2754,7 @@ var r64={id:'r64',title:'黄昏菜场',emoji:'🏮',sub:'数学 · 助人',
     {text:'小花猫眨眨眼：“我想要礼物！”',use:[{item:'gift_r64',take:['gift_r64'],win:true,text:'小花猫开心地收下了！「黄昏菜场」任务完成！'}],wrong:'小花猫摇摇头：“我要的是礼物哦。”'}
   ]},
   {id:'desk',name:'秤台',box:[30,150,120,50],views:[
-    {if:['!desk_open'],text:'秤台抽屉锁着，纸条上有题：',note:'【算一算】笔记本每本 5.4 元，买 4 本；橡皮每块 1.5 元，买 6 块。一共多少元？',lock:{kind:'num',len:4,dot:true,answer:'30.6',prompt:'输入密码',ok:{set:['desk_open'],text:'抽屉开了，里面有一份礼物！'},bad:'再算算。'}},
+    {if:['!desk_open'],text:'秤台抽屉锁着，纸条上有题：',note:'【算一算】小数四则：8.5 + 1.25 − 0.8 = ?',lock:{kind:'num',len:4,dot:true,answer:'8.95',prompt:'输入密码',ok:{set:['desk_open'],text:'抽屉开了，里面有一份礼物！'},bad:'再算算。'}},
     {if:['desk_open','!took_gift'],text:'里面有一份礼物。',take:{give:['gift_r64'],set:['took_gift'],text:'你拿到了礼物。'}},
     {text:'抽屉空了。'}
   ]},
@@ -2773,12 +2773,12 @@ var r64={id:'r64',title:'黄昏菜场',emoji:'🏮',sub:'数学 · 助人',
  ],
  combos:[],
  hints:[
-  {until:'desk_open',obj:'desk',tiers:['先解开秤台的密码。','看纸条上的题，可能要算两步。','先算笔记本总价，再加橡皮总价。']},
+  {until:'desk_open',obj:'desk',tiers:['先解开秤台的密码。','看纸条上的题，可能要算两步。','看清每一步在求什么，一步一步算。有加减又有乘，先乘再加减。']},
   {until:'took_gift',obj:'desk',tiers:['把礼物拿起来。','点秤台拿起。','拿起来。']},
   {until:'escaped',obj:'door',tiers:['把礼物交给小花猫。','选中礼物，再点小花猫。','先点物品，再点对方。']}
  ],
- explain:['5.4×4+1.5×6=30.6','拿到礼物。','交给小花猫，任务完成。'],
- solution:[['code','desk','30.6'],['take','desk'],['use','door','gift_r64']],
+ explain:['8.5 + 1.25 − 0.8 = 8.95。先加再减。','拿到礼物。','交给小花猫，任务完成。'],
+ solution:[['code','desk','8.95'],['take','desk'],['use','door','gift_r64']],
  art:function(f){var s='';
   s+=R(0,0,400,300,'#fff0d8');
   s+=R(0,210,400,90,'#d7b898');
@@ -2800,7 +2800,7 @@ var r65={id:'r65',title:'晚霞雪屋',emoji:'🌅',sub:'数学 · 益智',
     {text:'组装台等着成品。',use:[{item:'combo_r65',take:['combo_r65'],win:true,text:'放上去——成功！「晚霞雪屋」做好啦！'}],wrong:'要把两样材料拼好再放上来。'}
   ]},
   {id:'desk',name:'雪凳',box:[30,150,120,50],views:[
-    {if:['!desk_open'],text:'雪凳锁着：',note:'【算一算】循环小数：计算 1÷7，商的循环节有几位数字？',lock:{kind:'num',len:1,answer:'6',prompt:'输入密码',ok:{set:['desk_open'],text:'开了！里面有材料 A。'},bad:'再算一算。'}},
+    {if:['!desk_open'],text:'雪凳锁着：',note:'【算一算】梯形：上底 5 分米，下底 11 分米，高 6 分米。面积是多少平方分米？',lock:{kind:'num',len:2,answer:'48',prompt:'输入密码',ok:{set:['desk_open'],text:'开了！里面有材料 A。'},bad:'再算一算。'}},
     {if:['desk_open','!took_a'],text:'里面有材料 A。',take:{give:['partA_r65'],set:['took_a'],text:'你拿到了材料 A。'}},
     {text:'空了。'}
   ]},
@@ -2820,14 +2820,14 @@ var r65={id:'r65',title:'晚霞雪屋',emoji:'🌅',sub:'数学 · 益智',
  ],
  combos:[{a:'partA_r65',b:'partB_r65',give:['combo_r65'],set:['made_combo'],text:'两样材料拼在一起，成品做好了！'}],
  hints:[
-  {until:'desk_open',obj:'desk',tiers:['先开雪凳。','算纸条上的题。','用竖式除一除，余数重复就停。只数一直重复的那几位有几位，前面不循环的数字不要算进去。']},
+  {until:'desk_open',obj:'desk',tiers:['先开雪凳。','算纸条上的题。','梯形面积 =（上底+下底）×高÷2。']},
   {until:'took_a',obj:'desk',tiers:['拿起材料 A。','点开拿起。','拿起来。']},
   {until:'took_b',obj:'shelf',tiers:['看看木柴堆。','拿起材料 B。','点架子拿。']},
   {until:'made_combo',tiers:['两样材料可以组合。','物品栏先点一个再点另一个。','拼成成品。']},
   {until:'escaped',obj:'door',tiers:['把成品放到组装台。','选中成品再点目标。','放上去就过关。']}
  ],
- explain:['1÷7=0.142857…，循环节是 142857，有 6 位。','拿到材料 A 和 B。','组合成成品，放到组装台。'],
- solution:[['code','desk','6'],['take','desk'],['take','shelf'],['combine','partA_r65','partB_r65'],['use','door','combo_r65']],
+ explain:['（5+11）×6÷2 = 48','拿到材料 A 和 B。','组合成成品，放到组装台。'],
+ solution:[['code','desk','48'],['take','desk'],['take','shelf'],['combine','partA_r65','partB_r65'],['use','door','combo_r65']],
  art:function(f){var s='';
   s+='<defs><linearGradient id="snS" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f0b8c8"/><stop offset="1" stop-color="#ffe8dc"/></linearGradient></defs>';
   s+=R(0,0,400,300,'url(#snS)');
@@ -2848,7 +2848,7 @@ var r66={id:'r66',title:'清晨小房间',emoji:'🛋️',sub:'数学 · 英语'
  story:['双锁挑战站「清晨小房间」！','先过茶几，再过玩具箱。','两关都对，不用找门——直接挑战成功！'],
  objects:[
   {id:'desk',name:'茶几',box:[30,150,120,50],views:[
-    {if:['!desk_open'],text:'第一关（数学）：',note:'【算一算】小数四则：12.5 + 0.08 = ?',lock:{kind:'num',len:5,dot:true,answer:'12.58',prompt:'输入密码',ok:{set:['desk_open'],text:'第一关过了！去看第二关吧。'},bad:'再算算。'}},
+    {if:['!desk_open'],text:'第一关（数学）：',note:'【算一算】循环小数：计算 5÷6，从小数点后第几位开始循环？',lock:{kind:'num',len:1,answer:'2',prompt:'输入密码',ok:{set:['desk_open'],text:'第一关过了！去看第二关吧。'},bad:'再算算。'}},
     {text:'第一关已经打开了。'}
   ]},
   {id:'box',name:'玩具箱',box:[200,160,70,50],views:[
@@ -2870,11 +2870,11 @@ var r66={id:'r66',title:'清晨小房间',emoji:'🛋️',sub:'数学 · 英语'
  ],
  combos:[],
  hints:[
-  {until:'desk_open',obj:'desk',tiers:['先过第一关数学题。','仔细看【算一算】，可能不止一步。','小数点对齐再相加。位数不一样时，空着的位可以看成 0。']},
+  {until:'desk_open',obj:'desk',tiers:['先过第一关数学题。','仔细看【算一算】，可能不止一步。','看小数点后面，从第几位起才开始一直重复。如果第一位就不停地重复，答案就是 1。']},
   {until:'escaped',obj:'box',tiers:['去开第二关。','Unit 2，形容词性名词，7 个字母，首字母 S；研究自然的学科。','根据词性、首字母和课本单元想想，不要偷看答案哦。']}
  ],
- explain:['12.5 + 0.08 = 12.58。小数点对齐再相加。','I want to join the _____ club. (科学) → SCIENCE','两关都对，挑战成功。'],
- solution:[['code','desk','12.58'],['code','box','SCIENCE']],
+ explain:['5÷6=0.8333…，从小数点后第 2 位开始循环。','I want to join the _____ club. (科学) → SCIENCE','两关都对，挑战成功。'],
+ solution:[['code','desk','2'],['code','box','SCIENCE']],
  art:function(f){var s='';
   s+='<defs><linearGradient id="lvW" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f7f3ea"/><stop offset="1" stop-color="#e7f0f8"/></linearGradient></defs><defs><radialGradient id="lvL" cx="50%" cy="45%" r="55%"><stop offset="0" stop-color="#ffe7a3"/><stop offset="1" stop-color="#ffe7a3" stop-opacity="0"/></radialGradient></defs>';
   s+=R(0,0,400,300,'url(#lvW)');
@@ -2899,7 +2899,7 @@ var r67={id:'r67',title:'薄雾卧室',emoji:'🛏️',sub:'数学 · 通行证'
     {text:'一台刷卡机，嘀嘀作响。',use:[{item:'combo_r67',take:['combo_r67'],win:true,text:'嘀——通过！「薄雾卧室」刷卡成功！'}],wrong:'要先做好通行证再刷。'}
   ]},
   {id:'desk',name:'床头柜',box:[30,150,120,50],views:[
-    {if:['!desk_open'],text:'床头柜锁着：',note:'【算一算】长方形花坛长 15 米、宽 9 米。四周铺宽 2 米的小路，小路面积是多少平方米？',lock:{kind:'num',len:3,answer:'112',prompt:'输入密码',ok:{set:['desk_open'],text:'开了，里面有一张卡片。'},bad:'再算一算。'}},
+    {if:['!desk_open'],text:'床头柜锁着：',note:'【算一算】一块三角形彩纸底 10 厘米、高 7 厘米。用同样的两块拼成一个图形，总面积是多少平方厘米？',lock:{kind:'num',len:2,answer:'70',prompt:'输入密码',ok:{set:['desk_open'],text:'开了，里面有一张卡片。'},bad:'再算一算。'}},
     {if:['desk_open','!took_scrap'],text:'里面有一张卡片。',take:{give:['scrap_r67'],set:['took_scrap'],text:'你拿到了卡片。'}},
     {text:'空了。'}
   ]},
@@ -2919,14 +2919,14 @@ var r67={id:'r67',title:'薄雾卧室',emoji:'🛏️',sub:'数学 · 通行证'
  ],
  combos:[{a:'scrap_r67',b:'tool_r67',give:['combo_r67'],set:['made_combo'],text:'卡片和徽章拼成了通行证！'}],
  hints:[
-  {until:'desk_open',obj:'desk',tiers:['先开床头柜。','算题，注意多步运算。','先算“花坛+小路”的大长方形，再减去花坛本身。']},
+  {until:'desk_open',obj:'desk',tiers:['先开床头柜。','算题，注意多步运算。','先求一块三角形面积，再乘 2。']},
   {until:'took_scrap',obj:'desk',tiers:['拿卡片。','点开拿起。','拿起来。']},
   {until:'took_tool',obj:'shelf',tiers:['还要徽章。','看衣柜。','拿起徽章。']},
   {until:'made_combo',tiers:['卡片和徽章可组合。','物品栏点两个拼。','拼成通行证。']},
   {until:'escaped',obj:'door',tiers:['去刷卡机。','选中通行证点刷卡机。','刷卡过关。']}
  ],
- explain:['外围 (15+4)×(9+4) 减去花坛 15×9 = 112','拿到卡片和徽章。','组合成通行证，刷卡机刷过关。'],
- solution:[['code','desk','112'],['take','desk'],['take','shelf'],['combine','scrap_r67','tool_r67'],['use','door','combo_r67']],
+ explain:['一块 = 10×7÷2 = 35，两块 = 70','拿到卡片和徽章。','组合成通行证，刷卡机刷过关。'],
+ solution:[['code','desk','70'],['take','desk'],['take','shelf'],['combine','scrap_r67','tool_r67'],['use','door','combo_r67']],
  art:function(f){var s='';
   s+='<defs><linearGradient id="bdW" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d7e4f4"/><stop offset="1" stop-color="#efe6f8"/></linearGradient></defs><defs><radialGradient id="bdM" cx="50%" cy="45%" r="55%"><stop offset="0" stop-color="#fff6c8"/><stop offset="1" stop-color="#fff6c8" stop-opacity="0"/></radialGradient></defs>';
   s+=R(0,0,400,300,'url(#bdW)');
@@ -3048,7 +3048,7 @@ var r70={id:'r70',title:'晨雾过河',emoji:'🛶',sub:'数学 · 挑战',
     {text:'渡船锁着，需要钥匙。',use:[{item:'key_r70',win:true,text:'钥匙一转，渡船开了！「晨雾过河」挑战成功！'}],wrong:'要用钥匙才能开门。'}
   ]},
   {id:'desk',name:'岸边石桌',box:[30,150,120,50],views:[
-    {if:['!desk_open'],text:'岸边石桌上有密码锁，旁边贴着纸条：',note:'【算一算】循环小数：计算 2÷3，把循环节按顺序连起来是多少？',lock:{kind:'num',len:1,answer:'6',prompt:'输入密码',ok:{set:['desk_open'],text:'打开了！里面有一把钥匙。'},bad:'密码不对哦，再算一算。'}},
+    {if:['!desk_open'],text:'岸边石桌上有密码锁，旁边贴着纸条：',note:'【算一算】循环小数：最简分数 1/3 写成小数，把循环节按顺序连起来是多少？',lock:{kind:'num',len:1,answer:'3',prompt:'输入密码',ok:{set:['desk_open'],text:'打开了！里面有一把钥匙。'},bad:'密码不对哦，再算一算。'}},
     {if:['desk_open','!took_key'],text:'里面有一把钥匙。',take:{give:['key_r70'],set:['took_key'],text:'你拿到了钥匙。'}},
     {text:'已经空了。'}
   ]},
@@ -3067,12 +3067,12 @@ var r70={id:'r70',title:'晨雾过河',emoji:'🛶',sub:'数学 · 挑战',
  ],
  combos:[],
  hints:[
-  {until:'desk_open',obj:'desk',tiers:['先看看岸边石桌上的纸条。','纸条上有一道数学题，算出答案就是密码。','先除到开始循环。循环节是重复的那一段，按顺序连成一个数，比如重复 1 和 8 就填 18。不循环的数字不要写。']},
+  {until:'desk_open',obj:'desk',tiers:['先看看岸边石桌上的纸条。','纸条上有一道数学题，算出答案就是密码。','把分数除开，一直除到余数重复。只把重复的数字按顺序连起来。']},
   {until:'took_key',obj:'desk',tiers:['抽屉开了。','点岸边石桌，拿起钥匙。','把钥匙拿起来。']},
   {until:'escaped',obj:'door',tiers:['你有钥匙了！','选中钥匙，再点渡船。','先点钥匙，再点目标。']}
  ],
- explain:['2÷3=0.6666…。循环节连起来是 6。','打开抽屉拿到钥匙。','用钥匙打开渡船，挑战成功。'],
- solution:[['code','desk','6'],['take','desk'],['use','door','key_r70']],
+ explain:['1/3=0.3333…，循环节连起来是 3。','打开抽屉拿到钥匙。','用钥匙打开渡船，挑战成功。'],
+ solution:[['code','desk','3'],['take','desk'],['use','door','key_r70']],
  art:function(f){var s='';
   s+='<defs><linearGradient id="rvS" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d5e4ee"/><stop offset="1" stop-color="#f4f8fb"/></linearGradient></defs><defs><linearGradient id="rvW" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c5dce8"/><stop offset="1" stop-color="#e7f2f8"/></linearGradient></defs>';
   s+=R(0,0,400,128,'url(#rvS)');
@@ -3099,7 +3099,7 @@ var r71={id:'r71',title:'薄雾石桥',emoji:'🌉',sub:'数学 · 闯关',
  story:['欢迎来到「薄雾石桥」挑战站！','桥头石凳上有一道题，做对就通关。','不一定要出门——答对就是胜利！'],
  objects:[
   {id:'desk',name:'桥头石凳',box:[30,150,120,50],views:[
-    {if:['!desk_open'],text:'桥头石凳上的挑战题：',note:'【算一算】小数四则：10.5 − 1.08 = ?',lock:{kind:'num',len:4,dot:true,answer:'9.42',prompt:'输入答案',ok:{set:['desk_open'],win:true,text:'答对啦！「薄雾石桥」挑战成功！'},bad:'再算一算。'}},
+    {if:['!desk_open'],text:'桥头石凳上的挑战题：',note:'【算一算】小路长 36 米。从头到尾，每隔 4 米种一棵树（两头都要种）。一共要种多少棵树？',lock:{kind:'num',len:2,answer:'10',prompt:'输入答案',ok:{set:['desk_open'],win:true,text:'答对啦！「薄雾石桥」挑战成功！'},bad:'再算一算。'}},
     {text:'题目已经解开啦。'}
   ]},
   {id:'door',name:'桥门',box:[310,160,70,120],views:[
@@ -3120,10 +3120,10 @@ var r71={id:'r71',title:'薄雾石桥',emoji:'🌉',sub:'数学 · 闯关',
  ],
  combos:[],
  hints:[
-  {until:'escaped',obj:'desk',tiers:['点开桥头石凳上的题。','仔细看【算一算】，多步时先算哪一步？','小数点对齐再相减。位数少的一边补 0，不够减就向前一位借。']}
+  {until:'escaped',obj:'desk',tiers:['点开桥头石凳上的题。','仔细看【算一算】，多步时先算哪一步？','段数 = 全长÷间隔，两头都种则棵数比段数多 1。']}
  ],
- explain:['10.5 − 1.08 = 9.42。小数点对齐，位数少的补 0。','在桌子/长椅等物件上输入答案。','答对题目，直接挑战成功。'],
- solution:[['code','desk','9.42']],
+ explain:['段数=36÷4=9，棵数=段数+1=10','在桌子/长椅等物件上输入答案。','答对题目，直接挑战成功。'],
+ solution:[['code','desk','10']],
  art:function(f){var s='';
   s+='<defs><linearGradient id="brS" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e7eef2"/><stop offset="1" stop-color="#f7f4ea"/></linearGradient></defs><defs><linearGradient id="brW" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c5d5e0"/><stop offset="1" stop-color="#e7eef2"/></linearGradient></defs>';
   s+=R(0,0,400,300,'url(#brS)');
@@ -3147,7 +3147,7 @@ var r72={id:'r72',title:'早读教室',emoji:'🏫',sub:'数学 · 助人',
     {text:'小花猫眨眨眼：“我想要礼物！”',use:[{item:'gift_r72',take:['gift_r72'],win:true,text:'小花猫开心地收下了！「早读教室」任务完成！'}],wrong:'小花猫摇摇头：“我要的是礼物哦。”'}
   ]},
   {id:'desk',name:'讲台',box:[30,150,120,50],views:[
-    {if:['!desk_open'],text:'讲台抽屉锁着，纸条上有题：',note:'【算一算】长方形桌面长 1.5 米、宽 1.5 米。面积是多少平方分米？（1 米 = 10 分米）',lock:{kind:'num',len:3,answer:'225',prompt:'输入密码',ok:{set:['desk_open'],text:'抽屉开了，里面有一份礼物！'},bad:'再算算。'}},
+    {if:['!desk_open'],text:'讲台抽屉锁着，纸条上有题：',note:'【算一算】一辆车平均每小时行 48 千米，行了 1.5 小时。一共行了多少千米？',lock:{kind:'num',len:2,answer:'72',prompt:'输入密码',ok:{set:['desk_open'],text:'抽屉开了，里面有一份礼物！'},bad:'再算算。'}},
     {if:['desk_open','!took_gift'],text:'里面有一份礼物。',take:{give:['gift_r72'],set:['took_gift'],text:'你拿到了礼物。'}},
     {text:'抽屉空了。'}
   ]},
@@ -3166,12 +3166,12 @@ var r72={id:'r72',title:'早读教室',emoji:'🏫',sub:'数学 · 助人',
  ],
  combos:[],
  hints:[
-  {until:'desk_open',obj:'desk',tiers:['先解开讲台的密码。','看纸条上的题，可能要算两步。','先把米换成分米，再相乘。']},
+  {until:'desk_open',obj:'desk',tiers:['先解开讲台的密码。','看纸条上的题，可能要算两步。','路程 = 速度 × 时间。']},
   {until:'took_gift',obj:'desk',tiers:['把礼物拿起来。','点讲台拿起。','拿起来。']},
   {until:'escaped',obj:'door',tiers:['把礼物交给小花猫。','选中礼物，再点小花猫。','先点物品，再点对方。']}
  ],
- explain:['先换成 15 分米 × 15 分米 = 225 平方分米','拿到礼物。','交给小花猫，任务完成。'],
- solution:[['code','desk','225'],['take','desk'],['use','door','gift_r72']],
+ explain:['路程 = 速度 × 时间 = 48 × 1.5 = 72','拿到礼物。','交给小花猫，任务完成。'],
+ solution:[['code','desk','72'],['take','desk'],['use','door','gift_r72']],
  art:function(f){var s='';
   s+=R(0,0,400,300,'#f7fbff');
   s+=R(0,236,400,64,'#efe6d4');
@@ -3192,7 +3192,7 @@ var r73={id:'r73',title:'清晨走廊',emoji:'🏫',sub:'数学 · 益智',
     {text:'组装台等着成品。',use:[{item:'combo_r73',take:['combo_r73'],win:true,text:'放上去——成功！「清晨走廊」做好啦！'}],wrong:'要把两样材料拼好再放上来。'}
   ]},
   {id:'desk',name:'休息椅',box:[30,150,120,50],views:[
-    {if:['!desk_open'],text:'休息椅锁着：',note:'【算一算】循环小数：0.6666…（循环节是 6）化成最简分数，分母是多少？',lock:{kind:'num',len:1,answer:'3',prompt:'输入密码',ok:{set:['desk_open'],text:'开了！里面有材料 A。'},bad:'再算一算。'}},
+    {if:['!desk_open'],text:'休息椅锁着：',note:'【算一算】一件原价 120 元的外套打 7 折。应付多少元？',lock:{kind:'num',len:2,answer:'84',prompt:'输入密码',ok:{set:['desk_open'],text:'开了！里面有材料 A。'},bad:'再算一算。'}},
     {if:['desk_open','!took_a'],text:'里面有材料 A。',take:{give:['partA_r73'],set:['took_a'],text:'你拿到了材料 A。'}},
     {text:'空了。'}
   ]},
@@ -3212,14 +3212,14 @@ var r73={id:'r73',title:'清晨走廊',emoji:'🏫',sub:'数学 · 益智',
  ],
  combos:[{a:'partA_r73',b:'partB_r73',give:['combo_r73'],set:['made_combo'],text:'两样材料拼在一起，成品做好了！'}],
  hints:[
-  {until:'desk_open',obj:'desk',tiers:['先开休息椅。','算纸条上的题。','纯循环小数：循环几位，分母就是几个 9。一位用 9，两位用 99，写好再约分，约完的分母才是答案。']},
+  {until:'desk_open',obj:'desk',tiers:['先开休息椅。','算纸条上的题。','打 7 折就是用原价乘 0.7。']},
   {until:'took_a',obj:'desk',tiers:['拿起材料 A。','点开拿起。','拿起来。']},
   {until:'took_b',obj:'shelf',tiers:['看看储物柜。','拿起材料 B。','点架子拿。']},
   {until:'made_combo',tiers:['两样材料可以组合。','物品栏先点一个再点另一个。','拼成成品。']},
   {until:'escaped',obj:'door',tiers:['把成品放到组装台。','选中成品再点目标。','放上去就过关。']}
  ],
- explain:['0.6666… 的循环节是 6，写成 6/9，约分得 2/3，分母是 3。','拿到材料 A 和 B。','组合成成品，放到组装台。'],
- solution:[['code','desk','3'],['take','desk'],['take','shelf'],['combine','partA_r73','partB_r73'],['use','door','combo_r73']],
+ explain:['120 × 0.7 = 84','拿到材料 A 和 B。','组合成成品，放到组装台。'],
+ solution:[['code','desk','84'],['take','desk'],['take','shelf'],['combine','partA_r73','partB_r73'],['use','door','combo_r73']],
  art:function(f){var s='';
   s+='<defs><linearGradient id="hwW" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f7fbff"/><stop offset="1" stop-color="#eef3f6"/></linearGradient></defs>';
   s+=R(0,0,400,300,'url(#hwW)');
@@ -3238,7 +3238,7 @@ var r74={id:'r74',title:'晨雾森林',emoji:'🌲',sub:'数学 · 英语',
  story:['双锁挑战站「晨雾森林」！','先过树桩，再过小木箱。','两关都对，不用找门——直接挑战成功！'],
  objects:[
   {id:'desk',name:'树桩',box:[30,150,120,50],views:[
-    {if:['!desk_open'],text:'第一关（数学）：',note:'【算一算】小数四则：3.5 × 0.4 = ?',lock:{kind:'num',len:3,dot:true,answer:'1.4',prompt:'输入密码',ok:{set:['desk_open'],text:'第一关过了！去看第二关吧。'},bad:'再算算。'}},
+    {if:['!desk_open'],text:'第一关（数学）：',note:'【算一算】笔记本每本 5.4 元，买 4 本；橡皮每块 1.5 元，买 6 块。一共多少元？',lock:{kind:'num',len:4,dot:true,answer:'30.6',prompt:'输入密码',ok:{set:['desk_open'],text:'第一关过了！去看第二关吧。'},bad:'再算算。'}},
     {text:'第一关已经打开了。'}
   ]},
   {id:'box',name:'小木箱',box:[200,160,70,50],views:[
@@ -3260,11 +3260,11 @@ var r74={id:'r74',title:'晨雾森林',emoji:'🌲',sub:'数学 · 英语',
  ],
  combos:[],
  hints:[
-  {until:'desk_open',obj:'desk',tiers:['先过第一关数学题。','仔细看【算一算】，可能不止一步。','先按整数相乘，再点小数点：两个因数一共有几位小数，积就有几位小数。']},
+  {until:'desk_open',obj:'desk',tiers:['先过第一关数学题。','仔细看【算一算】，可能不止一步。','先算笔记本总价，再加橡皮总价。']},
   {until:'escaped',obj:'box',tiers:['去开第二关。','Unit 2，复数名词，6 个字母，首字母 T；各种新事物。','根据词性、首字母和课本单元想想，不要偷看答案哦。']}
  ],
- explain:['3.5 × 0.4 = 1.4。先按整数乘，再点上小数点。','You can try new _____. (事物) → THINGS','两关都对，挑战成功。'],
- solution:[['code','desk','1.4'],['code','box','THINGS']],
+ explain:['5.4×4+1.5×6=30.6','You can try new _____. (事物) → THINGS','两关都对，挑战成功。'],
+ solution:[['code','desk','30.6'],['code','box','THINGS']],
  art:function(f){var s='';
   s+='<defs><linearGradient id="foS" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d5e4d8"/><stop offset="1" stop-color="#eef6ea"/></linearGradient></defs>';
   s+=R(0,0,400,300,'url(#foS)');
@@ -3289,7 +3289,7 @@ var r75={id:'r75',title:'晨光沙滩',emoji:'🏖️',sub:'数学 · 通行证'
     {text:'一台刷卡机，嘀嘀作响。',use:[{item:'combo_r75',take:['combo_r75'],win:true,text:'嘀——通过！「晨光沙滩」刷卡成功！'}],wrong:'要先做好通行证再刷。'}
   ]},
   {id:'desk',name:'沙桌',box:[30,150,120,50],views:[
-    {if:['!desk_open'],text:'沙桌锁着：',note:'【算一算】解方程：5x − 15 = 3x + 25\n求 x。',lock:{kind:'num',len:2,answer:'20',prompt:'输入密码',ok:{set:['desk_open'],text:'开了，里面有一张卡片。'},bad:'再算一算。'}},
+    {if:['!desk_open'],text:'沙桌锁着：',note:'【算一算】循环小数：计算 1÷7，商的循环节有几位数字？',lock:{kind:'num',len:1,answer:'6',prompt:'输入密码',ok:{set:['desk_open'],text:'开了，里面有一张卡片。'},bad:'再算一算。'}},
     {if:['desk_open','!took_scrap'],text:'里面有一张卡片。',take:{give:['scrap_r75'],set:['took_scrap'],text:'你拿到了卡片。'}},
     {text:'空了。'}
   ]},
@@ -3309,14 +3309,14 @@ var r75={id:'r75',title:'晨光沙滩',emoji:'🏖️',sub:'数学 · 通行证'
  ],
  combos:[{a:'scrap_r75',b:'tool_r75',give:['combo_r75'],set:['made_combo'],text:'卡片和徽章拼成了通行证！'}],
  hints:[
-  {until:'desk_open',obj:'desk',tiers:['先开沙桌。','算题，注意多步运算。','把含 x 的项移到一边，常数移到另一边。']},
+  {until:'desk_open',obj:'desk',tiers:['先开沙桌。','算题，注意多步运算。','用竖式除一除，余数重复就停。只数一直重复的那几位有几位，前面不循环的数字不要算进去。']},
   {until:'took_scrap',obj:'desk',tiers:['拿卡片。','点开拿起。','拿起来。']},
   {until:'took_tool',obj:'shelf',tiers:['还要徽章。','看救生圈架。','拿起徽章。']},
   {until:'made_combo',tiers:['卡片和徽章可组合。','物品栏点两个拼。','拼成通行证。']},
   {until:'escaped',obj:'door',tiers:['去刷卡机。','选中通行证点刷卡机。','刷卡过关。']}
  ],
- explain:['移项合并：(5-3)x = 15+25 → x = 20','拿到卡片和徽章。','组合成通行证，刷卡机刷过关。'],
- solution:[['code','desk','20'],['take','desk'],['take','shelf'],['combine','scrap_r75','tool_r75'],['use','door','combo_r75']],
+ explain:['1÷7=0.142857…，循环节是 142857，有 6 位。','拿到卡片和徽章。','组合成通行证，刷卡机刷过关。'],
+ solution:[['code','desk','6'],['take','desk'],['take','shelf'],['combine','scrap_r75','tool_r75'],['use','door','combo_r75']],
  art:function(f){var s='';
   s+='<defs><linearGradient id="bcS" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e7f6ff"/><stop offset="1" stop-color="#fffaf0"/></linearGradient></defs><defs><linearGradient id="bcW" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c5e4f2"/><stop offset="1" stop-color="#e7f6ff"/></linearGradient></defs>';
   s+=R(0,0,400,168,'url(#bcS)');
@@ -3430,7 +3430,7 @@ var r78={id:'r78',title:'晨雾营地',emoji:'⛺',sub:'数学 · 挑战',
     {text:'帐篷锁着，需要钥匙。',use:[{item:'key_r78',win:true,text:'钥匙一转，帐篷开了！「晨雾营地」挑战成功！'}],wrong:'要用钥匙才能开门。'}
   ]},
   {id:'desk',name:'木头凳',box:[30,150,120,50],views:[
-    {if:['!desk_open'],text:'木头凳上有密码锁，旁边贴着纸条：',note:'【算一算】循环小数：下面哪个算式的商是循环小数？① 9÷2 ② 1÷4 ③ 5÷6 ④ 7÷5。填序号。',lock:{kind:'num',len:1,answer:'3',prompt:'输入密码',ok:{set:['desk_open'],text:'打开了！里面有一把钥匙。'},bad:'密码不对哦，再算一算。'}},
+    {if:['!desk_open'],text:'木头凳上有密码锁，旁边贴着纸条：',note:'【算一算】小数四则：12.5 + 0.08 = ?',lock:{kind:'num',len:5,dot:true,answer:'12.58',prompt:'输入密码',ok:{set:['desk_open'],text:'打开了！里面有一把钥匙。'},bad:'密码不对哦，再算一算。'}},
     {if:['desk_open','!took_key'],text:'里面有一把钥匙。',take:{give:['key_r78'],set:['took_key'],text:'你拿到了钥匙。'}},
     {text:'已经空了。'}
   ]},
@@ -3449,12 +3449,12 @@ var r78={id:'r78',title:'晨雾营地',emoji:'⛺',sub:'数学 · 挑战',
  ],
  combos:[],
  hints:[
-  {until:'desk_open',obj:'desk',tiers:['先看看木头凳上的纸条。','纸条上有一道数学题，算出答案就是密码。','约分后分母只剩 2 和 5，商是有限小数；分母里还有 3、7、11 这类因数，商通常会循环。四个里只有一个。']},
+  {until:'desk_open',obj:'desk',tiers:['先看看木头凳上的纸条。','纸条上有一道数学题，算出答案就是密码。','小数点对齐再相加。位数不一样时，空着的位可以看成 0。']},
   {until:'took_key',obj:'desk',tiers:['抽屉开了。','点木头凳，拿起钥匙。','把钥匙拿起来。']},
   {until:'escaped',obj:'door',tiers:['你有钥匙了！','选中钥匙，再点帐篷。','先点钥匙，再点目标。']}
  ],
- explain:['① 9÷2=4.5 有限小数，② 1÷4=0.25 有限小数，③ 5÷6=0.8333… 循环小数，④ 7÷5=1.4 有限小数。所以填 3。','打开抽屉拿到钥匙。','用钥匙打开帐篷，挑战成功。'],
- solution:[['code','desk','3'],['take','desk'],['use','door','key_r78']],
+ explain:['12.5 + 0.08 = 12.58。小数点对齐再相加。','打开抽屉拿到钥匙。','用钥匙打开帐篷，挑战成功。'],
+ solution:[['code','desk','12.58'],['take','desk'],['use','door','key_r78']],
  art:function(f){var s='';
   s+='<defs><linearGradient id="cpS" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c5d5c8"/><stop offset="1" stop-color="#e7eee4"/></linearGradient></defs><defs><radialGradient id="cpF" cx="50%" cy="45%" r="55%"><stop offset="0" stop-color="#ffb15a"/><stop offset="1" stop-color="#ff7a2a" stop-opacity="0"/></radialGradient></defs>';
   s+=R(0,0,400,300,'url(#cpS)');
@@ -3474,7 +3474,7 @@ var r79={id:'r79',title:'晨光树屋',emoji:'🌳',sub:'数学 · 闯关',
  story:['欢迎来到「晨光树屋」挑战站！','树枝台上有一道题，做对就通关。','不一定要出门——答对就是胜利！'],
  objects:[
   {id:'desk',name:'树枝台',box:[30,150,120,50],views:[
-    {if:['!desk_open'],text:'树枝台上的挑战题：',note:'【算一算】小数四则：4.5 ÷ 0.75 = ?',lock:{kind:'num',len:1,answer:'6',prompt:'输入答案',ok:{set:['desk_open'],win:true,text:'答对啦！「晨光树屋」挑战成功！'},bad:'再算一算。'}},
+    {if:['!desk_open'],text:'树枝台上的挑战题：',note:'【算一算】长方形花坛长 15 米、宽 9 米。四周铺宽 2 米的小路，小路面积是多少平方米？',lock:{kind:'num',len:3,answer:'112',prompt:'输入答案',ok:{set:['desk_open'],win:true,text:'答对啦！「晨光树屋」挑战成功！'},bad:'再算一算。'}},
     {text:'题目已经解开啦。'}
   ]},
   {id:'door',name:'树屋门',box:[310,160,70,120],views:[
@@ -3495,10 +3495,10 @@ var r79={id:'r79',title:'晨光树屋',emoji:'🌳',sub:'数学 · 闯关',
  ],
  combos:[],
  hints:[
-  {until:'escaped',obj:'desk',tiers:['点开树枝台上的题。','仔细看【算一算】，多步时先算哪一步？','除数是小数时，先把除数变成整数，被除数的小数点也向右移同样的位数，再除。']}
+  {until:'escaped',obj:'desk',tiers:['点开树枝台上的题。','仔细看【算一算】，多步时先算哪一步？','先算“花坛+小路”的大长方形，再减去花坛本身。']}
  ],
- explain:['4.5 ÷ 0.75 = 6。','在桌子/长椅等物件上输入答案。','答对题目，直接挑战成功。'],
- solution:[['code','desk','6']],
+ explain:['外围 (15+4)×(9+4) 减去花坛 15×9 = 112','在桌子/长椅等物件上输入答案。','答对题目，直接挑战成功。'],
+ solution:[['code','desk','112']],
  art:function(f){var s='';
   s+='<defs><linearGradient id="thS" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e7f6ff"/><stop offset="1" stop-color="#f4fff4"/></linearGradient></defs>';
   s+=R(0,0,400,300,'url(#thS)');
@@ -3522,7 +3522,7 @@ var r80={id:'r80',title:'晨露温室',emoji:'🪴',sub:'数学 · 助人',
     {text:'小花猫眨眨眼：“我想要礼物！”',use:[{item:'gift_r80',take:['gift_r80'],win:true,text:'小花猫开心地收下了！「晨露温室」任务完成！'}],wrong:'小花猫摇摇头：“我要的是礼物哦。”'}
   ]},
   {id:'desk',name:'育苗台',box:[30,150,120,50],views:[
-    {if:['!desk_open'],text:'育苗台抽屉锁着，纸条上有题：',note:'【算一算】一桶油重 30 千克，用去 12.5 千克后又倒入 6.8 千克。现在桶里有多少千克？',lock:{kind:'num',len:4,dot:true,answer:'24.3',prompt:'输入密码',ok:{set:['desk_open'],text:'抽屉开了，里面有一份礼物！'},bad:'再算算。'}},
+    {if:['!desk_open'],text:'育苗台抽屉锁着，纸条上有题：',note:'【算一算】每支铅笔 0.8 元，买 7 支。一共多少元？',lock:{kind:'num',len:3,dot:true,answer:'5.6',prompt:'输入密码',ok:{set:['desk_open'],text:'抽屉开了，里面有一份礼物！'},bad:'再算算。'}},
     {if:['desk_open','!took_gift'],text:'里面有一份礼物。',take:{give:['gift_r80'],set:['took_gift'],text:'你拿到了礼物。'}},
     {text:'抽屉空了。'}
   ]},
@@ -3541,12 +3541,12 @@ var r80={id:'r80',title:'晨露温室',emoji:'🪴',sub:'数学 · 助人',
  ],
  combos:[],
  hints:[
-  {until:'desk_open',obj:'desk',tiers:['先解开育苗台的密码。','看纸条上的题，可能要算两步。','先减去用去的，再加上倒入的。']},
+  {until:'desk_open',obj:'desk',tiers:['先解开育苗台的密码。','看纸条上的题，可能要算两步。','小数乘整数：按整数相乘，再数小数点后有几位。']},
   {until:'took_gift',obj:'desk',tiers:['把礼物拿起来。','点育苗台拿起。','拿起来。']},
   {until:'escaped',obj:'door',tiers:['把礼物交给小花猫。','选中礼物，再点小花猫。','先点物品，再点对方。']}
  ],
- explain:['30 − 12.5 + 6.8 = 24.3','拿到礼物。','交给小花猫，任务完成。'],
- solution:[['code','desk','24.3'],['take','desk'],['use','door','gift_r80']],
+ explain:['0.8 × 7 = 5.6','拿到礼物。','交给小花猫，任务完成。'],
+ solution:[['code','desk','5.6'],['take','desk'],['use','door','gift_r80']],
  art:function(f){var s='';
   s+='<defs><linearGradient id="ghS" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f4fff8"/><stop offset="1" stop-color="#e7f6ea"/></linearGradient></defs>';
   s+=R(0,0,400,300,'url(#ghS)');
@@ -3568,7 +3568,7 @@ var r81={id:'r81',title:'清晨细雨',emoji:'🌧️',sub:'数学 · 益智',
     {text:'组装台等着成品。',use:[{item:'combo_r81',take:['combo_r81'],win:true,text:'放上去——成功！「清晨细雨」做好啦！'}],wrong:'要把两样材料拼好再放上来。'}
   ]},
   {id:'desk',name:'候车椅',box:[30,150,120,50],views:[
-    {if:['!desk_open'],text:'候车椅锁着：',note:'【算一算】循环小数：0.5555…（循环节是 5）化成最简分数，分子是多少？',lock:{kind:'num',len:1,answer:'5',prompt:'输入密码',ok:{set:['desk_open'],text:'开了！里面有材料 A。'},bad:'再算一算。'}},
+    {if:['!desk_open'],text:'候车椅锁着：',note:'【算一算】循环小数：计算 2÷3，把循环节按顺序连起来是多少？',lock:{kind:'num',len:1,answer:'6',prompt:'输入密码',ok:{set:['desk_open'],text:'开了！里面有材料 A。'},bad:'再算一算。'}},
     {if:['desk_open','!took_a'],text:'里面有材料 A。',take:{give:['partA_r81'],set:['took_a'],text:'你拿到了材料 A。'}},
     {text:'空了。'}
   ]},
@@ -3588,14 +3588,14 @@ var r81={id:'r81',title:'清晨细雨',emoji:'🌧️',sub:'数学 · 益智',
  ],
  combos:[{a:'partA_r81',b:'partB_r81',give:['combo_r81'],set:['made_combo'],text:'两样材料拼在一起，成品做好了！'}],
  hints:[
-  {until:'desk_open',obj:'desk',tiers:['先开候车椅。','算纸条上的题。','先写成“循环节 / 几个 9”，再约分。约完以后的分子才是要填的数。']},
+  {until:'desk_open',obj:'desk',tiers:['先开候车椅。','算纸条上的题。','先除到开始循环。循环节是重复的那一段，按顺序连成一个数，比如重复 1 和 8 就填 18。不循环的数字不要写。']},
   {until:'took_a',obj:'desk',tiers:['拿起材料 A。','点开拿起。','拿起来。']},
   {until:'took_b',obj:'shelf',tiers:['看看报摊。','拿起材料 B。','点架子拿。']},
   {until:'made_combo',tiers:['两样材料可以组合。','物品栏先点一个再点另一个。','拼成成品。']},
   {until:'escaped',obj:'door',tiers:['把成品放到组装台。','选中成品再点目标。','放上去就过关。']}
  ],
- explain:['0.5555… 写成 5/9，约分得 5/9，分子是 5。','拿到材料 A 和 B。','组合成成品，放到组装台。'],
- solution:[['code','desk','5'],['take','desk'],['take','shelf'],['combine','partA_r81','partB_r81'],['use','door','combo_r81']],
+ explain:['2÷3=0.6666…。循环节连起来是 6。','拿到材料 A 和 B。','组合成成品，放到组装台。'],
+ solution:[['code','desk','6'],['take','desk'],['take','shelf'],['combine','partA_r81','partB_r81'],['use','door','combo_r81']],
  art:function(f){var s='';
   s+='<defs><linearGradient id="rnS" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d5e0e8"/><stop offset="1" stop-color="#eef3f6"/></linearGradient></defs>';
   s+=R(0,0,400,300,'url(#rnS)');
@@ -3615,7 +3615,7 @@ var r82={id:'r82',title:'雾中菜场',emoji:'🥬',sub:'数学 · 英语',
  story:['双锁挑战站「雾中菜场」！','先过秤台，再过菜筐。','两关都对，不用找门——直接挑战成功！'],
  objects:[
   {id:'desk',name:'秤台',box:[30,150,120,50],views:[
-    {if:['!desk_open'],text:'第一关（数学）：',note:'【算一算】小数四则：4 + 0.75 − 1.2 = ?',lock:{kind:'num',len:4,dot:true,answer:'3.55',prompt:'输入密码',ok:{set:['desk_open'],text:'第一关过了！去看第二关吧。'},bad:'再算算。'}},
+    {if:['!desk_open'],text:'第一关（数学）：',note:'【算一算】小数四则：10.5 − 1.08 = ?',lock:{kind:'num',len:4,dot:true,answer:'9.42',prompt:'输入密码',ok:{set:['desk_open'],text:'第一关过了！去看第二关吧。'},bad:'再算算。'}},
     {text:'第一关已经打开了。'}
   ]},
   {id:'box',name:'菜筐',box:[200,160,70,50],views:[
@@ -3637,11 +3637,11 @@ var r82={id:'r82',title:'雾中菜场',emoji:'🥬',sub:'数学 · 英语',
  ],
  combos:[],
  hints:[
-  {until:'desk_open',obj:'desk',tiers:['先过第一关数学题。','仔细看【算一算】，可能不止一步。','看清每一步在求什么，一步一步算。有加减又有乘，先乘再加减。']},
+  {until:'desk_open',obj:'desk',tiers:['先过第一关数学题。','仔细看【算一算】，可能不止一步。','小数点对齐再相减。位数少的一边补 0，不够减就向前一位借。']},
   {until:'escaped',obj:'box',tiers:['去开第二关。','Unit 2，复数名词，5 个字母，首字母 I；头脑里的想法。','根据词性、首字母和课本单元想想，不要偷看答案哦。']}
  ],
- explain:['4 + 0.75 − 1.2 = 3.55。先加再减。','I can share my _____. (想法) → IDEAS','两关都对，挑战成功。'],
- solution:[['code','desk','3.55'],['code','box','IDEAS']],
+ explain:['10.5 − 1.08 = 9.42。小数点对齐，位数少的补 0。','I can share my _____. (想法) → IDEAS','两关都对，挑战成功。'],
+ solution:[['code','desk','9.42'],['code','box','IDEAS']],
  art:function(f){var s='';
   s+=R(0,0,400,300,'#f7f4ea');
   s+=R(0,210,400,90,'#e4d8c4');
@@ -3663,7 +3663,7 @@ var r83={id:'r83',title:'晨雪小路',emoji:'❄️',sub:'数学 · 通行证',
     {text:'一台刷卡机，嘀嘀作响。',use:[{item:'combo_r83',take:['combo_r83'],win:true,text:'嘀——通过！「晨雪小路」刷卡成功！'}],wrong:'要先做好通行证再刷。'}
   ]},
   {id:'desk',name:'雪凳',box:[30,150,120,50],views:[
-    {if:['!desk_open'],text:'雪凳锁着：',note:'【算一算】梯形：上底 7 分米，下底 13 分米，高 5 分米。面积是多少平方分米？',lock:{kind:'num',len:2,answer:'50',prompt:'输入密码',ok:{set:['desk_open'],text:'开了，里面有一张卡片。'},bad:'再算一算。'}},
+    {if:['!desk_open'],text:'雪凳锁着：',note:'【算一算】长方形桌面长 1.5 米、宽 1.5 米。面积是多少平方分米？（1 米 = 10 分米）',lock:{kind:'num',len:3,answer:'225',prompt:'输入密码',ok:{set:['desk_open'],text:'开了，里面有一张卡片。'},bad:'再算一算。'}},
     {if:['desk_open','!took_scrap'],text:'里面有一张卡片。',take:{give:['scrap_r83'],set:['took_scrap'],text:'你拿到了卡片。'}},
     {text:'空了。'}
   ]},
@@ -3683,14 +3683,14 @@ var r83={id:'r83',title:'晨雪小路',emoji:'❄️',sub:'数学 · 通行证',
  ],
  combos:[{a:'scrap_r83',b:'tool_r83',give:['combo_r83'],set:['made_combo'],text:'卡片和徽章拼成了通行证！'}],
  hints:[
-  {until:'desk_open',obj:'desk',tiers:['先开雪凳。','算题，注意多步运算。','梯形面积 =（上底+下底）×高÷2。']},
+  {until:'desk_open',obj:'desk',tiers:['先开雪凳。','算题，注意多步运算。','先把米换成分米，再相乘。']},
   {until:'took_scrap',obj:'desk',tiers:['拿卡片。','点开拿起。','拿起来。']},
   {until:'took_tool',obj:'shelf',tiers:['还要徽章。','看木柴堆。','拿起徽章。']},
   {until:'made_combo',tiers:['卡片和徽章可组合。','物品栏点两个拼。','拼成通行证。']},
   {until:'escaped',obj:'door',tiers:['去刷卡机。','选中通行证点刷卡机。','刷卡过关。']}
  ],
- explain:['（7+13）×5÷2 = 50','拿到卡片和徽章。','组合成通行证，刷卡机刷过关。'],
- solution:[['code','desk','50'],['take','desk'],['take','shelf'],['combine','scrap_r83','tool_r83'],['use','door','combo_r83']],
+ explain:['先换成 15 分米 × 15 分米 = 225 平方分米','拿到卡片和徽章。','组合成通行证，刷卡机刷过关。'],
+ solution:[['code','desk','225'],['take','desk'],['take','shelf'],['combine','scrap_r83','tool_r83'],['use','door','combo_r83']],
  art:function(f){var s='';
   s+='<defs><linearGradient id="snS" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#eef6fb"/><stop offset="1" stop-color="#ffffff"/></linearGradient></defs>';
   s+=R(0,0,400,300,'url(#snS)');
@@ -3804,7 +3804,7 @@ var r86={id:'r86',title:'星空公园',emoji:'🌃',sub:'数学 · 挑战',
     {text:'园门锁着，需要钥匙。',use:[{item:'key_r86',win:true,text:'钥匙一转，园门开了！「星空公园」挑战成功！'}],wrong:'要用钥匙才能开门。'}
   ]},
   {id:'desk',name:'长椅',box:[30,150,120,50],views:[
-    {if:['!desk_open'],text:'长椅上有密码锁，旁边贴着纸条：',note:'【算一算】循环小数：计算 1÷3，从小数点后第几位开始循环？',lock:{kind:'num',len:1,answer:'1',prompt:'输入密码',ok:{set:['desk_open'],text:'打开了！里面有一把钥匙。'},bad:'密码不对哦，再算一算。'}},
+    {if:['!desk_open'],text:'长椅上有密码锁，旁边贴着纸条：',note:'【算一算】饮料每升 0.6 元，买 3.5 升。一共多少元？',lock:{kind:'num',len:3,dot:true,answer:'2.1',prompt:'输入密码',ok:{set:['desk_open'],text:'打开了！里面有一把钥匙。'},bad:'密码不对哦，再算一算。'}},
     {if:['desk_open','!took_key'],text:'里面有一把钥匙。',take:{give:['key_r86'],set:['took_key'],text:'你拿到了钥匙。'}},
     {text:'已经空了。'}
   ]},
@@ -3823,12 +3823,12 @@ var r86={id:'r86',title:'星空公园',emoji:'🌃',sub:'数学 · 挑战',
  ],
  combos:[],
  hints:[
-  {until:'desk_open',obj:'desk',tiers:['先看看长椅上的纸条。','纸条上有一道数学题，算出答案就是密码。','看小数点后面，从第几位起才开始一直重复。如果第一位就不停地重复，答案就是 1。']},
+  {until:'desk_open',obj:'desk',tiers:['先看看长椅上的纸条。','纸条上有一道数学题，算出答案就是密码。','小数乘小数：先当整数乘，再看两个因数一共有几位小数。']},
   {until:'took_key',obj:'desk',tiers:['抽屉开了。','点长椅，拿起钥匙。','把钥匙拿起来。']},
   {until:'escaped',obj:'door',tiers:['你有钥匙了！','选中钥匙，再点园门。','先点钥匙，再点目标。']}
  ],
- explain:['1÷3=0.3333…，从小数点后第 1 位开始循环。','打开抽屉拿到钥匙。','用钥匙打开园门，挑战成功。'],
- solution:[['code','desk','1'],['take','desk'],['use','door','key_r86']],
+ explain:['0.6 × 3.5 = 2.1','打开抽屉拿到钥匙。','用钥匙打开园门，挑战成功。'],
+ solution:[['code','desk','2.1'],['take','desk'],['use','door','key_r86']],
  art:function(f){var s='';
   s+='<defs><linearGradient id="pkS" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#102033"/><stop offset="1" stop-color="#163024"/></linearGradient></defs>';
   s+=R(0,0,400,300,'url(#pkS)');
@@ -3851,7 +3851,7 @@ var r87={id:'r87',title:'夜香花园',emoji:'🌙',sub:'数学 · 闯关',
  story:['欢迎来到「夜香花园」挑战站！','花坛沿上有一道题，做对就通关。','不一定要出门——答对就是胜利！'],
  objects:[
   {id:'desk',name:'花坛沿',box:[30,150,120,50],views:[
-    {if:['!desk_open'],text:'花坛沿上的挑战题：',note:'【算一算】一块三角形彩纸底 12 厘米、高 5 厘米。用同样的两块拼成一个图形，总面积是多少平方厘米？',lock:{kind:'num',len:2,answer:'60',prompt:'输入答案',ok:{set:['desk_open'],win:true,text:'答对啦！「夜香花园」挑战成功！'},bad:'再算一算。'}},
+    {if:['!desk_open'],text:'花坛沿上的挑战题：',note:'【算一算】循环小数：0.6666…（循环节是 6）化成最简分数，分母是多少？',lock:{kind:'num',len:1,answer:'3',prompt:'输入答案',ok:{set:['desk_open'],win:true,text:'答对啦！「夜香花园」挑战成功！'},bad:'再算一算。'}},
     {text:'题目已经解开啦。'}
   ]},
   {id:'door',name:'花拱门',box:[310,160,70,120],views:[
@@ -3872,10 +3872,10 @@ var r87={id:'r87',title:'夜香花园',emoji:'🌙',sub:'数学 · 闯关',
  ],
  combos:[],
  hints:[
-  {until:'escaped',obj:'desk',tiers:['点开花坛沿上的题。','仔细看【算一算】，多步时先算哪一步？','先求一块三角形面积，再乘 2。']}
+  {until:'escaped',obj:'desk',tiers:['点开花坛沿上的题。','仔细看【算一算】，多步时先算哪一步？','纯循环小数：循环几位，分母就是几个 9。一位用 9，两位用 99，写好再约分，约完的分母才是答案。']}
  ],
- explain:['一块 = 12×5÷2 = 30，两块 = 60','在桌子/长椅等物件上输入答案。','答对题目，直接挑战成功。'],
- solution:[['code','desk','60']],
+ explain:['0.6666… 的循环节是 6，写成 6/9，约分得 2/3，分母是 3。','在桌子/长椅等物件上输入答案。','答对题目，直接挑战成功。'],
+ solution:[['code','desk','3']],
  art:function(f){var s='';
   s+='<defs><linearGradient id="flS" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3a2040"/><stop offset="1" stop-color="#5a3058"/></linearGradient></defs><defs><radialGradient id="flG" cx="50%" cy="45%" r="55%"><stop offset="0" stop-color="#fff"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient></defs>';
   s+=R(0,0,400,300,'url(#flS)');
@@ -3906,7 +3906,7 @@ var r88={id:'r88',title:'星夜过河',emoji:'🌌',sub:'数学 · 助人',
     {text:'小花猫眨眨眼：“我想要礼物！”',use:[{item:'gift_r88',take:['gift_r88'],win:true,text:'小花猫开心地收下了！「星夜过河」任务完成！'}],wrong:'小花猫摇摇头：“我要的是礼物哦。”'}
   ]},
   {id:'desk',name:'岸边石桌',box:[30,150,120,50],views:[
-    {if:['!desk_open'],text:'岸边石桌抽屉锁着，纸条上有题：',note:'【算一算】循环小数：最简分数 5/6 写成小数，把循环节按顺序连起来是多少？',lock:{kind:'num',len:1,answer:'3',prompt:'输入密码',ok:{set:['desk_open'],text:'抽屉开了，里面有一份礼物！'},bad:'再算算。'}},
+    {if:['!desk_open'],text:'岸边石桌抽屉锁着，纸条上有题：',note:'【算一算】小数四则：3.5 × 0.4 = ?',lock:{kind:'num',len:3,dot:true,answer:'1.4',prompt:'输入密码',ok:{set:['desk_open'],text:'抽屉开了，里面有一份礼物！'},bad:'再算算。'}},
     {if:['desk_open','!took_gift'],text:'里面有一份礼物。',take:{give:['gift_r88'],set:['took_gift'],text:'你拿到了礼物。'}},
     {text:'抽屉空了。'}
   ]},
@@ -3925,12 +3925,12 @@ var r88={id:'r88',title:'星夜过河',emoji:'🌌',sub:'数学 · 助人',
  ],
  combos:[],
  hints:[
-  {until:'desk_open',obj:'desk',tiers:['先解开岸边石桌的密码。','看纸条上的题，可能要算两步。','把分数除开，一直除到余数重复。只把重复的数字按顺序连起来。']},
+  {until:'desk_open',obj:'desk',tiers:['先解开岸边石桌的密码。','看纸条上的题，可能要算两步。','先按整数相乘，再点小数点：两个因数一共有几位小数，积就有几位小数。']},
   {until:'took_gift',obj:'desk',tiers:['把礼物拿起来。','点岸边石桌拿起。','拿起来。']},
   {until:'escaped',obj:'door',tiers:['把礼物交给小花猫。','选中礼物，再点小花猫。','先点物品，再点对方。']}
  ],
- explain:['5/6=0.8333…，循环节连起来是 3。','拿到礼物。','交给小花猫，任务完成。'],
- solution:[['code','desk','3'],['take','desk'],['use','door','gift_r88']],
+ explain:['3.5 × 0.4 = 1.4。先按整数乘，再点上小数点。','拿到礼物。','交给小花猫，任务完成。'],
+ solution:[['code','desk','1.4'],['take','desk'],['use','door','gift_r88']],
  art:function(f){var s='';
   s+='<defs><linearGradient id="rvS" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#071428"/><stop offset="1" stop-color="#12304e"/></linearGradient></defs><defs><linearGradient id="rvW" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#071e36"/><stop offset="1" stop-color="#1a4a72"/></linearGradient></defs>';
   s+=R(0,0,400,128,'url(#rvS)');
@@ -3960,7 +3960,7 @@ var r89={id:'r89',title:'灯火石桥',emoji:'🌃',sub:'数学 · 益智',
     {text:'组装台等着成品。',use:[{item:'combo_r89',take:['combo_r89'],win:true,text:'放上去——成功！「灯火石桥」做好啦！'}],wrong:'要把两样材料拼好再放上来。'}
   ]},
   {id:'desk',name:'桥头石凳',box:[30,150,120,50],views:[
-    {if:['!desk_open'],text:'桥头石凳锁着：',note:'【算一算】小路长 60 米。从头到尾，每隔 5 米种一棵树（两头都要种）。一共要种多少棵树？',lock:{kind:'num',len:2,answer:'13',prompt:'输入密码',ok:{set:['desk_open'],text:'开了！里面有材料 A。'},bad:'再算一算。'}},
+    {if:['!desk_open'],text:'桥头石凳锁着：',note:'【算一算】解方程：5x − 15 = 3x + 25\n求 x。',lock:{kind:'num',len:2,answer:'20',prompt:'输入密码',ok:{set:['desk_open'],text:'开了！里面有材料 A。'},bad:'再算一算。'}},
     {if:['desk_open','!took_a'],text:'里面有材料 A。',take:{give:['partA_r89'],set:['took_a'],text:'你拿到了材料 A。'}},
     {text:'空了。'}
   ]},
@@ -3980,14 +3980,14 @@ var r89={id:'r89',title:'灯火石桥',emoji:'🌃',sub:'数学 · 益智',
  ],
  combos:[{a:'partA_r89',b:'partB_r89',give:['combo_r89'],set:['made_combo'],text:'两样材料拼在一起，成品做好了！'}],
  hints:[
-  {until:'desk_open',obj:'desk',tiers:['先开桥头石凳。','算纸条上的题。','段数 = 全长÷间隔，两头都种则棵数比段数多 1。']},
+  {until:'desk_open',obj:'desk',tiers:['先开桥头石凳。','算纸条上的题。','把含 x 的项移到一边，常数移到另一边。']},
   {until:'took_a',obj:'desk',tiers:['拿起材料 A。','点开拿起。','拿起来。']},
   {until:'took_b',obj:'shelf',tiers:['看看灯笼架。','拿起材料 B。','点架子拿。']},
   {until:'made_combo',tiers:['两样材料可以组合。','物品栏先点一个再点另一个。','拼成成品。']},
   {until:'escaped',obj:'door',tiers:['把成品放到组装台。','选中成品再点目标。','放上去就过关。']}
  ],
- explain:['段数=60÷5=12，棵数=段数+1=13','拿到材料 A 和 B。','组合成成品，放到组装台。'],
- solution:[['code','desk','13'],['take','desk'],['take','shelf'],['combine','partA_r89','partB_r89'],['use','door','combo_r89']],
+ explain:['移项合并：(5-3)x = 15+25 → x = 20','拿到材料 A 和 B。','组合成成品，放到组装台。'],
+ solution:[['code','desk','20'],['take','desk'],['take','shelf'],['combine','partA_r89','partB_r89'],['use','door','combo_r89']],
  art:function(f){var s='';
   s+='<defs><linearGradient id="brS" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#141820"/><stop offset="1" stop-color="#2a3038"/></linearGradient></defs><defs><linearGradient id="brW" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0e2436"/><stop offset="1" stop-color="#1a3a55"/></linearGradient></defs>';
   s+=R(0,0,400,300,'url(#brS)');
@@ -4008,7 +4008,7 @@ var r90={id:'r90',title:'夜自习教室',emoji:'🌙',sub:'数学 · 英语',
  story:['双锁挑战站「夜自习教室」！','小黄说：“两道题都做对，就过关！”','两关都对，不用找门——直接挑战成功！'],
  objects:[
   {id:'desk',name:'讲台',box:[30,150,120,50],views:[
-    {if:['!desk_open'],text:'第一关（数学）：',note:'【算一算】一辆车平均每小时行 72 千米，行了 2 小时。一共行了多少千米？',lock:{kind:'num',len:3,answer:'144',prompt:'输入密码',ok:{set:['desk_open'],text:'第一关过了！去看第二关吧。'},bad:'再算算。'}},
+    {if:['!desk_open'],text:'第一关（数学）：',note:'【算一算】7.5 千克糖果平均装进 5 袋，每袋多少千克？',lock:{kind:'num',len:3,dot:true,answer:'1.5',prompt:'输入密码',ok:{set:['desk_open'],text:'第一关过了！去看第二关吧。'},bad:'再算算。'}},
     {text:'第一关已经打开了。'}
   ]},
   {id:'box',name:'作业盒',box:[200,160,70,50],views:[
@@ -4030,11 +4030,11 @@ var r90={id:'r90',title:'夜自习教室',emoji:'🌙',sub:'数学 · 英语',
  ],
  combos:[],
  hints:[
-  {until:'desk_open',obj:'desk',tiers:['先过第一关数学题。','仔细看【算一算】，可能不止一步。','路程 = 速度 × 时间。']},
+  {until:'desk_open',obj:'desk',tiers:['先过第一关数学题。','仔细看【算一算】，可能不止一步。','总重÷袋数。']},
   {until:'escaped',obj:'box',tiers:['去开第二关。','Unit 2，动词，4 个字母，首字母 G；慢慢变高变壮。','根据词性、首字母和课本单元想想，不要偷看答案哦。']}
  ],
- explain:['路程 = 速度 × 时间 = 72 × 2 = 144','Sports help me _____ taller and stronger. (成长/长高) → GROW','两关都对，挑战成功。'],
- solution:[['code','desk','144'],['code','box','GROW']],
+ explain:['7.5 ÷ 5 = 1.5','Sports help me _____ taller and stronger. (成长/长高) → GROW','两关都对，挑战成功。'],
+ solution:[['code','desk','1.5'],['code','box','GROW']],
  art:function(f){var s='';
   s+=R(0,0,400,300,'#1c2838');
   s+=R(0,236,400,64,'#2a241c');
@@ -4055,7 +4055,7 @@ var r91={id:'r91',title:'夜灯走廊',emoji:'🌙',sub:'数学 · 通行证',
     {text:'一台刷卡机，嘀嘀作响。',use:[{item:'combo_r91',take:['combo_r91'],win:true,text:'嘀——通过！「夜灯走廊」刷卡成功！'}],wrong:'要先做好通行证再刷。'}
   ]},
   {id:'desk',name:'休息椅',box:[30,150,120,50],views:[
-    {if:['!desk_open'],text:'休息椅锁着：',note:'【算一算】一件原价 60 元的外套打 9 折。应付多少元？',lock:{kind:'num',len:2,answer:'54',prompt:'输入密码',ok:{set:['desk_open'],text:'开了，里面有一张卡片。'},bad:'再算一算。'}},
+    {if:['!desk_open'],text:'休息椅锁着：',note:'【算一算】循环小数：下面哪个算式的商是循环小数？① 9÷2 ② 1÷4 ③ 5÷6 ④ 7÷5。填序号。',lock:{kind:'num',len:1,answer:'3',prompt:'输入密码',ok:{set:['desk_open'],text:'开了，里面有一张卡片。'},bad:'再算一算。'}},
     {if:['desk_open','!took_scrap'],text:'里面有一张卡片。',take:{give:['scrap_r91'],set:['took_scrap'],text:'你拿到了卡片。'}},
     {text:'空了。'}
   ]},
@@ -4075,14 +4075,14 @@ var r91={id:'r91',title:'夜灯走廊',emoji:'🌙',sub:'数学 · 通行证',
  ],
  combos:[{a:'scrap_r91',b:'tool_r91',give:['combo_r91'],set:['made_combo'],text:'卡片和徽章拼成了通行证！'}],
  hints:[
-  {until:'desk_open',obj:'desk',tiers:['先开休息椅。','算题，注意多步运算。','打 9 折就是用原价乘 0.9。']},
+  {until:'desk_open',obj:'desk',tiers:['先开休息椅。','算题，注意多步运算。','约分后分母只剩 2 和 5，商是有限小数；分母里还有 3、7、11 这类因数，商通常会循环。四个里只有一个。']},
   {until:'took_scrap',obj:'desk',tiers:['拿卡片。','点开拿起。','拿起来。']},
   {until:'took_tool',obj:'shelf',tiers:['还要徽章。','看储物柜。','拿起徽章。']},
   {until:'made_combo',tiers:['卡片和徽章可组合。','物品栏点两个拼。','拼成通行证。']},
   {until:'escaped',obj:'door',tiers:['去刷卡机。','选中通行证点刷卡机。','刷卡过关。']}
  ],
- explain:['60 × 0.9 = 54','拿到卡片和徽章。','组合成通行证，刷卡机刷过关。'],
- solution:[['code','desk','54'],['take','desk'],['take','shelf'],['combine','scrap_r91','tool_r91'],['use','door','combo_r91']],
+ explain:['① 9÷2=4.5 有限小数，② 1÷4=0.25 有限小数，③ 5÷6=0.8333… 循环小数，④ 7÷5=1.4 有限小数。所以填 3。','拿到卡片和徽章。','组合成通行证，刷卡机刷过关。'],
+ solution:[['code','desk','3'],['take','desk'],['take','shelf'],['combine','scrap_r91','tool_r91'],['use','door','combo_r91']],
  art:function(f){var s='';
   s+='<defs><linearGradient id="hwW" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2a3340"/><stop offset="1" stop-color="#1c2430"/></linearGradient></defs>';
   s+=R(0,0,400,300,'url(#hwW)');
@@ -4196,7 +4196,7 @@ var r94={id:'r94',title:'星夜谷仓',emoji:'🌙',sub:'数学 · 挑战',
     {text:'谷仓锁着，需要钥匙。',use:[{item:'key_r94',win:true,text:'钥匙一转，谷仓开了！「星夜谷仓」挑战成功！'}],wrong:'要用钥匙才能开门。'}
   ]},
   {id:'desk',name:'木桌',box:[30,150,120,50],views:[
-    {if:['!desk_open'],text:'木桌上有密码锁，旁边贴着纸条：',note:'【算一算】笔记本每本 3.75 元，买 2 本；橡皮每块 2.5 元，买 4 块。一共多少元？',lock:{kind:'num',len:4,dot:true,answer:'17.5',prompt:'输入密码',ok:{set:['desk_open'],text:'打开了！里面有一把钥匙。'},bad:'密码不对哦，再算一算。'}},
+    {if:['!desk_open'],text:'木桌上有密码锁，旁边贴着纸条：',note:'【算一算】小数四则：4.5 ÷ 0.75 = ?',lock:{kind:'num',len:1,answer:'6',prompt:'输入密码',ok:{set:['desk_open'],text:'打开了！里面有一把钥匙。'},bad:'密码不对哦，再算一算。'}},
     {if:['desk_open','!took_key'],text:'里面有一把钥匙。',take:{give:['key_r94'],set:['took_key'],text:'你拿到了钥匙。'}},
     {text:'已经空了。'}
   ]},
@@ -4215,12 +4215,12 @@ var r94={id:'r94',title:'星夜谷仓',emoji:'🌙',sub:'数学 · 挑战',
  ],
  combos:[],
  hints:[
-  {until:'desk_open',obj:'desk',tiers:['先看看木桌上的纸条。','纸条上有一道数学题，算出答案就是密码。','先算笔记本总价，再加橡皮总价。']},
+  {until:'desk_open',obj:'desk',tiers:['先看看木桌上的纸条。','纸条上有一道数学题，算出答案就是密码。','除数是小数时，先把除数变成整数，被除数的小数点也向右移同样的位数，再除。']},
   {until:'took_key',obj:'desk',tiers:['抽屉开了。','点木桌，拿起钥匙。','把钥匙拿起来。']},
   {until:'escaped',obj:'door',tiers:['你有钥匙了！','选中钥匙，再点谷仓。','先点钥匙，再点目标。']}
  ],
- explain:['3.75×2+2.5×4=17.5','打开抽屉拿到钥匙。','用钥匙打开谷仓，挑战成功。'],
- solution:[['code','desk','17.5'],['take','desk'],['use','door','key_r94']],
+ explain:['4.5 ÷ 0.75 = 6。','打开抽屉拿到钥匙。','用钥匙打开谷仓，挑战成功。'],
+ solution:[['code','desk','6'],['take','desk'],['use','door','key_r94']],
  art:function(f){var s='';
   s+='<defs><linearGradient id="fmS" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#121c28"/><stop offset="1" stop-color="#1c2830"/></linearGradient></defs>';
   s+=R(0,0,400,150,'url(#fmS)');
@@ -4240,7 +4240,7 @@ var r95={id:'r95',title:'月下荷塘',emoji:'🌙',sub:'数学 · 闯关',
  story:['欢迎来到「月下荷塘」挑战站！','木码头上有一道题，做对就通关。','不一定要出门——答对就是胜利！'],
  objects:[
   {id:'desk',name:'木码头',box:[30,150,120,50],views:[
-    {if:['!desk_open'],text:'木码头上的挑战题：',note:'【算一算】循环小数：计算 1÷6，商的循环节有几位数字？',lock:{kind:'num',len:1,answer:'1',prompt:'输入答案',ok:{set:['desk_open'],win:true,text:'答对啦！「月下荷塘」挑战成功！'},bad:'再算一算。'}},
+    {if:['!desk_open'],text:'木码头上的挑战题：',note:'【算一算】一桶油重 30 千克，用去 12.5 千克后又倒入 6.8 千克。现在桶里有多少千克？',lock:{kind:'num',len:4,dot:true,answer:'24.3',prompt:'输入答案',ok:{set:['desk_open'],win:true,text:'答对啦！「月下荷塘」挑战成功！'},bad:'再算一算。'}},
     {text:'题目已经解开啦。'}
   ]},
   {id:'door',name:'月洞门',box:[310,160,70,120],views:[
@@ -4261,10 +4261,10 @@ var r95={id:'r95',title:'月下荷塘',emoji:'🌙',sub:'数学 · 闯关',
  ],
  combos:[],
  hints:[
-  {until:'escaped',obj:'desk',tiers:['点开木码头上的题。','仔细看【算一算】，多步时先算哪一步？','用竖式除一除，余数重复就停。只数一直重复的那几位有几位，前面不循环的数字不要算进去。']}
+  {until:'escaped',obj:'desk',tiers:['点开木码头上的题。','仔细看【算一算】，多步时先算哪一步？','先减去用去的，再加上倒入的。']}
  ],
- explain:['1÷6=0.1666…，循环节是 6，有 1 位。','在桌子/长椅等物件上输入答案。','答对题目，直接挑战成功。'],
- solution:[['code','desk','1']],
+ explain:['30 − 12.5 + 6.8 = 24.3','在桌子/长椅等物件上输入答案。','答对题目，直接挑战成功。'],
+ solution:[['code','desk','24.3']],
  art:function(f){var s='';
   s+='<defs><linearGradient id="ltS" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0c1c30"/><stop offset="1" stop-color="#163048"/></linearGradient></defs><defs><linearGradient id="ltW" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0a3050"/><stop offset="1" stop-color="#123048"/></linearGradient></defs>';
   s+=R(0,0,400,90,'url(#ltS)');
@@ -4288,7 +4288,7 @@ var r96={id:'r96',title:'深夜营火',emoji:'🌌',sub:'数学 · 助人',
     {text:'小花猫眨眨眼：“我想要礼物！”',use:[{item:'gift_r96',take:['gift_r96'],win:true,text:'小花猫开心地收下了！「深夜营火」任务完成！'}],wrong:'小花猫摇摇头：“我要的是礼物哦。”'}
   ]},
   {id:'desk',name:'木头凳',box:[30,150,120,50],views:[
-    {if:['!desk_open'],text:'木头凳抽屉锁着，纸条上有题：',note:'【算一算】小数四则：6 + 0.75 = ?',lock:{kind:'num',len:4,dot:true,answer:'6.75',prompt:'输入密码',ok:{set:['desk_open'],text:'抽屉开了，里面有一份礼物！'},bad:'再算算。'}},
+    {if:['!desk_open'],text:'木头凳抽屉锁着，纸条上有题：',note:'【算一算】一共有 2.4 升牛奶，每份 0.8 升。可以分成多少份？',lock:{kind:'num',len:1,answer:'3',prompt:'输入密码',ok:{set:['desk_open'],text:'抽屉开了，里面有一份礼物！'},bad:'再算算。'}},
     {if:['desk_open','!took_gift'],text:'里面有一份礼物。',take:{give:['gift_r96'],set:['took_gift'],text:'你拿到了礼物。'}},
     {text:'抽屉空了。'}
   ]},
@@ -4307,12 +4307,12 @@ var r96={id:'r96',title:'深夜营火',emoji:'🌌',sub:'数学 · 助人',
  ],
  combos:[],
  hints:[
-  {until:'desk_open',obj:'desk',tiers:['先解开木头凳的密码。','看纸条上的题，可能要算两步。','小数点对齐再相加。位数不一样时，空着的位可以看成 0。']},
+  {until:'desk_open',obj:'desk',tiers:['先解开木头凳的密码。','看纸条上的题，可能要算两步。','小数除以小数：先把除数变成整数（两边同乘 10 或 100），再除。']},
   {until:'took_gift',obj:'desk',tiers:['把礼物拿起来。','点木头凳拿起。','拿起来。']},
   {until:'escaped',obj:'door',tiers:['把礼物交给小花猫。','选中礼物，再点小花猫。','先点物品，再点对方。']}
  ],
- explain:['6 + 0.75 = 6.75。小数点对齐再相加。','拿到礼物。','交给小花猫，任务完成。'],
- solution:[['code','desk','6.75'],['take','desk'],['use','door','gift_r96']],
+ explain:['2.4 ÷ 0.8 = 3','拿到礼物。','交给小花猫，任务完成。'],
+ solution:[['code','desk','3'],['take','desk'],['use','door','gift_r96']],
  art:function(f){var s='';
   s+='<defs><linearGradient id="cpS" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#070b18"/><stop offset="1" stop-color="#12182c"/></linearGradient></defs><defs><radialGradient id="cpF" cx="50%" cy="45%" r="55%"><stop offset="0" stop-color="#ffb15a"/><stop offset="1" stop-color="#ff7a2a" stop-opacity="0"/></radialGradient></defs>';
   s+=R(0,0,400,300,'url(#cpS)');
@@ -4335,7 +4335,7 @@ var r97={id:'r97',title:'星夜树屋',emoji:'🌙',sub:'数学 · 益智',
     {text:'组装台等着成品。',use:[{item:'combo_r97',take:['combo_r97'],win:true,text:'放上去——成功！「星夜树屋」做好啦！'}],wrong:'要把两样材料拼好再放上来。'}
   ]},
   {id:'desk',name:'树枝台',box:[30,150,120,50],views:[
-    {if:['!desk_open'],text:'树枝台锁着：',note:'【算一算】长方形花坛长 8 米、宽 5 米。四周铺宽 1 米的小路，小路面积是多少平方米？',lock:{kind:'num',len:2,answer:'30',prompt:'输入密码',ok:{set:['desk_open'],text:'开了！里面有材料 A。'},bad:'再算一算。'}},
+    {if:['!desk_open'],text:'树枝台锁着：',note:'【算一算】循环小数：0.5555…（循环节是 5）化成最简分数，分子是多少？',lock:{kind:'num',len:1,answer:'5',prompt:'输入密码',ok:{set:['desk_open'],text:'开了！里面有材料 A。'},bad:'再算一算。'}},
     {if:['desk_open','!took_a'],text:'里面有材料 A。',take:{give:['partA_r97'],set:['took_a'],text:'你拿到了材料 A。'}},
     {text:'空了。'}
   ]},
@@ -4355,14 +4355,14 @@ var r97={id:'r97',title:'星夜树屋',emoji:'🌙',sub:'数学 · 益智',
  ],
  combos:[{a:'partA_r97',b:'partB_r97',give:['combo_r97'],set:['made_combo'],text:'两样材料拼在一起，成品做好了！'}],
  hints:[
-  {until:'desk_open',obj:'desk',tiers:['先开树枝台。','算纸条上的题。','先算“花坛+小路”的大长方形，再减去花坛本身。']},
+  {until:'desk_open',obj:'desk',tiers:['先开树枝台。','算纸条上的题。','先写成“循环节 / 几个 9”，再约分。约完以后的分子才是要填的数。']},
   {until:'took_a',obj:'desk',tiers:['拿起材料 A。','点开拿起。','拿起来。']},
   {until:'took_b',obj:'shelf',tiers:['看看松鼠洞。','拿起材料 B。','点架子拿。']},
   {until:'made_combo',tiers:['两样材料可以组合。','物品栏先点一个再点另一个。','拼成成品。']},
   {until:'escaped',obj:'door',tiers:['把成品放到组装台。','选中成品再点目标。','放上去就过关。']}
  ],
- explain:['外围 (8+2)×(5+2) 减去花坛 8×5 = 30','拿到材料 A 和 B。','组合成成品，放到组装台。'],
- solution:[['code','desk','30'],['take','desk'],['take','shelf'],['combine','partA_r97','partB_r97'],['use','door','combo_r97']],
+ explain:['0.5555… 写成 5/9，约分得 5/9，分子是 5。','拿到材料 A 和 B。','组合成成品，放到组装台。'],
+ solution:[['code','desk','5'],['take','desk'],['take','shelf'],['combine','partA_r97','partB_r97'],['use','door','combo_r97']],
  art:function(f){var s='';
   s+='<defs><linearGradient id="thS" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#102033"/><stop offset="1" stop-color="#163028"/></linearGradient></defs>';
   s+=R(0,0,400,300,'url(#thS)');
@@ -4383,7 +4383,7 @@ var r98={id:'r98',title:'灯下温室',emoji:'✨',sub:'数学 · 英语',
  story:['双锁挑战站「灯下温室」！','先过育苗台，再过花盆箱。','两关都对，不用找门——直接挑战成功！'],
  objects:[
   {id:'desk',name:'育苗台',box:[30,150,120,50],views:[
-    {if:['!desk_open'],text:'第一关（数学）：',note:'【算一算】循环小数：计算 3÷11，把循环节按顺序连起来是多少？',lock:{kind:'num',len:2,answer:'27',prompt:'输入密码',ok:{set:['desk_open'],text:'第一关过了！去看第二关吧。'},bad:'再算算。'}},
+    {if:['!desk_open'],text:'第一关（数学）：',note:'【算一算】小数四则：4 + 0.75 − 1.2 = ?',lock:{kind:'num',len:4,dot:true,answer:'3.55',prompt:'输入密码',ok:{set:['desk_open'],text:'第一关过了！去看第二关吧。'},bad:'再算算。'}},
     {text:'第一关已经打开了。'}
   ]},
   {id:'box',name:'花盆箱',box:[200,160,70,50],views:[
@@ -4405,11 +4405,11 @@ var r98={id:'r98',title:'灯下温室',emoji:'✨',sub:'数学 · 英语',
  ],
  combos:[],
  hints:[
-  {until:'desk_open',obj:'desk',tiers:['先过第一关数学题。','仔细看【算一算】，可能不止一步。','先除到开始循环。循环节是重复的那一段，按顺序连成一个数，比如重复 1 和 8 就填 18。不循环的数字不要写。']},
+  {until:'desk_open',obj:'desk',tiers:['先过第一关数学题。','仔细看【算一算】，可能不止一步。','看清每一步在求什么，一步一步算。有加减又有乘，先乘再加减。']},
   {until:'escaped',obj:'box',tiers:['去开第二关。','Unit 2，as ___ = 也，4 个字母，首字母 W。','根据词性、首字母和课本单元想想，不要偷看答案哦。']}
  ],
- explain:['3÷11=0.2727…。循环节连起来是 27。','I like dancing as _____. (也) → WELL','两关都对，挑战成功。'],
- solution:[['code','desk','27'],['code','box','WELL']],
+ explain:['4 + 0.75 − 1.2 = 3.55。先加再减。','I like dancing as _____. (也) → WELL','两关都对，挑战成功。'],
+ solution:[['code','desk','3.55'],['code','box','WELL']],
  art:function(f){var s='';
   s+='<defs><linearGradient id="ghS" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#10281c"/><stop offset="1" stop-color="#102018"/></linearGradient></defs>';
   s+=R(0,0,400,300,'url(#ghS)');
@@ -4431,7 +4431,7 @@ var r99={id:'r99',title:'夜雨街头',emoji:'🌙',sub:'数学 · 通行证',
     {text:'一台刷卡机，嘀嘀作响。',use:[{item:'combo_r99',take:['combo_r99'],win:true,text:'嘀——通过！「夜雨街头」刷卡成功！'}],wrong:'要先做好通行证再刷。'}
   ]},
   {id:'desk',name:'候车椅',box:[30,150,120,50],views:[
-    {if:['!desk_open'],text:'候车椅锁着：',note:'【算一算】小数四则：6.25 − 4.5 = ?',lock:{kind:'num',len:4,dot:true,answer:'1.75',prompt:'输入密码',ok:{set:['desk_open'],text:'开了，里面有一张卡片。'},bad:'再算一算。'}},
+    {if:['!desk_open'],text:'候车椅锁着：',note:'【算一算】梯形：上底 7 分米，下底 13 分米，高 5 分米。面积是多少平方分米？',lock:{kind:'num',len:2,answer:'50',prompt:'输入密码',ok:{set:['desk_open'],text:'开了，里面有一张卡片。'},bad:'再算一算。'}},
     {if:['desk_open','!took_scrap'],text:'里面有一张卡片。',take:{give:['scrap_r99'],set:['took_scrap'],text:'你拿到了卡片。'}},
     {text:'空了。'}
   ]},
@@ -4451,14 +4451,14 @@ var r99={id:'r99',title:'夜雨街头',emoji:'🌙',sub:'数学 · 通行证',
  ],
  combos:[{a:'scrap_r99',b:'tool_r99',give:['combo_r99'],set:['made_combo'],text:'卡片和徽章拼成了通行证！'}],
  hints:[
-  {until:'desk_open',obj:'desk',tiers:['先开候车椅。','算题，注意多步运算。','小数点对齐再相减。位数少的一边补 0，不够减就向前一位借。']},
+  {until:'desk_open',obj:'desk',tiers:['先开候车椅。','算题，注意多步运算。','梯形面积 =（上底+下底）×高÷2。']},
   {until:'took_scrap',obj:'desk',tiers:['拿卡片。','点开拿起。','拿起来。']},
   {until:'took_tool',obj:'shelf',tiers:['还要徽章。','看报摊。','拿起徽章。']},
   {until:'made_combo',tiers:['卡片和徽章可组合。','物品栏点两个拼。','拼成通行证。']},
   {until:'escaped',obj:'door',tiers:['去刷卡机。','选中通行证点刷卡机。','刷卡过关。']}
  ],
- explain:['6.25 − 4.5 = 1.75。小数点对齐，位数少的补 0。','拿到卡片和徽章。','组合成通行证，刷卡机刷过关。'],
- solution:[['code','desk','1.75'],['take','desk'],['take','shelf'],['combine','scrap_r99','tool_r99'],['use','door','combo_r99']],
+ explain:['（7+13）×5÷2 = 50','拿到卡片和徽章。','组合成通行证，刷卡机刷过关。'],
+ solution:[['code','desk','50'],['take','desk'],['take','shelf'],['combine','scrap_r99','tool_r99'],['use','door','combo_r99']],
  art:function(f){var s='';
   s+='<defs><linearGradient id="rnS" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#121820"/><stop offset="1" stop-color="#1c2834"/></linearGradient></defs>';
   s+=R(0,0,400,300,'url(#rnS)');

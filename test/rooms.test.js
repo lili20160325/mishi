@@ -199,9 +199,35 @@ function autoCalc(note){
   // 单位
   if((m=note.match(/【算一算】([\d.]+) 千米 = \? 米/)))
     return fmtDec(mul(dec(m[1]),dec('1000')));
-  // 简单乘法 / 加减
+  // 小数×整数：每X 价，买 n
+  if((m=note.match(/【算一算】每.+? ([\d.]+) 元，买 (\d+) .+。一共多少元？/)))
+    return fmtDec(mul(dec(m[1]),dec(m[2])));
+  // 小数×小数：名每单位 价，买 n 单位
+  if((m=note.match(/【算一算】.+每(?:米|千克|升) ([\d.]+) 元，买 ([\d.]+) (?:米|千克|升)。一共多少元？/)))
+    return fmtDec(mul(dec(m[1]),dec(m[2])));
+  // 小数÷整数：平均倒进/剪成/装进/人平分
+  if((m=note.match(/【算一算】([\d.]+) .+平均倒进 (\d+) 个瓶子/)))
+    return fmtDec({n:dec(m[1]).n, d:dec(m[1]).d*BigInt(m[2])});
+  if((m=note.match(/【算一算】([\d.]+) .+平均剪成 (\d+) 段/)))
+    return fmtDec({n:dec(m[1]).n, d:dec(m[1]).d*BigInt(m[2])});
+  if((m=note.match(/【算一算】([\d.]+) .+平均装进 (\d+) 袋/)))
+    return fmtDec({n:dec(m[1]).n, d:dec(m[1]).d*BigInt(m[2])});
+  if((m=note.match(/【算一算】([\d.]+) .+平均倒进 (\d+) 杯/)))
+    return fmtDec({n:dec(m[1]).n, d:dec(m[1]).d*BigInt(m[2])});
+  if((m=note.match(/【算一算】([\d.]+) .+由 (\d+) 人平分/)))
+    return fmtDec({n:dec(m[1]).n, d:dec(m[1]).d*BigInt(m[2])});
+  // 小数÷小数：一共有 a，每份 b，分成多少份
+  if((m=note.match(/【算一算】一共有 ([\d.]+) .+，每份 ([\d.]+) .+。可以分成多少份？/))){
+    const a=dec(m[1]), b=dec(m[2]);
+    return fmtDec({n:a.n*b.d, d:a.d*b.n});
+  }
+  // 简单乘法 / 除法 / 加减
   if((m=note.match(/【算一算】([\d.]+) × ([\d.]+) = \?/)))
     return fmtDec(mul(dec(m[1]),dec(m[2])));
+  if((m=note.match(/【算一算】([\d.]+) ÷ ([\d.]+) = \?/))){
+    const a=dec(m[1]), b=dec(m[2]);
+    return fmtDec({n:a.n*b.d, d:a.d*b.n});
+  }
   if((m=note.match(/【算一算】一个袋子里有 (\d+) 个红球、(\d+) 个蓝球。一共有几个球？/)))
     return String(+m[1]+ +m[2]);
   if((m=note.match(/【算一算】班级有 (\d+) 人，分成 (\d+) 组，平均每组几人？/)))
