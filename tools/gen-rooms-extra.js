@@ -105,14 +105,100 @@ const EN_QA = [
 ];
 
 const IDIOMS = [
-  {blank:'___ 颜六色', full:'五颜六色', digit:'5'},
-  {blank:'七上 ___ 下', full:'七上八下', digit:'8'},
-  {blank:'___ 牛一毛', full:'九牛一毛', digit:'9'},
-  {blank:'三心 ___ 意', full:'三心二意', digit:'2'},
-  {blank:'___ 全十美', full:'十全十美', digit:'10'},
-  {blank:'四面 ___ 方', full:'四面八方', digit:'8'},
-  {blank:'___ 言两语', full:'三言两语', digit:'3'},
-  {blank:'一心 ___ 意', full:'一心一意', digit:'1'},
+  // 部编/人教五上词语表成语（缺一字 dial）
+  {full:'兄友弟恭', blank:'兄 ___ 弟 恭', missing:'友', hint:'兄弟友爱、恭敬，说家庭和睦'},
+  {full:'父慈子孝', blank:'父 慈 ___ 孝', missing:'子', hint:'父母慈爱、子女孝顺'},
+  {full:'家喻户晓', blank:'家 喻 户 ___', missing:'晓', hint:'家家户户都知道，形容很有名'},
+  {full:'心浮气躁', blank:'心 浮 ___ 躁', missing:'气', hint:'心里不踏实、容易着急'},
+  {full:'如泣如诉', blank:'如 ___ 如 诉', missing:'泣', hint:'像在哭泣、又像在诉说'},
+  {full:'一张一弛', blank:'一 张 ___ 弛', missing:'一', hint:'有紧张有放松，劳逸结合'},
+  {full:'不卑不亢', blank:'不 卑 不 ___', missing:'亢', hint:'既不低声下气，也不骄傲'},
+  {full:'诗词歌赋', blank:'___ 词 歌 赋', missing:'诗', hint:'诗、词、歌、赋四类文学'},
+  {full:'相提并论', blank:'相 提 ___ 论', missing:'并', hint:'把不同的事物放在一起比较、谈论'},
+  {full:'忠于职守', blank:'忠 ___ 职 守', missing:'于', hint:'忠实于自己的工作岗位'},
+  {full:'千真万确', blank:'千 真 万 ___', missing:'确', hint:'形容非常真实、确实'},
+  {full:'倾盆大雨', blank:'___ 盆 大 雨', missing:'倾', hint:'雨像盆里的水倒下来一样大'},
+  {full:'震天动地', blank:'震 ___ 动 地', missing:'天', hint:'声音或气势极大'},
+  {full:'世世代代', blank:'世 世 ___ 代', missing:'代', hint:'一代又一代，形容时间久'},
+  {full:'眉开眼笑', blank:'___ 开 眼 笑', missing:'眉', hint:'形容非常高兴的样子'},
+  {full:'美中不足', blank:'美 中 不 ___', missing:'足', hint:'虽然很好，但还有一点点缺憾'},
+  {full:'成家立业', blank:'成 家 ___ 业', missing:'立', hint:'结婚成家，成就事业'},
+  {full:'相依为命', blank:'相 依 为 ___', missing:'命', hint:'互相依靠着生活'},
+  {full:'不可估量', blank:'不 可 ___ 量', missing:'估', hint:'没法估计有多大'},
+  {full:'举世闻名', blank:'___ 世 闻 名', missing:'举', hint:'全世界都知道名字'},
+  {full:'众星拱月', blank:'众 ___ 拱 月', missing:'星', hint:'许多星星环绕月亮，比喻众人捧一人'},
+  {full:'亭台楼阁', blank:'亭 台 楼 ___', missing:'阁', hint:'园林里的各种建筑'},
+  {full:'诗情画意', blank:'___ 情 画 意', missing:'诗', hint:'像诗、像画一样的美好意境'},
+  {full:'天南海北', blank:'天 南 ___ 北', missing:'海', hint:'形容距离很远，或四面八方'},
+  {full:'奇珍异宝', blank:'奇 ___ 异 宝', missing:'珍', hint:'稀奇珍贵的宝物'},
+  {full:'寸草不生', blank:'寸 草 不 ___', missing:'生', hint:'连小草都不长，形容荒凉'},
+  {full:'叹为观止', blank:'___ 为 观 止', missing:'叹', hint:'赞叹看到的事物好到极点'},
+  {full:'不计其数', blank:'不 计 ___ 数', missing:'其', hint:'数量多得数不过来'},
+  {full:'想方设法', blank:'想 ___ 设 法', missing:'方', hint:'多方面想办法'},
+  {full:'无穷无尽', blank:'无 穷 无 ___', missing:'尽', hint:'没有尽头，没有完'},
+  {full:'无价之宝', blank:'___ 价 之 宝', missing:'无', hint:'无法用价钱衡量的宝物'},
+  {full:'同心协力', blank:'同 心 ___ 力', missing:'协', hint:'齐心合力一起做'},
+  {full:'小心翼翼', blank:'小 心 翼 ___', missing:'翼', hint:'谨慎小心，一点不敢大意'},
+  {full:'惊恐万状', blank:'___ 恐 万 状', missing:'惊', hint:'非常惊慌害怕的样子'},
+  {full:'势不可挡', blank:'势 不 ___ 挡', missing:'可', hint:'来势猛，没法抵挡'},
+  {full:'惊慌失措', blank:'惊 ___ 失 措', missing:'慌', hint:'害怕得不知怎么办'},
+  {full:'纹丝不动', blank:'___ 丝 不 动', missing:'纹', hint:'一点儿也不动'},
+  {full:'津津有味', blank:'津 津 有 ___', missing:'味', hint:'吃或听得特别有兴趣'},
+  {full:'一知半解', blank:'一 ___ 半 解', missing:'知', hint:'知道得不全面，理解不深'},
+  {full:'兴亡盛衰', blank:'兴 亡 ___ 衰', missing:'盛', hint:'兴起、灭亡、强盛、衰落'},
+  {full:'粉妆玉砌', blank:'粉 妆 玉 ___', missing:'砌', hint:'像用粉妆饰、用玉堆砌，多形容雪景'},
+  {full:'五颜六色', blank:'___ 颜 六 色', missing:'五', hint:'颜色很多很鲜艳'},
+  {full:'七上八下', blank:'七 上 ___ 下', missing:'八', hint:'心里不安、七上八下'},
+  {full:'九牛一毛', blank:'___ 牛 一 毛', missing:'九', hint:'九头牛身上的一根毛，形容极少'},
+  {full:'三心二意', blank:'三 心 ___ 意', missing:'二', hint:'心思不专一'},
+  {full:'十全十美', blank:'___ 全 十 美', missing:'十', hint:'完美，没有缺点'},
+  {full:'四面八方', blank:'四 面 ___ 方', missing:'八', hint:'周围各个方面'},
+  {full:'三言两语', blank:'___ 言 两 语', missing:'三', hint:'很少的几句话'},
+  {full:'一心一意', blank:'一 心 ___ 意', missing:'一', hint:'心思专一'},
+];
+
+const WORDS = [
+  // 部编/人教五上词语表双字词（缺一字 dial）
+  {full:'桂花', blank:'桂 ___', missing:'花', hint:'秋天开的香香的花'},
+  {full:'故乡', blank:'___ 乡', missing:'故', hint:'自己出生或长大的地方'},
+  {full:'欣赏', blank:'欣 ___', missing:'赏', hint:'带着喜爱去看、感受'},
+  {full:'成熟', blank:'___ 熟', missing:'成', hint:'果实长够了，或人懂事了'},
+  {full:'播种', blank:'播 ___', missing:'种', hint:'把种子撒进地里'},
+  {full:'收获', blank:'___ 获', missing:'收', hint:'把成熟的庄稼收进来'},
+  {full:'吩咐', blank:'吩 ___', missing:'咐', hint:'口头告诉别人去做'},
+  {full:'可贵', blank:'___ 贵', missing:'可', hint:'值得珍惜、难得'},
+  {full:'地道', blank:'地 ___', missing:'道', hint:'真正的、纯正的；也指地下通道'},
+  {full:'平原', blank:'___ 原', missing:'平', hint:'平坦宽广的陆地'},
+  {full:'封锁', blank:'封 ___', missing:'锁', hint:'用武力等隔断、控制'},
+  {full:'粉碎', blank:'___ 碎', missing:'粉', hint:'打碎成粉末；彻底打垮'},
+  {full:'广阔', blank:'广 ___', missing:'阔', hint:'面积或范围很大'},
+  {full:'游击', blank:'___ 击', missing:'游', hint:'灵活机动的战斗方式'},
+  {full:'转移', blank:'转 ___', missing:'移', hint:'改换位置或方向'},
+  {full:'召集', blank:'___ 集', missing:'召', hint:'通知大家集合'},
+  {full:'商议', blank:'商 ___', missing:'议', hint:'一起商量讨论'},
+  {full:'允诺', blank:'___ 诺', missing:'允', hint:'答应别人的请求'},
+  {full:'隆重', blank:'隆 ___', missing:'重', hint:'盛大而庄重'},
+  {full:'典礼', blank:'___ 礼', missing:'典', hint:'郑重的仪式'},
+  {full:'承诺', blank:'承 ___', missing:'诺', hint:'答应并保证做到'},
+  {full:'拒绝', blank:'___ 绝', missing:'拒', hint:'不接受、不同意'},
+  {full:'速度', blank:'速 ___', missing:'度', hint:'快慢的程度'},
+  {full:'冠军', blank:'___ 军', missing:'冠', hint:'比赛中的第一名'},
+  {full:'俯冲', blank:'俯 ___', missing:'冲', hint:'头朝下快速冲下去'},
+  {full:'赤道', blank:'___ 道', missing:'赤', hint:'地球中间的那一圈'},
+  {full:'弥漫', blank:'弥 ___', missing:'漫', hint:'烟、雾、气味等充满'},
+  {full:'海峡', blank:'___ 峡', missing:'海', hint:'两块陆地之间的狭窄海面'},
+  {full:'凌晨', blank:'凌 ___', missing:'晨', hint:'天快亮的时候'},
+  {full:'威严', blank:'___ 严', missing:'威', hint:'有威力而严肃的样子'},
+  {full:'岗位', blank:'岗 ___', missing:'位', hint:'工作的位置、职责'},
+  {full:'侵入', blank:'___ 入', missing:'侵', hint:'强行进入别人的地方'},
+  {full:'飘落', blank:'飘 ___', missing:'落', hint:'在空中飞着落下来'},
+  {full:'彩虹', blank:'___ 虹', missing:'彩', hint:'雨后天空出现的七色彩带'},
+  {full:'俗话', blank:'俗 ___', missing:'话', hint:'民间流传的通俗话'},
+  {full:'瑞雪', blank:'___ 雪', missing:'瑞', hint:'对农作物有好处的及时雪'},
+  {full:'供应', blank:'供 ___', missing:'应', hint:'提供所需的东西'},
+  {full:'精巧', blank:'___ 巧', missing:'精', hint:'精细巧妙'},
+  {full:'适宜', blank:'适 ___', missing:'宜', hint:'合适、恰当'},
+  {full:'寻常', blank:'___ 常', missing:'寻', hint:'平常、普通'},
 ];
 
 const RIDDLES = [
@@ -645,10 +731,20 @@ function propsFor(scene){
   return {desk:'书桌', board:'黑板', box:'小盒', shelf:'书架', door:'门', window:'窗户', decorNote:'窗外阳光暖暖的。'};
 }
 
-function dialOptsFor(missing){
-  const opts=['天','了','的','一','中',missing].filter((c,i,a)=>a.indexOf(c)===i);
+function dialOptsFor(missing, extra){
+  const base=['天','了','的','一','中','不','无','大','小','心','手','目'];
+  const pool=(extra||[]).concat(base);
+  const opts=[];
+  const add=c=>{ if(c && !opts.includes(c)) opts.push(c); };
+  add(missing);
+  for(const c of pool){ add(c); if(opts.length>=6) break; }
+  while(opts.length<6) add(base[opts.length%base.length]+''); // noop safety
+  // 答案不能停在第一格（测试要求 dial 初始不是答案）
   while(opts[0]===missing) opts.push(opts.shift());
-  return opts;
+  return opts.slice(0,6);
+}
+function dialOptsFromFull(full, missing){
+  return dialOptsFor(missing, [...full].filter(c=>c!==missing));
 }
 
 function makeRoom(idx){
@@ -832,7 +928,7 @@ function makeRoom(idx){
   } else if(mode===4){
     // Dual lock: both correct → second lock wins (stamp optional)
     const m = takeMath();
-    const useEn = true; // 台风单元：双锁第二关固定英语，保证对话/听力/作文都轮到
+    const useEn = idx%3!==1; // 英语约 2/3，语文（成语/词语）约 1/3
     let lock2note, lock2ans, lock2kind, lock2explain, lock2hint, lock2len, lock2opts;
     if(useEn){
       const e = nextEn();
@@ -842,12 +938,23 @@ function makeRoom(idx){
       lock2hint = [e.hint, '根据词性、首字母和课本单元想想，不要偷看答案哦。'];
       sub = '数学 · 英语';
     } else {
-      const p = nextPoem();
-      const dialOpts = dialOptsFor(p.missing);
-      lock2note = `《${p.title}》　${p.author}\n${p.blank}\n（想一想课文里完整的一句）`;
-      lock2ans = p.missing; lock2kind='dial'; lock2opts=[dialOpts];
-      lock2explain = `《${p.title}》：${p.full}，缺「${p.missing}」`;
-      lock2hint = [`这是《${p.title}》，${p.author}。`, '回忆整句，看空格前后的字，想想缺哪个字。'];
+      // 语文：成语 / 词语交替（古诗留给 mode6）
+      const useIdiom = idx%2===0;
+      if(useIdiom){
+        const idm = nextIdiom();
+        const dialOpts = dialOptsFromFull(idm.full, idm.missing);
+        lock2note = `【成语填空】${idm.blank}\n（想一想这个成语缺哪个字）`;
+        lock2ans = idm.missing; lock2kind='dial'; lock2opts=[dialOpts];
+        lock2explain = `成语「${idm.full}」缺「${idm.missing}」。${idm.hint}`;
+        lock2hint = ['这是一个四字成语，看空格前后想想。', '结合上下字的搭配来猜。', idm.hint];
+      } else {
+        const w = nextWord();
+        const dialOpts = dialOptsFromFull(w.full, w.missing);
+        lock2note = `【词语填空】${w.blank}\n（写出正确的字，组成词语）`;
+        lock2ans = w.missing; lock2kind='dial'; lock2opts=[dialOpts];
+        lock2explain = `词语「${w.full}」缺「${w.missing}」。${w.hint}`;
+        lock2hint = ['这是课表里的双字词，看空着的位置。', '想想常见搭配。', w.hint];
+      }
       sub = '数学 · 语文';
     }
     story = [
@@ -929,34 +1036,68 @@ function makeRoom(idx){
       [comboItem]:{name:'通行证',icon:'🎫',glow:1,desc:'卡片和徽章拼成的通行证。'}
     };
   } else if(mode===6){
-    // Poem dial → win on correct
-    const p = nextPoem();
-    sub = '语文 · 古诗';
-    story = [
-      `古诗转盘挑战「${title}」！`,
-      mentionXiaohuang ? `小黄想起课文里读过《${p.title}》。` : `墙上的诗少了一个字。`,
-      `转到正确的字，就算挑战成功——不用找门！`
-    ];
-    const opts = dialOptsFor(p.missing);
+    // 语文转盘：古诗 / 成语 / 词语 轮换
+    const langKind = Math.floor(idx/8) % 3; // 0 poem, 1 idiom, 2 word
+    let note, ans, opts, explainLines, hintTiers, label, boardText;
+    if(langKind===0){
+      const p = nextPoem();
+      note = `《${p.title}》　${p.author}\n${p.blank}\n（想一想课文里完整的一句）`;
+      ans = p.missing; opts = dialOptsFor(p.missing);
+      explainLines = [`《${p.title}》：${p.full}`, `缺的字是「${p.missing}」。`, '转对转盘，挑战成功。'];
+      hintTiers = ['看看墙上的古诗，少了哪个字？', `这是《${p.title}》，${p.author}。`, '读空格前后的字，回忆课文原句，不要直接翻答案。'];
+      label = '古诗'; boardText = `墙上写着《${p.title}》（${p.author}），少了一个字：`;
+      sub = '语文 · 古诗';
+      story = [
+        `古诗转盘挑战「${title}」！`,
+        mentionXiaohuang ? `小黄想起课文里读过《${p.title}》。` : `墙上的诗少了一个字。`,
+        `转到正确的字，就算挑战成功——不用找门！`
+      ];
+    } else if(langKind===1){
+      const idm = nextIdiom();
+      note = `【成语填空】${idm.blank}\n（想一想这个成语缺哪个字）`;
+      ans = idm.missing; opts = dialOptsFromFull(idm.full, idm.missing);
+      explainLines = [`成语「${idm.full}」`, `缺的字是「${idm.missing}」。${idm.hint}`, '转对转盘，挑战成功。'];
+      hintTiers = ['这是词语表里的四字成语，看空格。', '结合前后字想想常见搭配。', idm.hint];
+      label = '成语'; boardText = '黑板上写着一个成语，少了一个字：';
+      sub = '语文 · 成语';
+      story = [
+        `成语转盘挑战「${title}」！`,
+        mentionXiaohuang ? `小黄说：“词语表里刚学过这个成语！”` : `匣子上的成语少了一个字。`,
+        `转到正确的字，就算挑战成功——不用找门！`
+      ];
+    } else {
+      const w = nextWord();
+      note = `【词语填空】${w.blank}\n（写出正确的字，组成词语）`;
+      ans = w.missing; opts = dialOptsFromFull(w.full, w.missing);
+      explainLines = [`词语「${w.full}」`, `缺的字是「${w.missing}」。${w.hint}`, '转对转盘，挑战成功。'];
+      hintTiers = ['这是词语表里的双字词。', '看看空着的是第几个字。', w.hint];
+      label = '词语'; boardText = '黑板上写着一个词语，少了一个字：';
+      sub = '语文 · 词语';
+      story = [
+        `词语转盘挑战「${title}」！`,
+        mentionXiaohuang ? `小黄指着黑板：“把缺的字转出来！”` : `黑板上的词语少了一个字。`,
+        `转到正确的字，就算挑战成功——不用找门！`
+      ];
+    }
     objects = [
-      {id:'box', name:'诗匣转盘', box:[200,160,70,50], views:[
-        {if:['!box_open'], text:'诗匣上有一个汉字转盘。', note:`《${p.title}》　${p.author}\n${p.blank}\n（想一想课文里完整的一句）`,
-          lock:{kind:'dial', opts:[opts], answer:p.missing, prompt:'转到正确的字',
-            ok:{set:['box_open'], win:true, text:`转对了！「${title}」古诗挑战成功！`}, bad:'不对哦，再读一读这首诗。'}},
+      {id:'box', name: label+'匣转盘', box:[200,160,70,50], views:[
+        {if:['!box_open'], text:'匣子上有一个汉字转盘。', note,
+          lock:{kind:'dial', opts:[opts], answer:ans, prompt:'转到正确的字',
+            ok:{set:['box_open'], win:true, text:`转对了！「${title}」${label}挑战成功！`}, bad:'不对哦，再想想。'}},
         {text:'转盘已经转对啦。'}
       ]},
       {id:'board', name:P.board, box:[130,20,150,90], views:[
-        {text:`墙上写着《${p.title}》（${p.author}），少了一个字：`, note:`《${p.title}》　${p.author}\n${p.blank}\n（想一想课文里完整的一句）`}
+        {text:boardText, note}
       ]},
-      {id:'desk', name:P.desk, box:[30,150,120,50], views:[{text:`${P.desk}上有一本诗集，翻开正好是这一页。`}]},
+      {id:'desk', name:P.desk, box:[30,150,120,50], views:[{text:`${P.desk}上有语文课本，翻开正好是词语表。`}]},
       {id:'door', name:P.door, box:[310,160,70,120], views:[{text:`${P.door}开着，这关靠转盘通关。`}]},
-      {id:'shelf', name:P.shelf, box:[290,40,90,120], views:[{text:`${P.shelf}上有《唐诗三百首》。`}]},
+      {id:'shelf', name:P.shelf, box:[290,40,90,120], views:[{text:`${P.shelf}上有《成语词典》。`}]},
       ...decorObjs()
     ];
     combos=[];
-    hints=[hi('escaped','board',['看看墙上的古诗，少了哪个字？',`这是《${p.title}》，${p.author}。`,'读空格前后的字，回忆课文原句，不要直接翻答案。'])];
-    explain=[`《${p.title}》：${p.full}`,`缺的字是「${p.missing}」。`,'转对转盘，挑战成功。'];
-    solution=[['code','box',p.missing]];
+    hints=[hi('escaped','board', hintTiers)];
+    explain=explainLines;
+    solution=[['code','box',ans]];
     items={};
   } else {
     // mode 7: English spelling → win on correct
@@ -1005,12 +1146,13 @@ function makeRoom(idx){
 }
 
 const rooms = [];
-let mathI=0, poemI=0, enI=0, ridI=0, idiomI=0;
+let mathI=0, poemI=0, enI=0, ridI=0, idiomI=0, wordI=0;
 function nextMath(){const m=MATH[mathI%MATH.length];mathI++;return m;}
 function nextPoem(){const p=POEMS[poemI%POEMS.length];poemI++;return p;}
 function nextEn(){const e=EN_QA[enI%EN_QA.length];enI++;return e;}
 function nextRid(){const r=RIDDLES[ridI%RIDDLES.length];ridI++;return r;}
 function nextIdiom(){const i=IDIOMS[idiomI%IDIOMS.length];idiomI++;return i;}
+function nextWord(){const w=WORDS[wordI%WORDS.length];wordI++;return w;}
 
 for(let i=0;i<95;i++) rooms.push(makeRoom(i));
 
