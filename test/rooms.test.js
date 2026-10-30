@@ -37,6 +37,36 @@ const NUMW={one:1,two:2,three:3,four:4,five:5,six:6,seven:7,eight:8,nine:9,ten:1
 const IDIOMS=['五颜六色','七上八下','九牛一毛','三心二意','一心一意','四面八方','十全十美','千言万语','百发百中','三言两语','六神无主','八仙过海'];
 const CN='零一二三四五六七八九';
 const EN_QA={
+  "Nikki: A typhoon is coming! Please _____ the windows.\nYafei: OK!":"CLOSE",
+  "【听力·广播】Good morning! Typhoon Haitang is coming on Saturday afternoon. During a typhoon, try to stay indoors. Bring everything inside, and close your windows. Also, turn off your lights and TV. If you happen to be outside, get to a safe place quickly. Stay away from trees! Watch your step and don't run. Wear a colourful raincoat so others can see you. Remember, a raincoat is better than an umbrella. Keep safe!\n问：Typhoon Haitang is coming on _____ afternoon.":"SATURDAY",
+  "【小作文·校长通知】Dear students, there will be heavy rain. Please remember to turn off the _____ before you leave.":"LIGHTS",
+  "You'll need to turn off the _____.":"LIGHTS",
+  "【听力·广播】Typhoon Haitang is coming on Saturday afternoon. During a typhoon, try to stay indoors. Bring everything inside, and close your windows. Also, turn off your lights and TV. Stay away from trees! Wear a colourful raincoat. A raincoat is better than an umbrella.\n问：During a typhoon, try to stay _____.":"INDOORS",
+  "【小作文·校长通知】Make sure you wear a _____ on your way home.":"RAINCOAT",
+  "You'll want to close the _____.":"WINDOWS",
+  "【听力·广播】… Wear a colourful raincoat so others can see you. Remember, a raincoat is better than an umbrella. Keep safe!\n问：A raincoat is better than an _____.":"UMBRELLA",
+  "【小作文·安全 tip】You'll need to close the _____ when a typhoon is landing.":"WINDOWS",
+  "Yiming: What will we need to do?\nMulan: We will need to stay _____.":"INDOORS",
+  "【听力·广播】If you happen to be outside, get to a safe place quickly. Stay away from trees! Watch your step and don't run.\n问：Stay away from _____!":"TREES",
+  "【小作文·安全 tip】Please remember to bring everything _____.":"INSIDE",
+  "If you happen to be outside, get to a safe place _____.":"QUICKLY",
+  "【听力·广播】Bring everything inside, and close your windows. Also, turn off your lights and TV.\n问：Please close your _____.":"WINDOWS",
+  "【小作文·安全 tip】… is better than … → A _____ is better than an umbrella.":"RAINCOAT",
+  "Stay away from _____! (trees)":"TREES",
+  "【听力·广播】Wear a colourful raincoat so others can see you.\n问：Wear a colourful _____.":"RAINCOAT",
+  "【Wonderland】What can you find in a first-aid kit? A _____ helps you see in the dark.":"FLASHLIGHT",
+  "Bring everything _____. (把东西都收进来)":"INSIDE",
+  "【听力·广播】Also, turn off your lights and TV.\n问：Turn off your _____ and TV.":"LIGHTS",
+  "【Wonderland】In a first-aid kit, a _____ can cover a small cut.":"BANDAGE",
+  "Wear a colourful _____ so others can see you.":"RAINCOAT",
+  "A raincoat is better than an _____.":"UMBRELLA",
+  "A _____ will come on Friday. / A _____ is coming.":"TYPHOON",
+  "Girl A: You'll need to turn off the lights.\nGirl B: Good _____!":"IDEA",
+  "Girl A: You'll want to close the windows.\nGirl B: You're _____!":"RIGHT",
+  "Don't _____. We can keep safe.":"WORRY",
+  "Try to stay _____ during a typhoon. (opposite of outdoors)":"INDOORS",
+  "Right, what about _____? If you happen to be outside…":"OUTDOORS",
+  "【Wonderland】Blow a _____ if you need help and others cannot see you.":"WHISTLE",
   'How do you learn new words? I like to learn words in _____.':'CHUNKS',
   'What is a _____? A group of words that go together. (语块)':'CHUNK',
   '_____ = 担心':'WORRY',
@@ -280,10 +310,10 @@ function autoCalc(note){
     // fallback: compare char by char
     throw 'poem align '+JSON.stringify({pref,suf,f2,full});
   }
-  // 英语
-  if((m=note.match(/【英语题】(.+)/))){
+  // 英语（支持多行题干：广播听力 / 小作文）
+  if((m=note.match(/【英语题】([\s\S]+?)\n（线索：/)) || (m=note.match(/【英语题】(.+)/))){
     const q=m[1].trim();
-    if(!EN_QA[q])throw 'unknown en '+q;
+    if(!EN_QA[q])throw 'unknown en '+JSON.stringify(q).slice(0,120);
     return EN_QA[q];
   }
   // 字谜

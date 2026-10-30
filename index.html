@@ -777,7 +777,7 @@ var r10={id:'r10',title:'蝴蝶公园',emoji:'🎠',sub:'数学 · 英语',
     {text:'第一关已经打开了。'}
   ]},
   {id:'box',name:'花箱',box:[200,160,70,50],views:[
-    {if:['!box_open'],text:'花箱上还有第二关：',note:'【英语题】How do you learn new words? I like to learn words in _____.\n（线索：Unit 1，复数名词，6 个字母，首字母 C；指“成组的语块”。）',lock:{kind:'alpha',len:6,answer:'CHUNKS',prompt:'输入英文',ok:{set:['box_open'],win:true,text:'两关都过啦！「蝴蝶公园」挑战成功！'},bad:'再想想。'}},
+    {if:['!box_open'],text:'花箱上还有第二关：',note:'【英语题】Nikki: A typhoon is coming! Please _____ the windows.\nYafei: OK!\n（线索：Typhoon 单元对话，动词，5 个字母，首字母 C；把窗关上。）',lock:{kind:'alpha',len:5,answer:'CLOSE',prompt:'输入英文',ok:{set:['box_open'],win:true,text:'两关都过啦！「蝴蝶公园」挑战成功！'},bad:'再想想。'}},
     {text:'第二关已经完成。'}
   ]},
   {id:'door',name:'园门',box:[310,160,70,120],views:[
@@ -796,10 +796,10 @@ var r10={id:'r10',title:'蝴蝶公园',emoji:'🎠',sub:'数学 · 英语',
  combos:[],
  hints:[
   {until:'desk_open',obj:'desk',tiers:['先过第一关数学题。','仔细看【算一算】，可能不止一步。','小数乘整数：按整数相乘，再数小数点后有几位。']},
-  {until:'escaped',obj:'box',tiers:['去开第二关。','Unit 1，复数名词，6 个字母，首字母 C；指“成组的语块”。','根据词性、首字母和课本单元想想，不要偷看答案哦。']}
+  {until:'escaped',obj:'box',tiers:['去开第二关。','Typhoon 单元对话，动词，5 个字母，首字母 C；把窗关上。','根据词性、首字母和课本单元想想，不要偷看答案哦。']}
  ],
- explain:['2.5 × 4 = 10','How do you learn new words? I like to learn words in _____. → CHUNKS','两关都对，挑战成功。'],
- solution:[['code','desk','10'],['code','box','CHUNKS']],
+ explain:['2.5 × 4 = 10','Nikki: A typhoon is coming! Please _____ the windows.\nYafei: OK! → CLOSE','两关都对，挑战成功。'],
+ solution:[['code','desk','10'],['code','box','CLOSE']],
  art:function(f){var s='';s+=R(0,0,400,300,'#dff7e8')+R(0,160,400,140,'#8fd99a');
   s+=C(60,40,18,'#fff6a8')+C(320,30,12,'#fff',' opacity=".8"')+C(350,50,16,'#fff',' opacity=".7"');
   s+=P('M0 180Q100 140 200 180T400 170','#7ecf6a',' opacity=".35"');
@@ -897,11 +897,11 @@ var r12={id:'r12',title:'星星屋',emoji:'🔭',sub:'语文 · 古诗',
   s+=T(50,270,22,'🔭')+T(350,270,20,'🚀');
   return s;}
 };
-var r13={id:'r13',title:'奇妙实验室',emoji:'🔬',sub:'英语 · 拼写',
- story:['英语拼写站「奇妙实验室」！','小黄看到英文卡片：“用大写字母拼出来！”','拼对就算挑战成功，不用找钥匙开门。'],
+var r13={id:'r13',title:'奇妙实验室',emoji:'🔬',sub:'英语 · 听力',
+ story:['英语听力站「奇妙实验室」！（读一读广播文字再答题）','小黄看到英文卡片：“用大写字母拼出来！”','拼对就算挑战成功，不用找钥匙开门。'],
  objects:[
   {id:'desk',name:'实验台',box:[30,150,120,50],views:[
-    {if:['!desk_open'],text:'实验台小盒上有字母锁，旁边是英文卡片：',note:'【英语题】What is a _____? A group of words that go together. (语块)\n（线索：Unit 1，单数名词，5 个字母，首字母 C；“一小组常一起出现的词”。）',lock:{kind:'alpha',len:5,answer:'CHUNK',prompt:'输入英文大写',ok:{set:['desk_open'],win:true,text:'Correct! 「奇妙实验室」英语挑战成功！'},bad:'不对哦，再想想英文怎么说。'}},
+    {if:['!desk_open'],text:'实验台小盒上有字母锁，旁边是英文卡片：',note:'【英语题】【听力·广播】Good morning! Typhoon Haitang is coming on Saturday afternoon. During a typhoon, try to stay indoors. Bring everything inside, and close your windows. Also, turn off your lights and TV. If you happen to be outside, get to a safe place quickly. Stay away from trees! Watch your step and don\'t run. Wear a colourful raincoat so others can see you. Remember, a raincoat is better than an umbrella. Keep safe!\n问：Typhoon Haitang is coming on _____ afternoon.\n（线索：听广播找时间，8 个字母，首字母 S；一周里的星期六。）',lock:{kind:'alpha',len:8,answer:'SATURDAY',prompt:'输入英文大写',ok:{set:['desk_open'],win:true,text:'Correct! 「奇妙实验室」英语挑战成功！'},bad:'不对哦，再想想英文怎么说。'}},
     {text:'小盒已经打开啦。'}
   ]},
   {id:'board',name:'公式板',box:[130,20,150,90],views:[
@@ -922,10 +922,10 @@ var r13={id:'r13',title:'奇妙实验室',emoji:'🔬',sub:'英语 · 拼写',
  ],
  combos:[],
  hints:[
-  {until:'escaped',obj:'desk',tiers:['看看英文卡片上的问题，用大写字母拼。','Unit 1，单数名词，5 个字母，首字母 C；“一小组常一起出现的词”。','结合词性、首字母和中文意思方向来猜，不要直接写答案。']}
+  {until:'escaped',obj:'desk',tiers:['看看英文卡片上的问题，用大写字母拼。','听广播找时间，8 个字母，首字母 S；一周里的星期六。','结合词性、首字母和中文意思方向来猜，不要直接写答案。']}
  ],
- explain:['英文题：What is a _____? A group of words that go together. (语块)','正确答案是 CHUNK。（通关后讲解）','拼对通关。'],
- solution:[['code','desk','CHUNK']],
+ explain:['英文题：【听力·广播】Good morning! Typhoon Haitang is coming on Saturday afternoon. During a typhoon, try to stay indoors. Bring everything inside, and close your windows. Also, turn off your lights and TV. If you happen to be outside, get to a safe place quickly. Stay away from trees! Watch your step and don\'t run. Wear a colourful raincoat so others can see you. Remember, a raincoat is better than an umbrella. Keep safe!\n问：Typhoon Haitang is coming on _____ afternoon.','正确答案是 SATURDAY。（通关后讲解）','拼对通关。'],
+ solution:[['code','desk','SATURDAY']],
  art:function(f){var s='';s+=R(0,0,400,300,'#e8f4ff')+R(0,214,400,86,'#b8d4e8');
   s+=R(10,220,380,10,'#a0b8c8',2);
   s+=g('window',R(18,18,96,74,'#d4f1f9',8,SK)+C(90,40,10,'#fff2a8'));
@@ -1116,7 +1116,7 @@ var r18={id:'r18',title:'秘密小花园',emoji:'🌷',sub:'数学 · 英语',
     {text:'第一关已经打开了。'}
   ]},
   {id:'box',name:'花箱',box:[200,160,70,50],views:[
-    {if:['!box_open'],text:'花箱上还有第二关：',note:'【英语题】_____ = 担心\n（线索：Unit 1，动词/名词，5 个字母，首字母 W；心里不安、怕出事。）',lock:{kind:'alpha',len:5,answer:'WORRY',prompt:'输入英文',ok:{set:['box_open'],win:true,text:'两关都过啦！「秘密小花园」挑战成功！'},bad:'再想想。'}},
+    {if:['!box_open'],text:'花箱上还有第二关：',note:'【英语题】【小作文·校长通知】Dear students, there will be heavy rain. Please remember to turn off the _____ before you leave.\n（线索：通知信安全 tip，复数，6 个字母，首字母 L；离校前关掉。）',lock:{kind:'alpha',len:6,answer:'LIGHTS',prompt:'输入英文',ok:{set:['box_open'],win:true,text:'两关都过啦！「秘密小花园」挑战成功！'},bad:'再想想。'}},
     {text:'第二关已经完成。'}
   ]},
   {id:'door',name:'园门',box:[310,160,70,120],views:[
@@ -1135,10 +1135,10 @@ var r18={id:'r18',title:'秘密小花园',emoji:'🌷',sub:'数学 · 英语',
  combos:[],
  hints:[
   {until:'desk_open',obj:'desk',tiers:['先过第一关数学题。','仔细看【算一算】，可能不止一步。','先按整数相乘，再点小数点：两个因数一共有几位小数，积就有几位小数。']},
-  {until:'escaped',obj:'box',tiers:['去开第二关。','Unit 1，动词/名词，5 个字母，首字母 W；心里不安、怕出事。','根据词性、首字母和课本单元想想，不要偷看答案哦。']}
+  {until:'escaped',obj:'box',tiers:['去开第二关。','通知信安全 tip，复数，6 个字母，首字母 L；离校前关掉。','根据词性、首字母和课本单元想想，不要偷看答案哦。']}
  ],
- explain:['2.4 × 0.15 = 0.36。先按整数乘，再点上小数点。','_____ = 担心 → WORRY','两关都对，挑战成功。'],
- solution:[['code','desk','0.36'],['code','box','WORRY']],
+ explain:['2.4 × 0.15 = 0.36。先按整数乘，再点上小数点。','【小作文·校长通知】Dear students, there will be heavy rain. Please remember to turn off the _____ before you leave. → LIGHTS','两关都对，挑战成功。'],
+ solution:[['code','desk','0.36'],['code','box','LIGHTS']],
  art:function(f){var s='';s+=R(0,0,400,300,'#e8ffe8')+R(0,160,400,140,'#90d080');
   s+=C(60,40,18,'#fff6a8')+C(320,30,12,'#fff',' opacity=".8"')+C(350,50,16,'#fff',' opacity=".7"');
   s+=P('M0 180Q100 140 200 180T400 170','#7ecf6a',' opacity=".35"');
@@ -1236,11 +1236,11 @@ var r20={id:'r20',title:'智慧电脑室',emoji:'💻',sub:'语文 · 古诗',
   s+=T(48,275,22,'💻')+T(350,275,20,'🖥️');
   return s;}
 };
-var r21={id:'r21',title:'月亮书房',emoji:'📚',sub:'英语 · 拼写',
- story:['英语拼写站「月亮书房」！','书桌上的英文卡片写着一道题。','拼对就算挑战成功，不用找钥匙开门。'],
+var r21={id:'r21',title:'月亮书房',emoji:'📚',sub:'英语 · 对话',
+ story:['英语对话站「月亮书房」！','书桌上的英文卡片写着一道题。','拼对就算挑战成功，不用找钥匙开门。'],
  objects:[
   {id:'desk',name:'书桌',box:[30,150,120,50],views:[
-    {if:['!desk_open'],text:'书桌小盒上有字母锁，旁边是英文卡片：',note:'【英语题】Please _____ the sentences. (读)\n（线索：Unit 1，动词，4 个字母，首字母 R；用眼睛看文字出声或默读。）',lock:{kind:'alpha',len:4,answer:'READ',prompt:'输入英文大写',ok:{set:['desk_open'],win:true,text:'Correct! 「月亮书房」英语挑战成功！'},bad:'不对哦，再想想英文怎么说。'}},
+    {if:['!desk_open'],text:'书桌小盒上有字母锁，旁边是英文卡片：',note:'【英语题】You\'ll need to turn off the _____.\n（线索：Typhoon 单元 Spotlight，复数名词，6 个字母，首字母 L；屋里的灯。）',lock:{kind:'alpha',len:6,answer:'LIGHTS',prompt:'输入英文大写',ok:{set:['desk_open'],win:true,text:'Correct! 「月亮书房」英语挑战成功！'},bad:'不对哦，再想想英文怎么说。'}},
     {text:'小盒已经打开啦。'}
   ]},
   {id:'board',name:'黑板',box:[130,20,150,90],views:[
@@ -1261,10 +1261,10 @@ var r21={id:'r21',title:'月亮书房',emoji:'📚',sub:'英语 · 拼写',
  ],
  combos:[],
  hints:[
-  {until:'escaped',obj:'desk',tiers:['看看英文卡片上的问题，用大写字母拼。','Unit 1，动词，4 个字母，首字母 R；用眼睛看文字出声或默读。','结合词性、首字母和中文意思方向来猜，不要直接写答案。']}
+  {until:'escaped',obj:'desk',tiers:['看看英文卡片上的问题，用大写字母拼。','Typhoon 单元 Spotlight，复数名词，6 个字母，首字母 L；屋里的灯。','结合词性、首字母和中文意思方向来猜，不要直接写答案。']}
  ],
- explain:['英文题：Please _____ the sentences. (读)','正确答案是 READ。（通关后讲解）','拼对通关。'],
- solution:[['code','desk','READ']],
+ explain:['英文题：You\'ll need to turn off the _____.','正确答案是 LIGHTS。（通关后讲解）','拼对通关。'],
+ solution:[['code','desk','LIGHTS']],
  art:function(f){var s='';s+=R(0,0,400,300,'#ffe9c7')+R(0,214,400,86,'#e7b98a');
   for(var i=0;i<8;i++)s+=P('M'+(i*50+10)+' 0v214','none',' stroke="#ffdcae" stroke-width="8" opacity=".35"');
   s+=g('window',R(20,20,96,76,'#bfe8ff',8,SK)+C(96,42,11,'#fff2a8')+R(30,68,32,22,'#7ccf6c',3));
@@ -1456,7 +1456,7 @@ var r26={id:'r26',title:'书香角',emoji:'📖',sub:'数学 · 英语',
     {text:'第一关已经打开了。'}
   ]},
   {id:'box',name:'还书箱',box:[200,160,70,50],views:[
-    {if:['!box_open'],text:'还书箱上还有第二关：',note:'【英语题】Be careful! Don\'t let the book _____. (落下)\n（线索：Unit 1，动词，4 个字母，首字母 F；从上往下掉。）',lock:{kind:'alpha',len:4,answer:'FALL',prompt:'输入英文',ok:{set:['box_open'],win:true,text:'两关都过啦！「书香角」挑战成功！'},bad:'再想想。'}},
+    {if:['!box_open'],text:'还书箱上还有第二关：',note:'【英语题】【听力·广播】Typhoon Haitang is coming on Saturday afternoon. During a typhoon, try to stay indoors. Bring everything inside, and close your windows. Also, turn off your lights and TV. Stay away from trees! Wear a colourful raincoat. A raincoat is better than an umbrella.\n问：During a typhoon, try to stay _____.\n（线索：听广播找安全地点，7 个字母，首字母 I；待在屋里。）',lock:{kind:'alpha',len:7,answer:'INDOORS',prompt:'输入英文',ok:{set:['box_open'],win:true,text:'两关都过啦！「书香角」挑战成功！'},bad:'再想想。'}},
     {text:'第二关已经完成。'}
   ]},
   {id:'door',name:'馆门',box:[310,160,70,120],views:[
@@ -1475,10 +1475,10 @@ var r26={id:'r26',title:'书香角',emoji:'📖',sub:'数学 · 英语',
  combos:[],
  hints:[
   {until:'desk_open',obj:'desk',tiers:['先过第一关数学题。','仔细看【算一算】，可能不止一步。','小数除以小数：先把除数变成整数（两边同乘 10 或 100），再除。']},
-  {until:'escaped',obj:'box',tiers:['去开第二关。','Unit 1，动词，4 个字母，首字母 F；从上往下掉。','根据词性、首字母和课本单元想想，不要偷看答案哦。']}
+  {until:'escaped',obj:'box',tiers:['去开第二关。','听广播找安全地点，7 个字母，首字母 I；待在屋里。','根据词性、首字母和课本单元想想，不要偷看答案哦。']}
  ],
- explain:['4.8 ÷ 1.2 = 4','Be careful! Don\'t let the book _____. (落下) → FALL','两关都对，挑战成功。'],
- solution:[['code','desk','4'],['code','box','FALL']],
+ explain:['4.8 ÷ 1.2 = 4','【听力·广播】Typhoon Haitang is coming on Saturday afternoon. During a typhoon, try to stay indoors. Bring everything inside, and close your windows. Also, turn off your lights and TV. Stay away from trees! Wear a colourful raincoat. A raincoat is better than an umbrella.\n问：During a typhoon, try to stay _____. → INDOORS','两关都对，挑战成功。'],
+ solution:[['code','desk','4'],['code','box','INDOORS']],
  art:function(f){var s='';s+=R(0,0,400,300,'#fff0e0')+R(0,214,400,86,'#d4b896');
   s+=g('window',R(18,18,96,74,'#fdebd0',8,SK)+C(90,40,10,'#fff2a8'));
   s+=g('board',R(128,12,160,98,'#fef9e7',6,' stroke="#b7950b" stroke-width="5"')+T(208,45,14,'📖')+T(208,72,11,'本周推荐',' fill="#7d6608"')+T(208,92,9,'静静阅读',' fill="#b7950b"'));
@@ -1575,11 +1575,11 @@ var r28={id:'r28',title:'气泡实验室',emoji:'🔬',sub:'语文 · 古诗',
   s+=T(48,275,22,'🔬')+T(350,275,20,'🧬');
   return s;}
 };
-var r29={id:'r29',title:'果果超市',emoji:'🛒',sub:'英语 · 拼写',
- story:['英语拼写站「果果超市」！','柜台上的英文卡片写着一道题。','拼对就算挑战成功，不用找钥匙开门。'],
+var r29={id:'r29',title:'果果超市',emoji:'🛒',sub:'英语 · 小作文',
+ story:['英语小作文站「果果超市」！（把安全 tip / 通知补完整）','柜台上的英文卡片写着一道题。','拼对就算挑战成功，不用找钥匙开门。'],
  objects:[
   {id:'desk',name:'柜台',box:[30,150,120,50],views:[
-    {if:['!desk_open'],text:'柜台小盒上有字母锁，旁边是英文卡片：',note:'【英语题】Don\'t speak too _____. (大声的)\n（线索：Unit 1，形容词，4 个字母，首字母 L；声音很大。）',lock:{kind:'alpha',len:4,answer:'LOUD',prompt:'输入英文大写',ok:{set:['desk_open'],win:true,text:'Correct! 「果果超市」英语挑战成功！'},bad:'不对哦，再想想英文怎么说。'}},
+    {if:['!desk_open'],text:'柜台小盒上有字母锁，旁边是英文卡片：',note:'【英语题】【小作文·校长通知】Make sure you wear a _____ on your way home.\n（线索：通知信穿戴，8 个字母，首字母 R；彩色的更好。）',lock:{kind:'alpha',len:8,answer:'RAINCOAT',prompt:'输入英文大写',ok:{set:['desk_open'],win:true,text:'Correct! 「果果超市」英语挑战成功！'},bad:'不对哦，再想想英文怎么说。'}},
     {text:'小盒已经打开啦。'}
   ]},
   {id:'board',name:'促销牌',box:[130,20,150,90],views:[
@@ -1600,10 +1600,10 @@ var r29={id:'r29',title:'果果超市',emoji:'🛒',sub:'英语 · 拼写',
  ],
  combos:[],
  hints:[
-  {until:'escaped',obj:'desk',tiers:['看看英文卡片上的问题，用大写字母拼。','Unit 1，形容词，4 个字母，首字母 L；声音很大。','结合词性、首字母和中文意思方向来猜，不要直接写答案。']}
+  {until:'escaped',obj:'desk',tiers:['看看英文卡片上的问题，用大写字母拼。','通知信穿戴，8 个字母，首字母 R；彩色的更好。','结合词性、首字母和中文意思方向来猜，不要直接写答案。']}
  ],
- explain:['英文题：Don\'t speak too _____. (大声的)','正确答案是 LOUD。（通关后讲解）','拼对通关。'],
- solution:[['code','desk','LOUD']],
+ explain:['英文题：【小作文·校长通知】Make sure you wear a _____ on your way home.','正确答案是 RAINCOAT。（通关后讲解）','拼对通关。'],
+ solution:[['code','desk','RAINCOAT']],
  art:function(f){var s='';s+=R(0,0,400,300,'#fff5f0')+R(0,214,400,86,'#f0d4c8');
   for(var i=0;i<5;i++)s+=R(20+i*74,230,60,50,'#f8e0d0',4,' opacity=".5"');
   s+=g('window',R(16,16,100,78,'#cce8ff',8,SK)+T(66,55,14,'OPEN',' fill="#e74c3c" font-weight="700"'));
@@ -1824,7 +1824,7 @@ var r34={id:'r34',title:'石头过河',emoji:'🛶',sub:'数学 · 英语',
     {text:'第一关已经打开了。'}
   ]},
   {id:'box',name:'木箱',box:[200,160,70,50],views:[
-    {if:['!box_open'],text:'木箱上还有第二关：',note:'【英语题】Is there _____ in the box? (任何东西)\n（线索：Unit 1，代词，8 个字母，首字母 A；疑问/否定句里表示“任何事物”。）',lock:{kind:'alpha',len:8,answer:'ANYTHING',prompt:'输入英文',ok:{set:['box_open'],win:true,text:'两关都过啦！「石头过河」挑战成功！'},bad:'再想想。'}},
+    {if:['!box_open'],text:'木箱上还有第二关：',note:'【英语题】You\'ll want to close the _____.\n（线索：Typhoon 单元 Spotlight，复数名词，7 个字母，首字母 W；墙上的窗。）',lock:{kind:'alpha',len:7,answer:'WINDOWS',prompt:'输入英文',ok:{set:['box_open'],win:true,text:'两关都过啦！「石头过河」挑战成功！'},bad:'再想想。'}},
     {text:'第二关已经完成。'}
   ]},
   {id:'door',name:'渡船',box:[310,160,70,120],views:[
@@ -1843,10 +1843,10 @@ var r34={id:'r34',title:'石头过河',emoji:'🛶',sub:'数学 · 英语',
  combos:[],
  hints:[
   {until:'desk_open',obj:'desk',tiers:['先过第一关数学题。','仔细看【算一算】，可能不止一步。','把分数除开，一直除到余数重复。只把重复的数字按顺序连起来。']},
-  {until:'escaped',obj:'box',tiers:['去开第二关。','Unit 1，代词，8 个字母，首字母 A；疑问/否定句里表示“任何事物”。','根据词性、首字母和课本单元想想，不要偷看答案哦。']}
+  {until:'escaped',obj:'box',tiers:['去开第二关。','Typhoon 单元 Spotlight，复数名词，7 个字母，首字母 W；墙上的窗。','根据词性、首字母和课本单元想想，不要偷看答案哦。']}
  ],
- explain:['2/11=0.1818…，循环节连起来是 18。','Is there _____ in the box? (任何东西) → ANYTHING','两关都对，挑战成功。'],
- solution:[['code','desk','18'],['code','box','ANYTHING']],
+ explain:['2/11=0.1818…，循环节连起来是 18。','You\'ll want to close the _____. → WINDOWS','两关都对，挑战成功。'],
+ solution:[['code','desk','18'],['code','box','WINDOWS']],
  art:function(f){var s='';
   s+='<defs><linearGradient id="rvS" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3d8fd4"/><stop offset="1" stop-color="#d7f1ff"/></linearGradient></defs><defs><linearGradient id="rvW" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0e5f98"/><stop offset="1" stop-color="#7ec8ea"/></linearGradient></defs>';
   s+=R(0,0,400,128,'url(#rvS)');
@@ -1962,11 +1962,11 @@ var r36={id:'r36',title:'阳光教室',emoji:'🏫',sub:'语文 · 古诗',
   s+=g('door',R(308,140,66,140,'#dfeaf6',2,' stroke="#9bb7d4" stroke-width="4"')+R(322,154,38,36,'#fffaf2',2)+C(358,214,4,'#c9a06a')+T(340,292,11,'教室门',' fill="#3a2e24" stroke="#fff" stroke-width="3" paint-order="stroke"'));
   return s;}
 };
-var r37={id:'r37',title:'校园走廊',emoji:'🏫',sub:'英语 · 拼写',
- story:['英语拼写站「校园走廊」！','休息椅上的英文卡片写着一道题。','拼对就算挑战成功，不用找钥匙开门。'],
+var r37={id:'r37',title:'校园走廊',emoji:'🏫',sub:'英语 · 听力',
+ story:['英语听力站「校园走廊」！（读一读广播文字再答题）','休息椅上的英文卡片写着一道题。','拼对就算挑战成功，不用找钥匙开门。'],
  objects:[
   {id:'desk',name:'休息椅',box:[30,150,120,50],views:[
-    {if:['!desk_open'],text:'休息椅小盒上有字母锁，旁边是英文卡片：',note:'【英语题】There are a _____ new words on the card. (几个)\n（线索：Unit 1，a ___ = 几个，3 个字母，首字母 F。）',lock:{kind:'alpha',len:3,answer:'FEW',prompt:'输入英文大写',ok:{set:['desk_open'],win:true,text:'Correct! 「校园走廊」英语挑战成功！'},bad:'不对哦，再想想英文怎么说。'}},
+    {if:['!desk_open'],text:'休息椅小盒上有字母锁，旁边是英文卡片：',note:'【英语题】【听力·广播】… Wear a colourful raincoat so others can see you. Remember, a raincoat is better than an umbrella. Keep safe!\n问：A raincoat is better than an _____.\n（线索：听广播比一比，8 个字母，首字母 U；挡雨的伞。）',lock:{kind:'alpha',len:8,answer:'UMBRELLA',prompt:'输入英文大写',ok:{set:['desk_open'],win:true,text:'Correct! 「校园走廊」英语挑战成功！'},bad:'不对哦，再想想英文怎么说。'}},
     {text:'小盒已经打开啦。'}
   ]},
   {id:'board',name:'布告栏',box:[130,20,150,90],views:[
@@ -1987,10 +1987,10 @@ var r37={id:'r37',title:'校园走廊',emoji:'🏫',sub:'英语 · 拼写',
  ],
  combos:[],
  hints:[
-  {until:'escaped',obj:'desk',tiers:['看看英文卡片上的问题，用大写字母拼。','Unit 1，a ___ = 几个，3 个字母，首字母 F。','结合词性、首字母和中文意思方向来猜，不要直接写答案。']}
+  {until:'escaped',obj:'desk',tiers:['看看英文卡片上的问题，用大写字母拼。','听广播比一比，8 个字母，首字母 U；挡雨的伞。','结合词性、首字母和中文意思方向来猜，不要直接写答案。']}
  ],
- explain:['英文题：There are a _____ new words on the card. (几个)','正确答案是 FEW。（通关后讲解）','拼对通关。'],
- solution:[['code','desk','FEW']],
+ explain:['英文题：【听力·广播】… Wear a colourful raincoat so others can see you. Remember, a raincoat is better than an umbrella. Keep safe!\n问：A raincoat is better than an _____.','正确答案是 UMBRELLA。（通关后讲解）','拼对通关。'],
+ solution:[['code','desk','UMBRELLA']],
  art:function(f){var s='';
   s+='<defs><linearGradient id="hwW" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f7f4ea"/><stop offset="1" stop-color="#e7edf4"/></linearGradient></defs>';
   s+=R(0,0,400,300,'url(#hwW)');
@@ -2206,7 +2206,7 @@ var r42={id:'r42',title:'星空露营',emoji:'⛺',sub:'数学 · 英语',
     {text:'第一关已经打开了。'}
   ]},
   {id:'box',name:'冷藏盒',box:[200,160,70,50],views:[
-    {if:['!box_open'],text:'冷藏盒上还有第二关：',note:'【英语题】Can you write a _____? (句子)\n（线索：Unit 1，名词，8 个字母，首字母 S；由单词组成、表达完整意思。）',lock:{kind:'alpha',len:8,answer:'SENTENCE',prompt:'输入英文',ok:{set:['box_open'],win:true,text:'两关都过啦！「星空露营」挑战成功！'},bad:'再想想。'}},
+    {if:['!box_open'],text:'冷藏盒上还有第二关：',note:'【英语题】【小作文·安全 tip】You\'ll need to close the _____ when a typhoon is landing.\n（线索：作文句型 You\'ll need to…，7 个字母，首字母 W。）',lock:{kind:'alpha',len:7,answer:'WINDOWS',prompt:'输入英文',ok:{set:['box_open'],win:true,text:'两关都过啦！「星空露营」挑战成功！'},bad:'再想想。'}},
     {text:'第二关已经完成。'}
   ]},
   {id:'door',name:'帐篷',box:[310,160,70,120],views:[
@@ -2225,10 +2225,10 @@ var r42={id:'r42',title:'星空露营',emoji:'⛺',sub:'数学 · 英语',
  combos:[],
  hints:[
   {until:'desk_open',obj:'desk',tiers:['先过第一关数学题。','仔细看【算一算】，可能不止一步。','小数点对齐再相加。位数不一样时，空着的位可以看成 0。']},
-  {until:'escaped',obj:'box',tiers:['去开第二关。','Unit 1，名词，8 个字母，首字母 S；由单词组成、表达完整意思。','根据词性、首字母和课本单元想想，不要偷看答案哦。']}
+  {until:'escaped',obj:'box',tiers:['去开第二关。','作文句型 You\'ll need to…，7 个字母，首字母 W。','根据词性、首字母和课本单元想想，不要偷看答案哦。']}
  ],
- explain:['0.8 + 1.25 = 2.05。小数点对齐再相加。','Can you write a _____? (句子) → SENTENCE','两关都对，挑战成功。'],
- solution:[['code','desk','2.05'],['code','box','SENTENCE']],
+ explain:['0.8 + 1.25 = 2.05。小数点对齐再相加。','【小作文·安全 tip】You\'ll need to close the _____ when a typhoon is landing. → WINDOWS','两关都对，挑战成功。'],
+ solution:[['code','desk','2.05'],['code','box','WINDOWS']],
  art:function(f){var s='';
   s+='<defs><linearGradient id="cpS" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#121a33"/><stop offset="1" stop-color="#24344e"/></linearGradient></defs><defs><radialGradient id="cpF" cx="50%" cy="45%" r="55%"><stop offset="0" stop-color="#ffb15a"/><stop offset="1" stop-color="#ff7a2a" stop-opacity="0"/></radialGradient></defs>';
   s+=R(0,0,400,300,'url(#cpS)');
@@ -2338,11 +2338,11 @@ var r44={id:'r44',title:'玻璃温室',emoji:'🪴',sub:'语文 · 古诗',
   s+=g('door',R(308,140,68,130,'#e7fff2',2,' stroke="#3d9a62" stroke-width="4"')+P('M342 140 V270','none',' stroke="#3d9a62" stroke-width="3"')+T(342,250,11,'温室门',' fill="#3a2e24" stroke="#fff" stroke-width="3" paint-order="stroke"'));
   return s;}
 };
-var r45={id:'r45',title:'雨中街道',emoji:'🌧️',sub:'英语 · 拼写',
- story:['英语拼写站「雨中街道」！','候车椅上的英文卡片写着一道题。','拼对就算挑战成功，不用找钥匙开门。'],
+var r45={id:'r45',title:'雨中街道',emoji:'🌧️',sub:'英语 · 对话',
+ story:['英语对话站「雨中街道」！','候车椅上的英文卡片写着一道题。','拼对就算挑战成功，不用找钥匙开门。'],
  objects:[
   {id:'desk',name:'候车椅',box:[30,150,120,50],views:[
-    {if:['!desk_open'],text:'候车椅小盒上有字母锁，旁边是英文卡片：',note:'【英语题】Look them up in the _____. (词典)\n（线索：Unit 1，名词，10 个字母，首字母 D；查单词用的书。）',lock:{kind:'alpha',len:10,answer:'DICTIONARY',prompt:'输入英文大写',ok:{set:['desk_open'],win:true,text:'Correct! 「雨中街道」英语挑战成功！'},bad:'不对哦，再想想英文怎么说。'}},
+    {if:['!desk_open'],text:'候车椅小盒上有字母锁，旁边是英文卡片：',note:'【英语题】Yiming: What will we need to do?\nMulan: We will need to stay _____.\n（线索：Typhoon 单元，副词/场所，7 个字母，首字母 I；待在室内。）',lock:{kind:'alpha',len:7,answer:'INDOORS',prompt:'输入英文大写',ok:{set:['desk_open'],win:true,text:'Correct! 「雨中街道」英语挑战成功！'},bad:'不对哦，再想想英文怎么说。'}},
     {text:'小盒已经打开啦。'}
   ]},
   {id:'board',name:'雨天牌',box:[130,20,150,90],views:[
@@ -2363,10 +2363,10 @@ var r45={id:'r45',title:'雨中街道',emoji:'🌧️',sub:'英语 · 拼写',
  ],
  combos:[],
  hints:[
-  {until:'escaped',obj:'desk',tiers:['看看英文卡片上的问题，用大写字母拼。','Unit 1，名词，10 个字母，首字母 D；查单词用的书。','结合词性、首字母和中文意思方向来猜，不要直接写答案。']}
+  {until:'escaped',obj:'desk',tiers:['看看英文卡片上的问题，用大写字母拼。','Typhoon 单元，副词/场所，7 个字母，首字母 I；待在室内。','结合词性、首字母和中文意思方向来猜，不要直接写答案。']}
  ],
- explain:['英文题：Look them up in the _____. (词典)','正确答案是 DICTIONARY。（通关后讲解）','拼对通关。'],
- solution:[['code','desk','DICTIONARY']],
+ explain:['英文题：Yiming: What will we need to do?\nMulan: We will need to stay _____.','正确答案是 INDOORS。（通关后讲解）','拼对通关。'],
+ solution:[['code','desk','INDOORS']],
  art:function(f){var s='';
   s+='<defs><linearGradient id="rnS" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8aa0b4"/><stop offset="1" stop-color="#c5d0dc"/></linearGradient></defs>';
   s+=R(0,0,400,300,'url(#rnS)');
@@ -2580,7 +2580,7 @@ var r50={id:'r50',title:'黄昏公园',emoji:'🌆',sub:'数学 · 英语',
     {text:'第一关已经打开了。'}
   ]},
   {id:'box',name:'野餐篮',box:[200,160,70,50],views:[
-    {if:['!box_open'],text:'野餐篮上还有第二关：',note:'【英语题】Make word _____ with pictures. (卡片)\n（线索：Unit 1，复数名词，5 个字母，首字母 C；配图记单词用的纸片。）',lock:{kind:'alpha',len:5,answer:'CARDS',prompt:'输入英文',ok:{set:['box_open'],win:true,text:'两关都过啦！「黄昏公园」挑战成功！'},bad:'再想想。'}},
+    {if:['!box_open'],text:'野餐篮上还有第二关：',note:'【英语题】【听力·广播】If you happen to be outside, get to a safe place quickly. Stay away from trees! Watch your step and don\'t run.\n问：Stay away from _____!\n（线索：听广播找危险物，5 个字母，首字母 T；大风时别靠近。）',lock:{kind:'alpha',len:5,answer:'TREES',prompt:'输入英文',ok:{set:['box_open'],win:true,text:'两关都过啦！「黄昏公园」挑战成功！'},bad:'再想想。'}},
     {text:'第二关已经完成。'}
   ]},
   {id:'door',name:'园门',box:[310,160,70,120],views:[
@@ -2599,10 +2599,10 @@ var r50={id:'r50',title:'黄昏公园',emoji:'🌆',sub:'数学 · 英语',
  combos:[],
  hints:[
   {until:'desk_open',obj:'desk',tiers:['先过第一关数学题。','仔细看【算一算】，可能不止一步。','小数乘小数：先当整数乘，再看两个因数一共有几位小数。']},
-  {until:'escaped',obj:'box',tiers:['去开第二关。','Unit 1，复数名词，5 个字母，首字母 C；配图记单词用的纸片。','根据词性、首字母和课本单元想想，不要偷看答案哦。']}
+  {until:'escaped',obj:'box',tiers:['去开第二关。','听广播找危险物，5 个字母，首字母 T；大风时别靠近。','根据词性、首字母和课本单元想想，不要偷看答案哦。']}
  ],
- explain:['2.5 × 1.2 = 3','Make word _____ with pictures. (卡片) → CARDS','两关都对，挑战成功。'],
- solution:[['code','desk','3'],['code','box','CARDS']],
+ explain:['2.5 × 1.2 = 3','【听力·广播】If you happen to be outside, get to a safe place quickly. Stay away from trees! Watch your step and don\'t run.\n问：Stay away from _____! → TREES','两关都对，挑战成功。'],
+ solution:[['code','desk','3'],['code','box','TREES']],
  art:function(f){var s='';
   s+='<defs><linearGradient id="pkS" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f0a060"/><stop offset="1" stop-color="#6a8a4a"/></linearGradient></defs>';
   s+=R(0,0,400,300,'url(#pkS)');
@@ -2730,11 +2730,11 @@ var r52={id:'r52',title:'暮色过河',emoji:'🌅',sub:'语文 · 古诗',
   s+=T(40,250,14,'🦆');
   return s;}
 };
-var r53={id:'r53',title:'晚霞石桥',emoji:'🌇',sub:'英语 · 拼写',
- story:['英语拼写站「晚霞石桥」！','桥头石凳上的英文卡片写着一道题。','拼对就算挑战成功，不用找钥匙开门。'],
+var r53={id:'r53',title:'晚霞石桥',emoji:'🌇',sub:'英语 · 小作文',
+ story:['英语小作文站「晚霞石桥」！（把安全 tip / 通知补完整）','桥头石凳上的英文卡片写着一道题。','拼对就算挑战成功，不用找钥匙开门。'],
  objects:[
   {id:'desk',name:'桥头石凳',box:[30,150,120,50],views:[
-    {if:['!desk_open'],text:'桥头石凳小盒上有字母锁，旁边是英文卡片：',note:'【英语题】Keep the chunks in _____. (记在心里)\n（线索：Unit 1，短语 keep in ____，4 个字母，首字母 M；指头脑、心里。）',lock:{kind:'alpha',len:4,answer:'MIND',prompt:'输入英文大写',ok:{set:['desk_open'],win:true,text:'Correct! 「晚霞石桥」英语挑战成功！'},bad:'不对哦，再想想英文怎么说。'}},
+    {if:['!desk_open'],text:'桥头石凳小盒上有字母锁，旁边是英文卡片：',note:'【英语题】【小作文·安全 tip】Please remember to bring everything _____.\n（线索：作文句型 Please remember to…，6 个字母，首字母 I。）',lock:{kind:'alpha',len:6,answer:'INSIDE',prompt:'输入英文大写',ok:{set:['desk_open'],win:true,text:'Correct! 「晚霞石桥」英语挑战成功！'},bad:'不对哦，再想想英文怎么说。'}},
     {text:'小盒已经打开啦。'}
   ]},
   {id:'board',name:'桥名牌',box:[130,20,150,90],views:[
@@ -2755,10 +2755,10 @@ var r53={id:'r53',title:'晚霞石桥',emoji:'🌇',sub:'英语 · 拼写',
  ],
  combos:[],
  hints:[
-  {until:'escaped',obj:'desk',tiers:['看看英文卡片上的问题，用大写字母拼。','Unit 1，短语 keep in ____，4 个字母，首字母 M；指头脑、心里。','结合词性、首字母和中文意思方向来猜，不要直接写答案。']}
+  {until:'escaped',obj:'desk',tiers:['看看英文卡片上的问题，用大写字母拼。','作文句型 Please remember to…，6 个字母，首字母 I。','结合词性、首字母和中文意思方向来猜，不要直接写答案。']}
  ],
- explain:['英文题：Keep the chunks in _____. (记在心里)','正确答案是 MIND。（通关后讲解）','拼对通关。'],
- solution:[['code','desk','MIND']],
+ explain:['英文题：【小作文·安全 tip】Please remember to bring everything _____.','正确答案是 INSIDE。（通关后讲解）','拼对通关。'],
+ solution:[['code','desk','INSIDE']],
  art:function(f){var s='';
   s+='<defs><linearGradient id="brS" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e08a55"/><stop offset="1" stop-color="#6a5a78"/></linearGradient></defs><defs><linearGradient id="brW" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2a4a68"/><stop offset="1" stop-color="#c47a55"/></linearGradient></defs>';
   s+=R(0,0,400,300,'url(#brS)');
@@ -2972,7 +2972,7 @@ var r58={id:'r58',title:'傍晚农庄',emoji:'🌇',sub:'数学 · 英语',
     {text:'第一关已经打开了。'}
   ]},
   {id:'box',name:'菜筐',box:[200,160,70,50],views:[
-    {if:['!box_open'],text:'菜筐上还有第二关：',note:'【英语题】I\'m _____ to join the science club. (be going to)\n（线索：Unit 2，be _____ to 表打算，5 个字母，首字母 G。）',lock:{kind:'alpha',len:5,answer:'GOING',prompt:'输入英文',ok:{set:['box_open'],win:true,text:'两关都过啦！「傍晚农庄」挑战成功！'},bad:'再想想。'}},
+    {if:['!box_open'],text:'菜筐上还有第二关：',note:'【英语题】If you happen to be outside, get to a safe place _____.\n（线索：Typhoon 单元，副词，7 个字母，首字母 Q；赶快、迅速地。）',lock:{kind:'alpha',len:7,answer:'QUICKLY',prompt:'输入英文',ok:{set:['box_open'],win:true,text:'两关都过啦！「傍晚农庄」挑战成功！'},bad:'再想想。'}},
     {text:'第二关已经完成。'}
   ]},
   {id:'door',name:'谷仓',box:[310,160,70,120],views:[
@@ -2991,10 +2991,10 @@ var r58={id:'r58',title:'傍晚农庄',emoji:'🌇',sub:'数学 · 英语',
  combos:[],
  hints:[
   {until:'desk_open',obj:'desk',tiers:['先过第一关数学题。','仔细看【算一算】，可能不止一步。','除数是小数时，先把除数变成整数，被除数的小数点也向右移同样的位数，再除。']},
-  {until:'escaped',obj:'box',tiers:['去开第二关。','Unit 2，be _____ to 表打算，5 个字母，首字母 G。','根据词性、首字母和课本单元想想，不要偷看答案哦。']}
+  {until:'escaped',obj:'box',tiers:['去开第二关。','Typhoon 单元，副词，7 个字母，首字母 Q；赶快、迅速地。','根据词性、首字母和课本单元想想，不要偷看答案哦。']}
  ],
- explain:['7.2 ÷ 0.16 = 45。','I\'m _____ to join the science club. (be going to) → GOING','两关都对，挑战成功。'],
- solution:[['code','desk','45'],['code','box','GOING']],
+ explain:['7.2 ÷ 0.16 = 45。','If you happen to be outside, get to a safe place _____. → QUICKLY','两关都对，挑战成功。'],
+ solution:[['code','desk','45'],['code','box','QUICKLY']],
  art:function(f){var s='';
   s+='<defs><linearGradient id="fmS" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e07a3a"/><stop offset="1" stop-color="#f0c080"/></linearGradient></defs>';
   s+=R(0,0,400,150,'url(#fmS)');
@@ -3105,11 +3105,11 @@ var r60={id:'r60',title:'黄昏营地',emoji:'🔥',sub:'语文 · 古诗',
   s+=g('door',P('M308 272 L344 150 L380 272z','#f0a0a0')+P('M344 180 V260','none',' stroke="#5a3030" stroke-width="2"')+T(344,248,11,'帐篷',' fill="#3a2e24" stroke="#fff" stroke-width="3" paint-order="stroke"'));
   return s;}
 };
-var r61={id:'r61',title:'晚霞树屋',emoji:'🌇',sub:'英语 · 拼写',
- story:['英语拼写站「晚霞树屋」！','树枝台上的英文卡片写着一道题。','拼对就算挑战成功，不用找钥匙开门。'],
+var r61={id:'r61',title:'晚霞树屋',emoji:'🌇',sub:'英语 · 听力',
+ story:['英语听力站「晚霞树屋」！（读一读广播文字再答题）','树枝台上的英文卡片写着一道题。','拼对就算挑战成功，不用找钥匙开门。'],
  objects:[
   {id:'desk',name:'树枝台',box:[30,150,120,50],views:[
-    {if:['!desk_open'],text:'树枝台小盒上有字母锁，旁边是英文卡片：',note:'【英语题】Which _____ are you going to join? (社团)\n（线索：Unit 2，名词，4 个字母，首字母 C；兴趣小组/社团。）',lock:{kind:'alpha',len:4,answer:'CLUB',prompt:'输入英文大写',ok:{set:['desk_open'],win:true,text:'Correct! 「晚霞树屋」英语挑战成功！'},bad:'不对哦，再想想英文怎么说。'}},
+    {if:['!desk_open'],text:'树枝台小盒上有字母锁，旁边是英文卡片：',note:'【英语题】【听力·广播】Bring everything inside, and close your windows. Also, turn off your lights and TV.\n问：Please close your _____.\n（线索：听广播找动作对象，7 个字母，首字母 W。）',lock:{kind:'alpha',len:7,answer:'WINDOWS',prompt:'输入英文大写',ok:{set:['desk_open'],win:true,text:'Correct! 「晚霞树屋」英语挑战成功！'},bad:'不对哦，再想想英文怎么说。'}},
     {text:'小盒已经打开啦。'}
   ]},
   {id:'board',name:'树屋牌',box:[130,20,150,90],views:[
@@ -3130,10 +3130,10 @@ var r61={id:'r61',title:'晚霞树屋',emoji:'🌇',sub:'英语 · 拼写',
  ],
  combos:[],
  hints:[
-  {until:'escaped',obj:'desk',tiers:['看看英文卡片上的问题，用大写字母拼。','Unit 2，名词，4 个字母，首字母 C；兴趣小组/社团。','结合词性、首字母和中文意思方向来猜，不要直接写答案。']}
+  {until:'escaped',obj:'desk',tiers:['看看英文卡片上的问题，用大写字母拼。','听广播找动作对象，7 个字母，首字母 W。','结合词性、首字母和中文意思方向来猜，不要直接写答案。']}
  ],
- explain:['英文题：Which _____ are you going to join? (社团)','正确答案是 CLUB。（通关后讲解）','拼对通关。'],
- solution:[['code','desk','CLUB']],
+ explain:['英文题：【听力·广播】Bring everything inside, and close your windows. Also, turn off your lights and TV.\n问：Please close your _____.','正确答案是 WINDOWS。（通关后讲解）','拼对通关。'],
+ solution:[['code','desk','WINDOWS']],
  art:function(f){var s='';
   s+='<defs><linearGradient id="thS" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e09058"/><stop offset="1" stop-color="#8a6048"/></linearGradient></defs>';
   s+=R(0,0,400,300,'url(#thS)');
@@ -3345,7 +3345,7 @@ var r66={id:'r66',title:'清晨小房间',emoji:'🛋️',sub:'数学 · 英语'
     {text:'第一关已经打开了。'}
   ]},
   {id:'box',name:'玩具箱',box:[200,160,70,50],views:[
-    {if:['!box_open'],text:'玩具箱上还有第二关：',note:'【英语题】I want to join the _____ club. (科学)\n（线索：Unit 2，形容词性名词，7 个字母，首字母 S；研究自然的学科。）',lock:{kind:'alpha',len:7,answer:'SCIENCE',prompt:'输入英文',ok:{set:['box_open'],win:true,text:'两关都过啦！「清晨小房间」挑战成功！'},bad:'再想想。'}},
+    {if:['!box_open'],text:'玩具箱上还有第二关：',note:'【英语题】【小作文·安全 tip】… is better than … → A _____ is better than an umbrella.\n（线索：Spotlight 比较句，8 个字母，首字母 R。）',lock:{kind:'alpha',len:8,answer:'RAINCOAT',prompt:'输入英文',ok:{set:['box_open'],win:true,text:'两关都过啦！「清晨小房间」挑战成功！'},bad:'再想想。'}},
     {text:'第二关已经完成。'}
   ]},
   {id:'door',name:'房门',box:[310,160,70,120],views:[
@@ -3364,10 +3364,10 @@ var r66={id:'r66',title:'清晨小房间',emoji:'🛋️',sub:'数学 · 英语'
  combos:[],
  hints:[
   {until:'desk_open',obj:'desk',tiers:['先过第一关数学题。','仔细看【算一算】，可能不止一步。','看小数点后面，从第几位起才开始一直重复。如果第一位就不停地重复，答案就是 1。']},
-  {until:'escaped',obj:'box',tiers:['去开第二关。','Unit 2，形容词性名词，7 个字母，首字母 S；研究自然的学科。','根据词性、首字母和课本单元想想，不要偷看答案哦。']}
+  {until:'escaped',obj:'box',tiers:['去开第二关。','Spotlight 比较句，8 个字母，首字母 R。','根据词性、首字母和课本单元想想，不要偷看答案哦。']}
  ],
- explain:['5÷6=0.8333…，从小数点后第 2 位开始循环。','I want to join the _____ club. (科学) → SCIENCE','两关都对，挑战成功。'],
- solution:[['code','desk','2'],['code','box','SCIENCE']],
+ explain:['5÷6=0.8333…，从小数点后第 2 位开始循环。','【小作文·安全 tip】… is better than … → A _____ is better than an umbrella. → RAINCOAT','两关都对，挑战成功。'],
+ solution:[['code','desk','2'],['code','box','RAINCOAT']],
  art:function(f){var s='';
   s+='<defs><linearGradient id="lvW" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f7f3ea"/><stop offset="1" stop-color="#e7f0f8"/></linearGradient></defs><defs><radialGradient id="lvL" cx="50%" cy="45%" r="55%"><stop offset="0" stop-color="#ffe7a3"/><stop offset="1" stop-color="#ffe7a3" stop-opacity="0"/></radialGradient></defs>';
   s+=R(0,0,400,300,'url(#lvW)');
@@ -3482,11 +3482,11 @@ var r68={id:'r68',title:'清晨公园',emoji:'🌳',sub:'语文 · 古诗',
   s+=g('door',R(316,150,8,120,'#6b4428')+R(366,150,8,120,'#6b4428')+P('M316 156 Q344 118 374 156','none',' stroke="#2f8a40" stroke-width="8"')+T(344,250,11,'园门',' fill="#3a2e24" stroke="#fff" stroke-width="3" paint-order="stroke"'));
   return s;}
 };
-var r69={id:'r69',title:'晨露花园',emoji:'🌷',sub:'英语 · 拼写',
- story:['英语拼写站「晨露花园」！','小黄看到英文卡片：“用大写字母拼出来！”','拼对就算挑战成功，不用找钥匙开门。'],
+var r69={id:'r69',title:'晨露花园',emoji:'🌷',sub:'英语 · 对话',
+ story:['英语对话站「晨露花园」！','小黄看到英文卡片：“用大写字母拼出来！”','拼对就算挑战成功，不用找钥匙开门。'],
  objects:[
   {id:'desk',name:'花坛沿',box:[30,150,120,50],views:[
-    {if:['!desk_open'],text:'花坛沿小盒上有字母锁，旁边是英文卡片：',note:'【英语题】Any _____? (有什么建议吗？)\n（线索：Unit 2，不可数名词，6 个字母，首字母 A；别人给你的建议。）',lock:{kind:'alpha',len:6,answer:'ADVICE',prompt:'输入英文大写',ok:{set:['desk_open'],win:true,text:'Correct! 「晨露花园」英语挑战成功！'},bad:'不对哦，再想想英文怎么说。'}},
+    {if:['!desk_open'],text:'花坛沿小盒上有字母锁，旁边是英文卡片：',note:'【英语题】Stay away from _____! (trees)\n（线索：Typhoon 单元安全提示，复数名词，5 个字母，首字母 T；外面的大树。）',lock:{kind:'alpha',len:5,answer:'TREES',prompt:'输入英文大写',ok:{set:['desk_open'],win:true,text:'Correct! 「晨露花园」英语挑战成功！'},bad:'不对哦，再想想英文怎么说。'}},
     {text:'小盒已经打开啦。'}
   ]},
   {id:'board',name:'花名牌',box:[130,20,150,90],views:[
@@ -3507,10 +3507,10 @@ var r69={id:'r69',title:'晨露花园',emoji:'🌷',sub:'英语 · 拼写',
  ],
  combos:[],
  hints:[
-  {until:'escaped',obj:'desk',tiers:['看看英文卡片上的问题，用大写字母拼。','Unit 2，不可数名词，6 个字母，首字母 A；别人给你的建议。','结合词性、首字母和中文意思方向来猜，不要直接写答案。']}
+  {until:'escaped',obj:'desk',tiers:['看看英文卡片上的问题，用大写字母拼。','Typhoon 单元安全提示，复数名词，5 个字母，首字母 T；外面的大树。','结合词性、首字母和中文意思方向来猜，不要直接写答案。']}
  ],
- explain:['英文题：Any _____? (有什么建议吗？)','正确答案是 ADVICE。（通关后讲解）','拼对通关。'],
- solution:[['code','desk','ADVICE']],
+ explain:['英文题：Stay away from _____! (trees)','正确答案是 TREES。（通关后讲解）','拼对通关。'],
+ solution:[['code','desk','TREES']],
  art:function(f){var s='';
   s+='<defs><linearGradient id="flS" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff0f6"/><stop offset="1" stop-color="#f7fff4"/></linearGradient></defs><defs><radialGradient id="flG" cx="50%" cy="45%" r="55%"><stop offset="0" stop-color="#fff"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient></defs>';
   s+=R(0,0,400,300,'url(#flS)');
@@ -3735,7 +3735,7 @@ var r74={id:'r74',title:'晨雾森林',emoji:'🌲',sub:'数学 · 英语',
     {text:'第一关已经打开了。'}
   ]},
   {id:'box',name:'小木箱',box:[200,160,70,50],views:[
-    {if:['!box_open'],text:'小木箱上还有第二关：',note:'【英语题】You can try new _____. (事物)\n（线索：Unit 2，复数名词，6 个字母，首字母 T；各种新事物。）',lock:{kind:'alpha',len:6,answer:'THINGS',prompt:'输入英文',ok:{set:['box_open'],win:true,text:'两关都过啦！「晨雾森林」挑战成功！'},bad:'再想想。'}},
+    {if:['!box_open'],text:'小木箱上还有第二关：',note:'【英语题】【听力·广播】Wear a colourful raincoat so others can see you.\n问：Wear a colourful _____.\n（线索：听广播找穿戴，8 个字母，首字母 R。）',lock:{kind:'alpha',len:8,answer:'RAINCOAT',prompt:'输入英文',ok:{set:['box_open'],win:true,text:'两关都过啦！「晨雾森林」挑战成功！'},bad:'再想想。'}},
     {text:'第二关已经完成。'}
   ]},
   {id:'door',name:'小木屋',box:[310,160,70,120],views:[
@@ -3754,10 +3754,10 @@ var r74={id:'r74',title:'晨雾森林',emoji:'🌲',sub:'数学 · 英语',
  combos:[],
  hints:[
   {until:'desk_open',obj:'desk',tiers:['先过第一关数学题。','仔细看【算一算】，可能不止一步。','先算笔记本总价，再加橡皮总价。']},
-  {until:'escaped',obj:'box',tiers:['去开第二关。','Unit 2，复数名词，6 个字母，首字母 T；各种新事物。','根据词性、首字母和课本单元想想，不要偷看答案哦。']}
+  {until:'escaped',obj:'box',tiers:['去开第二关。','听广播找穿戴，8 个字母，首字母 R。','根据词性、首字母和课本单元想想，不要偷看答案哦。']}
  ],
- explain:['5.4×4+1.5×6=30.6','You can try new _____. (事物) → THINGS','两关都对，挑战成功。'],
- solution:[['code','desk','30.6'],['code','box','THINGS']],
+ explain:['5.4×4+1.5×6=30.6','【听力·广播】Wear a colourful raincoat so others can see you.\n问：Wear a colourful _____. → RAINCOAT','两关都对，挑战成功。'],
+ solution:[['code','desk','30.6'],['code','box','RAINCOAT']],
  art:function(f){var s='';
   s+='<defs><linearGradient id="foS" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d5e4d8"/><stop offset="1" stop-color="#eef6ea"/></linearGradient></defs>';
   s+=R(0,0,400,300,'url(#foS)');
@@ -3871,11 +3871,11 @@ var r76={id:'r76',title:'清晨农田',emoji:'🚜',sub:'语文 · 古诗',
   s+=T(30,270,14,'🐔');
   return s;}
 };
-var r77={id:'r77',title:'晨雾荷塘',emoji:'🪷',sub:'英语 · 拼写',
- story:['英语拼写站「晨雾荷塘」！','木码头上的英文卡片写着一道题。','拼对就算挑战成功，不用找钥匙开门。'],
+var r77={id:'r77',title:'晨雾荷塘',emoji:'🪷',sub:'英语 · 小作文',
+ story:['英语小作文站「晨雾荷塘」！（把安全 tip / 通知补完整）','木码头上的英文卡片写着一道题。','拼对就算挑战成功，不用找钥匙开门。'],
  objects:[
   {id:'desk',name:'木码头',box:[30,150,120,50],views:[
-    {if:['!desk_open'],text:'木码头小盒上有字母锁，旁边是英文卡片：',note:'【英语题】Join a club to make more _____. (朋友)\n（线索：Unit 2，复数名词，7 个字母，首字母 F；和你要好的人。）',lock:{kind:'alpha',len:7,answer:'FRIENDS',prompt:'输入英文大写',ok:{set:['desk_open'],win:true,text:'Correct! 「晨雾荷塘」英语挑战成功！'},bad:'不对哦，再想想英文怎么说。'}},
+    {if:['!desk_open'],text:'木码头小盒上有字母锁，旁边是英文卡片：',note:'【英语题】【Wonderland】What can you find in a first-aid kit? A _____ helps you see in the dark.\n（线索：急救箱拓展，10 个字母，首字母 F；手电筒。）',lock:{kind:'alpha',len:10,answer:'FLASHLIGHT',prompt:'输入英文大写',ok:{set:['desk_open'],win:true,text:'Correct! 「晨雾荷塘」英语挑战成功！'},bad:'不对哦，再想想英文怎么说。'}},
     {text:'小盒已经打开啦。'}
   ]},
   {id:'board',name:'荷塘牌',box:[130,20,150,90],views:[
@@ -3896,10 +3896,10 @@ var r77={id:'r77',title:'晨雾荷塘',emoji:'🪷',sub:'英语 · 拼写',
  ],
  combos:[],
  hints:[
-  {until:'escaped',obj:'desk',tiers:['看看英文卡片上的问题，用大写字母拼。','Unit 2，复数名词，7 个字母，首字母 F；和你要好的人。','结合词性、首字母和中文意思方向来猜，不要直接写答案。']}
+  {until:'escaped',obj:'desk',tiers:['看看英文卡片上的问题，用大写字母拼。','急救箱拓展，10 个字母，首字母 F；手电筒。','结合词性、首字母和中文意思方向来猜，不要直接写答案。']}
  ],
- explain:['英文题：Join a club to make more _____. (朋友)','正确答案是 FRIENDS。（通关后讲解）','拼对通关。'],
- solution:[['code','desk','FRIENDS']],
+ explain:['英文题：【Wonderland】What can you find in a first-aid kit? A _____ helps you see in the dark.','正确答案是 FLASHLIGHT。（通关后讲解）','拼对通关。'],
+ solution:[['code','desk','FLASHLIGHT']],
  art:function(f){var s='';
   s+='<defs><linearGradient id="ltS" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e7f6f8"/><stop offset="1" stop-color="#f4fffc"/></linearGradient></defs><defs><linearGradient id="ltW" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c5e4ea"/><stop offset="1" stop-color="#e7f6f8"/></linearGradient></defs>';
   s+=R(0,0,400,90,'url(#ltS)');
@@ -4112,7 +4112,7 @@ var r82={id:'r82',title:'雾中菜场',emoji:'🥬',sub:'数学 · 英语',
     {text:'第一关已经打开了。'}
   ]},
   {id:'box',name:'菜筐',box:[200,160,70,50],views:[
-    {if:['!box_open'],text:'菜筐上还有第二关：',note:'【英语题】I can share my _____. (想法)\n（线索：Unit 2，复数名词，5 个字母，首字母 I；头脑里的想法。）',lock:{kind:'alpha',len:5,answer:'IDEAS',prompt:'输入英文',ok:{set:['box_open'],win:true,text:'两关都过啦！「雾中菜场」挑战成功！'},bad:'再想想。'}},
+    {if:['!box_open'],text:'菜筐上还有第二关：',note:'【英语题】Bring everything _____. (把东西都收进来)\n（线索：Typhoon 单元，副词，6 个字母，首字母 I；往屋里收。）',lock:{kind:'alpha',len:6,answer:'INSIDE',prompt:'输入英文',ok:{set:['box_open'],win:true,text:'两关都过啦！「雾中菜场」挑战成功！'},bad:'再想想。'}},
     {text:'第二关已经完成。'}
   ]},
   {id:'door',name:'菜场口',box:[310,160,70,120],views:[
@@ -4131,10 +4131,10 @@ var r82={id:'r82',title:'雾中菜场',emoji:'🥬',sub:'数学 · 英语',
  combos:[],
  hints:[
   {until:'desk_open',obj:'desk',tiers:['先过第一关数学题。','仔细看【算一算】，可能不止一步。','小数点对齐再相减。位数少的一边补 0，不够减就向前一位借。']},
-  {until:'escaped',obj:'box',tiers:['去开第二关。','Unit 2，复数名词，5 个字母，首字母 I；头脑里的想法。','根据词性、首字母和课本单元想想，不要偷看答案哦。']}
+  {until:'escaped',obj:'box',tiers:['去开第二关。','Typhoon 单元，副词，6 个字母，首字母 I；往屋里收。','根据词性、首字母和课本单元想想，不要偷看答案哦。']}
  ],
- explain:['10.5 − 1.08 = 9.42。小数点对齐，位数少的补 0。','I can share my _____. (想法) → IDEAS','两关都对，挑战成功。'],
- solution:[['code','desk','9.42'],['code','box','IDEAS']],
+ explain:['10.5 − 1.08 = 9.42。小数点对齐，位数少的补 0。','Bring everything _____. (把东西都收进来) → INSIDE','两关都对，挑战成功。'],
+ solution:[['code','desk','9.42'],['code','box','INSIDE']],
  art:function(f){var s='';
   s+=R(0,0,400,300,'#f7f4ea');
   s+=R(0,210,400,90,'#e4d8c4');
@@ -4246,11 +4246,11 @@ var r84={id:'r84',title:'夜灯小房间',emoji:'🌙',sub:'语文 · 古诗',
   s+=g('door',R(308,150,64,128,'#f0d7b8',4,' stroke="#e0c2a0" stroke-width="3"')+C(356,214,4,'#e7b84a')+T(340,292,11,'房门',' fill="#3a2e24" stroke="#fff" stroke-width="3" paint-order="stroke"'));
   return s;}
 };
-var r85={id:'r85',title:'星空卧室',emoji:'🌙',sub:'英语 · 拼写',
- story:['英语拼写站「星空卧室」！','床头柜上的英文卡片写着一道题。','拼对就算挑战成功，不用找钥匙开门。'],
+var r85={id:'r85',title:'星空卧室',emoji:'🌙',sub:'英语 · 听力',
+ story:['英语听力站「星空卧室」！（读一读广播文字再答题）','床头柜上的英文卡片写着一道题。','拼对就算挑战成功，不用找钥匙开门。'],
  objects:[
   {id:'desk',name:'床头柜',box:[30,150,120,50],views:[
-    {if:['!desk_open'],text:'床头柜小盒上有字母锁，旁边是英文卡片：',note:'【英语题】A _____ can help us at the fair. (机器人)\n（线索：Unit 2，名词，5 个字母，首字母 R；会按程序干活的机器。）',lock:{kind:'alpha',len:5,answer:'ROBOT',prompt:'输入英文大写',ok:{set:['desk_open'],win:true,text:'Correct! 「星空卧室」英语挑战成功！'},bad:'不对哦，再想想英文怎么说。'}},
+    {if:['!desk_open'],text:'床头柜小盒上有字母锁，旁边是英文卡片：',note:'【英语题】【听力·广播】Also, turn off your lights and TV.\n问：Turn off your _____ and TV.\n（线索：听广播找要关掉的东西，6 个字母，首字母 L。）',lock:{kind:'alpha',len:6,answer:'LIGHTS',prompt:'输入英文大写',ok:{set:['desk_open'],win:true,text:'Correct! 「星空卧室」英语挑战成功！'},bad:'不对哦，再想想英文怎么说。'}},
     {text:'小盒已经打开啦。'}
   ]},
   {id:'board',name:'梦的清单',box:[130,20,150,90],views:[
@@ -4271,10 +4271,10 @@ var r85={id:'r85',title:'星空卧室',emoji:'🌙',sub:'英语 · 拼写',
  ],
  combos:[],
  hints:[
-  {until:'escaped',obj:'desk',tiers:['看看英文卡片上的问题，用大写字母拼。','Unit 2，名词，5 个字母，首字母 R；会按程序干活的机器。','结合词性、首字母和中文意思方向来猜，不要直接写答案。']}
+  {until:'escaped',obj:'desk',tiers:['看看英文卡片上的问题，用大写字母拼。','听广播找要关掉的东西，6 个字母，首字母 L。','结合词性、首字母和中文意思方向来猜，不要直接写答案。']}
  ],
- explain:['英文题：A _____ can help us at the fair. (机器人)','正确答案是 ROBOT。（通关后讲解）','拼对通关。'],
- solution:[['code','desk','ROBOT']],
+ explain:['英文题：【听力·广播】Also, turn off your lights and TV.\n问：Turn off your _____ and TV.','正确答案是 LIGHTS。（通关后讲解）','拼对通关。'],
+ solution:[['code','desk','LIGHTS']],
  art:function(f){var s='';
   s+='<defs><linearGradient id="bdW" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0e1430"/><stop offset="1" stop-color="#1a1840"/></linearGradient></defs><defs><radialGradient id="bdM" cx="50%" cy="45%" r="55%"><stop offset="0" stop-color="#fff6c8"/><stop offset="1" stop-color="#fff6c8" stop-opacity="0"/></radialGradient></defs>';
   s+=R(0,0,400,300,'url(#bdW)');
@@ -4505,7 +4505,7 @@ var r90={id:'r90',title:'夜自习教室',emoji:'🌙',sub:'数学 · 英语',
     {text:'第一关已经打开了。'}
   ]},
   {id:'box',name:'作业盒',box:[200,160,70,50],views:[
-    {if:['!box_open'],text:'作业盒上还有第二关：',note:'【英语题】Sports help me _____ taller and stronger. (成长/长高)\n（线索：Unit 2，动词，4 个字母，首字母 G；慢慢变高变壮。）',lock:{kind:'alpha',len:4,answer:'GROW',prompt:'输入英文',ok:{set:['box_open'],win:true,text:'两关都过啦！「夜自习教室」挑战成功！'},bad:'再想想。'}},
+    {if:['!box_open'],text:'作业盒上还有第二关：',note:'【英语题】【Wonderland】In a first-aid kit, a _____ can cover a small cut.\n（线索：急救箱拓展，7 个字母，首字母 B；绷带/创可贴一类。）',lock:{kind:'alpha',len:7,answer:'BANDAGE',prompt:'输入英文',ok:{set:['box_open'],win:true,text:'两关都过啦！「夜自习教室」挑战成功！'},bad:'再想想。'}},
     {text:'第二关已经完成。'}
   ]},
   {id:'door',name:'教室门',box:[310,160,70,120],views:[
@@ -4524,10 +4524,10 @@ var r90={id:'r90',title:'夜自习教室',emoji:'🌙',sub:'数学 · 英语',
  combos:[],
  hints:[
   {until:'desk_open',obj:'desk',tiers:['先过第一关数学题。','仔细看【算一算】，可能不止一步。','总重÷袋数。']},
-  {until:'escaped',obj:'box',tiers:['去开第二关。','Unit 2，动词，4 个字母，首字母 G；慢慢变高变壮。','根据词性、首字母和课本单元想想，不要偷看答案哦。']}
+  {until:'escaped',obj:'box',tiers:['去开第二关。','急救箱拓展，7 个字母，首字母 B；绷带/创可贴一类。','根据词性、首字母和课本单元想想，不要偷看答案哦。']}
  ],
- explain:['7.5 ÷ 5 = 1.5','Sports help me _____ taller and stronger. (成长/长高) → GROW','两关都对，挑战成功。'],
- solution:[['code','desk','1.5'],['code','box','GROW']],
+ explain:['7.5 ÷ 5 = 1.5','【Wonderland】In a first-aid kit, a _____ can cover a small cut. → BANDAGE','两关都对，挑战成功。'],
+ solution:[['code','desk','1.5'],['code','box','BANDAGE']],
  art:function(f){var s='';
   s+=R(0,0,400,300,'#1c2838');
   s+=R(0,236,400,64,'#2a241c');
@@ -4636,11 +4636,11 @@ var r92={id:'r92',title:'萤火森林',emoji:'✨',sub:'语文 · 古诗',
   s+=g('door',R(308,156,68,110,'#c49a62',3)+P('M308 156 l34-26 34 26','#8d4a3a')+R(328,178,28,22,'#f6e2a8',2)+T(342,250,11,'小木屋',' fill="#3a2e24" stroke="#fff" stroke-width="3" paint-order="stroke"'));
   return s;}
 };
-var r93={id:'r93',title:'月夜沙滩',emoji:'🌙',sub:'英语 · 拼写',
- story:['英语拼写站「月夜沙滩」！','沙桌上的英文卡片写着一道题。','拼对就算挑战成功，不用找钥匙开门。'],
+var r93={id:'r93',title:'月夜沙滩',emoji:'🌙',sub:'英语 · 对话',
+ story:['英语对话站「月夜沙滩」！','沙桌上的英文卡片写着一道题。','拼对就算挑战成功，不用找钥匙开门。'],
  objects:[
   {id:'desk',name:'沙桌',box:[30,150,120,50],views:[
-    {if:['!desk_open'],text:'沙桌小盒上有字母锁，旁边是英文卡片：',note:'【英语题】It is a _____ to learn new skills. (机会)\n（线索：Unit 2，名词，6 个字母，首字母 C；难得的机会。）',lock:{kind:'alpha',len:6,answer:'CHANCE',prompt:'输入英文大写',ok:{set:['desk_open'],win:true,text:'Correct! 「月夜沙滩」英语挑战成功！'},bad:'不对哦，再想想英文怎么说。'}},
+    {if:['!desk_open'],text:'沙桌小盒上有字母锁，旁边是英文卡片：',note:'【英语题】Wear a colourful _____ so others can see you.\n（线索：Typhoon 单元，名词，8 个字母，首字母 R；彩色雨衣。）',lock:{kind:'alpha',len:8,answer:'RAINCOAT',prompt:'输入英文大写',ok:{set:['desk_open'],win:true,text:'Correct! 「月夜沙滩」英语挑战成功！'},bad:'不对哦，再想想英文怎么说。'}},
     {text:'小盒已经打开啦。'}
   ]},
   {id:'board',name:'沙滩牌',box:[130,20,150,90],views:[
@@ -4661,10 +4661,10 @@ var r93={id:'r93',title:'月夜沙滩',emoji:'🌙',sub:'英语 · 拼写',
  ],
  combos:[],
  hints:[
-  {until:'escaped',obj:'desk',tiers:['看看英文卡片上的问题，用大写字母拼。','Unit 2，名词，6 个字母，首字母 C；难得的机会。','结合词性、首字母和中文意思方向来猜，不要直接写答案。']}
+  {until:'escaped',obj:'desk',tiers:['看看英文卡片上的问题，用大写字母拼。','Typhoon 单元，名词，8 个字母，首字母 R；彩色雨衣。','结合词性、首字母和中文意思方向来猜，不要直接写答案。']}
  ],
- explain:['英文题：It is a _____ to learn new skills. (机会)','正确答案是 CHANCE。（通关后讲解）','拼对通关。'],
- solution:[['code','desk','CHANCE']],
+ explain:['英文题：Wear a colourful _____ so others can see you.','正确答案是 RAINCOAT。（通关后讲解）','拼对通关。'],
+ solution:[['code','desk','RAINCOAT']],
  art:function(f){var s='';
   s+='<defs><linearGradient id="bcS" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0e1c38"/><stop offset="1" stop-color="#1a3058"/></linearGradient></defs><defs><linearGradient id="bcW" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0a2748"/><stop offset="1" stop-color="#16385c"/></linearGradient></defs>';
   s+=R(0,0,400,168,'url(#bcS)');
@@ -4880,7 +4880,7 @@ var r98={id:'r98',title:'灯下温室',emoji:'✨',sub:'数学 · 英语',
     {text:'第一关已经打开了。'}
   ]},
   {id:'box',name:'花盆箱',box:[200,160,70,50],views:[
-    {if:['!box_open'],text:'花盆箱上还有第二关：',note:'【英语题】I like dancing as _____. (也)\n（线索：Unit 2，as ___ = 也，4 个字母，首字母 W。）',lock:{kind:'alpha',len:4,answer:'WELL',prompt:'输入英文',ok:{set:['box_open'],win:true,text:'两关都过啦！「灯下温室」挑战成功！'},bad:'再想想。'}},
+    {if:['!box_open'],text:'花盆箱上还有第二关：',note:'【英语题】A raincoat is better than an _____.\n（线索：Typhoon 单元比较句，名词，8 个字母，首字母 U；雨伞。）',lock:{kind:'alpha',len:8,answer:'UMBRELLA',prompt:'输入英文',ok:{set:['box_open'],win:true,text:'两关都过啦！「灯下温室」挑战成功！'},bad:'再想想。'}},
     {text:'第二关已经完成。'}
   ]},
   {id:'door',name:'温室门',box:[310,160,70,120],views:[
@@ -4899,10 +4899,10 @@ var r98={id:'r98',title:'灯下温室',emoji:'✨',sub:'数学 · 英语',
  combos:[],
  hints:[
   {until:'desk_open',obj:'desk',tiers:['先过第一关数学题。','仔细看【算一算】，可能不止一步。','看清每一步在求什么，一步一步算。有加减又有乘，先乘再加减。']},
-  {until:'escaped',obj:'box',tiers:['去开第二关。','Unit 2，as ___ = 也，4 个字母，首字母 W。','根据词性、首字母和课本单元想想，不要偷看答案哦。']}
+  {until:'escaped',obj:'box',tiers:['去开第二关。','Typhoon 单元比较句，名词，8 个字母，首字母 U；雨伞。','根据词性、首字母和课本单元想想，不要偷看答案哦。']}
  ],
- explain:['4 + 0.75 − 1.2 = 3.55。先加再减。','I like dancing as _____. (也) → WELL','两关都对，挑战成功。'],
- solution:[['code','desk','3.55'],['code','box','WELL']],
+ explain:['4 + 0.75 − 1.2 = 3.55。先加再减。','A raincoat is better than an _____. → UMBRELLA','两关都对，挑战成功。'],
+ solution:[['code','desk','3.55'],['code','box','UMBRELLA']],
  art:function(f){var s='';
   s+='<defs><linearGradient id="ghS" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#10281c"/><stop offset="1" stop-color="#102018"/></linearGradient></defs>';
   s+=R(0,0,400,300,'url(#ghS)');

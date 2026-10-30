@@ -30,6 +30,37 @@ const POEMS = [
 ];
 
 const EN_QA = [
+  // ---- Typhoon Safety（教科版五上）对话 / 听力 / 小作文（三类交错，保证前 20 槽都用到）----
+  {q:'Nikki: A typhoon is coming! Please _____ the windows.\nYafei: OK!', a:'CLOSE', hint:'Typhoon 单元对话，动词，5 个字母，首字母 C；把窗关上。', tag:'dialog'},
+  {q:'【听力·广播】Good morning! Typhoon Haitang is coming on Saturday afternoon. During a typhoon, try to stay indoors. Bring everything inside, and close your windows. Also, turn off your lights and TV. If you happen to be outside, get to a safe place quickly. Stay away from trees! Watch your step and don\'t run. Wear a colourful raincoat so others can see you. Remember, a raincoat is better than an umbrella. Keep safe!\n问：Typhoon Haitang is coming on _____ afternoon.', a:'SATURDAY', hint:'听广播找时间，8 个字母，首字母 S；一周里的星期六。', tag:'listen'},
+  {q:'【小作文·校长通知】Dear students, there will be heavy rain. Please remember to turn off the _____ before you leave.', a:'LIGHTS', hint:'通知信安全 tip，复数，6 个字母，首字母 L；离校前关掉。', tag:'write'},
+  {q:'You\'ll need to turn off the _____.', a:'LIGHTS', hint:'Typhoon 单元 Spotlight，复数名词，6 个字母，首字母 L；屋里的灯。', tag:'dialog'},
+  {q:'【听力·广播】Typhoon Haitang is coming on Saturday afternoon. During a typhoon, try to stay indoors. Bring everything inside, and close your windows. Also, turn off your lights and TV. Stay away from trees! Wear a colourful raincoat. A raincoat is better than an umbrella.\n问：During a typhoon, try to stay _____.', a:'INDOORS', hint:'听广播找安全地点，7 个字母，首字母 I；待在屋里。', tag:'listen'},
+  {q:'【小作文·校长通知】Make sure you wear a _____ on your way home.', a:'RAINCOAT', hint:'通知信穿戴，8 个字母，首字母 R；彩色的更好。', tag:'write'},
+  {q:'You\'ll want to close the _____.', a:'WINDOWS', hint:'Typhoon 单元 Spotlight，复数名词，7 个字母，首字母 W；墙上的窗。', tag:'dialog'},
+  {q:'【听力·广播】… Wear a colourful raincoat so others can see you. Remember, a raincoat is better than an umbrella. Keep safe!\n问：A raincoat is better than an _____.', a:'UMBRELLA', hint:'听广播比一比，8 个字母，首字母 U；挡雨的伞。', tag:'listen'},
+  {q:'【小作文·安全 tip】You\'ll need to close the _____ when a typhoon is landing.', a:'WINDOWS', hint:'作文句型 You\'ll need to…，7 个字母，首字母 W。', tag:'write'},
+  {q:'Yiming: What will we need to do?\nMulan: We will need to stay _____.', a:'INDOORS', hint:'Typhoon 单元，副词/场所，7 个字母，首字母 I；待在室内。', tag:'dialog'},
+  {q:'【听力·广播】If you happen to be outside, get to a safe place quickly. Stay away from trees! Watch your step and don\'t run.\n问：Stay away from _____!', a:'TREES', hint:'听广播找危险物，5 个字母，首字母 T；大风时别靠近。', tag:'listen'},
+  {q:'【小作文·安全 tip】Please remember to bring everything _____.', a:'INSIDE', hint:'作文句型 Please remember to…，6 个字母，首字母 I。', tag:'write'},
+  {q:'If you happen to be outside, get to a safe place _____.', a:'QUICKLY', hint:'Typhoon 单元，副词，7 个字母，首字母 Q；赶快、迅速地。', tag:'dialog'},
+  {q:'【听力·广播】Bring everything inside, and close your windows. Also, turn off your lights and TV.\n问：Please close your _____.', a:'WINDOWS', hint:'听广播找动作对象，7 个字母，首字母 W。', tag:'listen'},
+  {q:'【小作文·安全 tip】… is better than … → A _____ is better than an umbrella.', a:'RAINCOAT', hint:'Spotlight 比较句，8 个字母，首字母 R。', tag:'write'},
+  {q:'Stay away from _____! (trees)', a:'TREES', hint:'Typhoon 单元安全提示，复数名词，5 个字母，首字母 T；外面的大树。', tag:'dialog'},
+  {q:'【听力·广播】Wear a colourful raincoat so others can see you.\n问：Wear a colourful _____.', a:'RAINCOAT', hint:'听广播找穿戴，8 个字母，首字母 R。', tag:'listen'},
+  {q:'【Wonderland】What can you find in a first-aid kit? A _____ helps you see in the dark.', a:'FLASHLIGHT', hint:'急救箱拓展，10 个字母，首字母 F；手电筒。', tag:'write'},
+  {q:'Bring everything _____. (把东西都收进来)', a:'INSIDE', hint:'Typhoon 单元，副词，6 个字母，首字母 I；往屋里收。', tag:'dialog'},
+  {q:'【听力·广播】Also, turn off your lights and TV.\n问：Turn off your _____ and TV.', a:'LIGHTS', hint:'听广播找要关掉的东西，6 个字母，首字母 L。', tag:'listen'},
+  {q:'【Wonderland】In a first-aid kit, a _____ can cover a small cut.', a:'BANDAGE', hint:'急救箱拓展，7 个字母，首字母 B；绷带/创可贴一类。', tag:'write'},
+  {q:'Wear a colourful _____ so others can see you.', a:'RAINCOAT', hint:'Typhoon 单元，名词，8 个字母，首字母 R；彩色雨衣。', tag:'dialog'},
+  {q:'A raincoat is better than an _____.', a:'UMBRELLA', hint:'Typhoon 单元比较句，名词，8 个字母，首字母 U；雨伞。', tag:'dialog'},
+  {q:'A _____ will come on Friday. / A _____ is coming.', a:'TYPHOON', hint:'Typhoon 单元核心词，名词，7 个字母，首字母 T；强风暴雨天气。', tag:'dialog'},
+  {q:'Girl A: You\'ll need to turn off the lights.\nGirl B: Good _____!', a:'IDEA', hint:'Typhoon 单元回应语，名词，4 个字母，首字母 I；好主意。', tag:'dialog'},
+  {q:'Girl A: You\'ll want to close the windows.\nGirl B: You\'re _____!', a:'RIGHT', hint:'Typhoon 单元回应语，形容词，5 个字母，首字母 R；你说得对。', tag:'dialog'},
+  {q:'Don\'t _____. We can keep safe.', a:'WORRY', hint:'Typhoon 单元安慰语，动词，5 个字母，首字母 W；别担心。', tag:'dialog'},
+  {q:'Try to stay _____ during a typhoon. (opposite of outdoors)', a:'INDOORS', hint:'Typhoon 单元，7 个字母，首字母 I；室内；outdoors 的反义。', tag:'dialog'},
+  {q:'Right, what about _____? If you happen to be outside…', a:'OUTDOORS', hint:'Typhoon 单元，8 个字母，首字母 O；室外、户外。', tag:'dialog'},
+  {q:'【Wonderland】Blow a _____ if you need help and others cannot see you.', a:'WHISTLE', hint:'急救箱拓展，7 个字母，首字母 W；哨子。', tag:'write'},
   // Unit 1 — hints: unit/letter count/first letter/meaning direction ONLY (never spell the answer)
   {q:'How do you learn new words? I like to learn words in _____.', a:'CHUNKS', hint:'Unit 1，复数名词，6 个字母，首字母 C；指“成组的语块”。'},
   {q:'What is a _____? A group of words that go together. (语块)', a:'CHUNK', hint:'Unit 1，单数名词，5 个字母，首字母 C；“一小组常一起出现的词”。'},
@@ -801,7 +832,7 @@ function makeRoom(idx){
   } else if(mode===4){
     // Dual lock: both correct → second lock wins (stamp optional)
     const m = takeMath();
-    const useEn = idx%2===0;
+    const useEn = true; // 台风单元：双锁第二关固定英语，保证对话/听力/作文都轮到
     let lock2note, lock2ans, lock2kind, lock2explain, lock2hint, lock2len, lock2opts;
     if(useEn){
       const e = nextEn();
@@ -930,9 +961,12 @@ function makeRoom(idx){
   } else {
     // mode 7: English spelling → win on correct
     const e = nextEn();
-    sub = '英语 · 拼写';
+    const tagLabel = e.tag==='listen' ? '听力' : (e.tag==='write' ? '小作文' : (e.tag==='dialog' ? '对话' : '拼写'));
+    sub = `英语 · ${tagLabel}`;
     story = [
-      `英语拼写站「${title}」！`,
+      e.tag==='listen' ? `英语听力站「${title}」！（读一读广播文字再答题）` :
+        e.tag==='write' ? `英语小作文站「${title}」！（把安全 tip / 通知补完整）` :
+        `英语${tagLabel}站「${title}」！`,
       mentionXiaohuang ? `小黄看到英文卡片：“用大写字母拼出来！”` : `${P.desk}上的英文卡片写着一道题。`,
       `拼对就算挑战成功，不用找钥匙开门。`
     ];
