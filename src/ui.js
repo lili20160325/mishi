@@ -7,7 +7,7 @@ function $$(s,r){return Array.prototype.slice.call((r||document).querySelectorAl
 function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
 var QS=new URLSearchParams(location.search);
 /* ---------------- 存档（本页专用，与解谜大冒险 puzzle_v1 互不影响） ---------------- */
-var KEY='mishi_v3'; /* 厚密室双锁重做，进度重开 */
+var KEY='mishi_mystery_v1'; /* 悬疑主线重做 */
 function defStore(){return {v:2,sound:true,best:{},rooms:{}};}
 var store;try{if(QS.has('reset'))localStorage.removeItem(KEY);store=JSON.parse(localStorage.getItem(KEY)||'null');}catch(e){store=null;}
 if(!store||store.v!==2)store=defStore();['best','rooms'].forEach(function(k){if(!store[k])store[k]={};});
@@ -33,7 +33,7 @@ var toastT=null;function toast(t,ms){var el=$('#toast');el.textContent=t;el.clas
 function confetti(){var cs=['#ff6fa5','#8e6bff','#22b88a','#ffc23c','#4d9bff'];for(var i=0;i<36;i++){var d=document.createElement('div');d.className='confetti';d.style.left=Math.random()*100+'vw';d.style.background=cs[i%5];d.style.animationDuration=(1.6+Math.random()*1.4)+'s';d.style.animationDelay=(Math.random()*0.4)+'s';document.body.appendChild(d);(function(x){setTimeout(function(){x.remove();},3600);})(d);}}
 function shake(el){if(!el)return;el.classList.remove('shake');void el.offsetWidth;el.classList.add('shake');}
 /* ---------------- 进度 ---------------- */
-var N=ROOMS.length,CHAP=10;
+var N=ROOMS.length,CHAP=5;
 function bestOf(i){return store.best['room:'+i]||0;}
 function unlocked(i){if(QS.has('unlock')||i===0)return true;
   var batch=Math.floor(i/CHAP),start=batch*CHAP;
@@ -62,7 +62,7 @@ function openResetChapterSheet(){var lab=chapterRangeLabel(roomChapter);
 var nav={screen:'home',idx:0};
 function show(id){$$('.screen').forEach(function(s){s.classList.toggle('active',s.id==='scr-'+id);});nav.screen=id;window.scrollTo(0,0);}
 function paintMute(){$$('[data-act="mute"]').forEach(function(b){b.textContent=store.sound?'🔊':'🔇';});}
-var OWL=['每个房间都有一个小故事。找线索、拿物品、解密码，完成挑战吧！','小窍门：做题前先问问自己：“题目告诉了我什么？要我找什么？”','卡住了不要急，点「💡 提示」，我会一点一点帮你。','物品可以组合：先点一个再点另一个试试！','每 10 间通关后，下一章才会打开哦。'];
+var OWL=['台风夜里，线索藏在告示、日记和账单里——先观察，再动手。','密码不会直接弹题：要从场景证据推出来。','有干扰项！「父慈子孝」「9.9×9.9」可能是陷阱。','物品可以组合：手电筒+电池、两半通行证、地图+胶水……','顺着房间走完主线，就能揭开 L 是谁。'];
 var roomChapter=0;
 function renderHome(chap){if(chap!=null)roomChapter=chap;
   var tot=sumStars(),done=doneCount();
@@ -75,7 +75,7 @@ function renderHome(chap){if(chap!=null)roomChapter=chap;
     h+='<button class="btn '+(roomChapter===c?'primary':'ghost')+'" data-act="chapter" data-c="'+c+'" style="min-height:40px;padding:8px 12px;font-size:14px">第 '+a+'-'+b+' 间</button>';}
   h+='</div>';
   h+='<div class="home-reset"><button class="btn" data-act="resetChapter" type="button">🔄 重置本章</button><button class="btn" data-act="resetProgress" type="button">🗑 清空全部通关</button></div>';
-  h+='<div class="room-list-hint">↕ 往下滑动，本章 10 间都能看到；顶部可切换章节</div>';
+  h+='<div class="room-list-hint">↕ 往下滑动看本章房间；顶部可切换章节</div>';
   h+='<div class="room-list-panel"><div class="big-grid">';
   var c0=roomChapter*CHAP,c1=c0+CHAP;
   ROOMS.forEach(function(x,i){
@@ -108,7 +108,7 @@ function winSheet(o){SFX.win();confetti();record(nav.idx,o.stars);
   if(o.explain&&o.explain.length)h+='<div class="explain"><h4>🦉 解谜思路</h4><ol>'+o.explain.map(function(x){return '<li>'+esc(x)+'</li>';}).join('')+'</ol></div>';
   var hasNext=nav.idx+1<N;
   h+='<div class="actions">'+(hasNext?'<button class="btn primary" data-act="next">下一关 ➜</button>':'')+'<button class="btn ghost" data-act="retry">再玩一次</button><button class="btn ghost" data-act="tolist">返回列表</button></div>';
-  if(!hasNext)h+='<div class="hint-cost">🏆 30 间密室全部通关啦，太厉害了！</div>';
+  if(!hasNext)h+='<div class="hint-cost">🏆 旧楼谜影全部通关！天亮了，你安全逃出啦！</div>';
   h+='</div>';openSheet(h,{locked:true});}
 function statLine(parts){return parts.filter(Boolean).join(' · ');}
 
@@ -171,6 +171,55 @@ function roomHint(){var hh=E.room.hint(RP.room,RP.st);if(!hh){toast('你已经�
 function roomWin(){var r=RP.room,stars=RP.hints<=0?3:RP.hints<=3?2:1;delete store.rooms[r.id];save();
   winSheet({icon:'🚪',title:'挑战成功「'+r.title+'」！',stars:stars,ending:RP.msg,stat:statLine([RP.hints?'用了 '+RP.hints+' 次提示':'一次提示也没用，太棒了！']),explain:r.explain});}
 
+
+/* ================= 数字游戏：24 点 ================= */
+var NG={nums:[],used:[],expr:'',lastWasOp:true,solved:0};
+function ngDeal(){
+  // easy-ish packs for grade 5
+  var packs=[[8,3,3,3],[6,6,4,1],[8,8,3,3],[4,4,4,4],[9,9,4,2],[8,5,5,2],[6,4,3,2],[7,7,3,3],[5,5,5,5],[9,3,4,2],[8,6,4,2],[9,6,3,2]];
+  NG.nums=packs[Math.floor(Math.random()*packs.length)].slice();
+  NG.used=[0,0,0,0];NG.expr='';NG.lastWasOp=true;ngRender();
+}
+function ngEvalSafe(s){
+  if(!/^[0-9+\-*/().\s]+$/.test(s))return null;
+  try{var v=Function('"use strict";return ('+s+')')();return typeof v==='number'&&isFinite(v)?v:null;}catch(e){return null;}
+}
+function ngRender(){
+  var h='<p class="say" style="text-align:center">用下面四个数，加上 + − × ÷ 和括号，算出 <b>24</b>。每个数只能用一次。</p>';
+  h+='<div class="num-cards">';
+  NG.nums.forEach(function(n,i){h+='<button class="num-card'+(NG.used[i]?' used':'')+'" data-act="ngNum" data-i="'+i+'" '+(NG.used[i]?'disabled':'')+'>'+n+'</button>';});
+  h+='</div><div class="num-expr">'+(NG.expr||'点击数字和运算')+'</div>';
+  h+='<div class="num-ops">';
+  [['+','+'],['-','−'],['*','×'],['/','÷'],['(',')'],['bs','⌫']].forEach(function(x){h+='<button class="btn ghost" data-act="ngOp" data-k="'+x[0]+'">'+x[1]+'</button>';});
+  h+='</div>';
+  h+='<div class="actions" style="justify-content:center"><button class="btn mint" data-act="ngCheck">算一算</button><button class="btn sun" data-act="ngDeal">换一组</button><button class="btn ghost" data-act="ngClear">清空</button></div>';
+  h+='<div class="hint-cost" style="text-align:center">已过关 '+NG.solved+' 组 · 和密室同一页面</div>';
+  var el=document.getElementById('numGameBody');if(el)el.innerHTML=h;paintMute();
+}
+function ngTapNum(i){if(NG.used[i])return;if(!NG.lastWasOp&&NG.expr.length){toast('先点运算符号');return;}NG.used[i]=1;NG.expr+=String(NG.nums[i]);NG.lastWasOp=false;SFX.tap();ngRender();}
+function ngTapOp(k){
+  if(k==='bs'){ // undo last token roughly
+    if(!NG.expr)return;
+    var ch=NG.expr.slice(-1);
+    if(/\d/.test(ch)){
+      // remove trailing number and unuse matching card
+      var m=NG.expr.match(/(\d+)$/);if(m){var num=m[1];NG.expr=NG.expr.slice(0,-num.length);
+        for(var i=NG.nums.length-1;i>=0;i--)if(NG.used[i]&&String(NG.nums[i])===num){NG.used[i]=0;break;}
+        NG.lastWasOp=true;}}
+    else{NG.expr=NG.expr.slice(0,-1);NG.lastWasOp=/[+\-*/(]/.test(NG.expr.slice(-1))||!NG.expr;}
+    SFX.tap();ngRender();return;
+  }
+  NG.expr+=k;NG.lastWasOp=(k!==')');SFX.tap();ngRender();
+}
+function ngCheck(){
+  if(NG.used.some(function(u){return!u;})){SFX.bad();toast('四个数都要用上哦');return;}
+  var v=ngEvalSafe(NG.expr);
+  if(v==null){SFX.bad();toast('算式有点奇怪，再试试');return;}
+  if(Math.abs(v-24)<1e-6){NG.solved++;SFX.win();toast('正好 24！太棒了 🎉');confetti();setTimeout(ngDeal,900);}
+  else{SFX.bad();toast('等于 '+Math.round(v*1000)/1000+'，还不是 24');}
+}
+function showNum(){show('num');ngDeal();}
+
 /* ================= 事件 ================= */
 document.addEventListener('click',function(ev){var t=ev.target;
   if(t.id==='mask'){if(!sheetLocked)closeSheet();return;}
@@ -179,6 +228,13 @@ document.addEventListener('click',function(ev){var t=ev.target;
   switch(a){
     case 'mute':store.sound=!store.sound;save();paintMute();if(store.sound)SFX.tap();break;
     case 'home':SFX.tap();closeSheet(true);renderHome();break;
+    case 'modeMystery':SFX.tap();show('home');renderHome();window.scrollTo(0, document.getElementById('mysteryBlock')?document.getElementById('mysteryBlock').offsetTop-8:0);break;
+    case 'modeNum':SFX.tap();showNum();break;
+    case 'ngNum':ngTapNum(+b.dataset.i);break;
+    case 'ngOp':ngTapOp(b.dataset.k);break;
+    case 'ngCheck':ngCheck();break;
+    case 'ngDeal':SFX.tap();ngDeal();break;
+    case 'ngClear':SFX.tap();NG.expr='';NG.used=[0,0,0,0];NG.lastWasOp=true;ngRender();break;
     case 'chapter':SFX.tap();renderHome(+b.dataset.c);break;
     case 'back':SFX.tap();closeSheet(true);renderHome(Math.floor(nav.idx/CHAP));break;
     case 'play':SFX.tap();play(+b.dataset.i);break;
